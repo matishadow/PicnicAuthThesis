@@ -268,3 +268,6 @@
 	\end{flushright}
 	\vfill
 }
+
+% ZMIANA ORYGINAŁU
+\renewcommand\bibname{Spis literatury}
