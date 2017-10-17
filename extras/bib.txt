@@ -1,0 +1,17 @@
+Laurens Van Houtven (lvh), Crypto 101, https://github.com/crypto101/crypto101.github.io/raw/master/Crypto101.pdf, 2017
+[Niels Ferguson, Bruce Schneier, Todayoshi Kohno], Cryptography Engineering: Design Principles and Practical Applications, Wiley Publishing, Inc., 2010
+[Jonathan Katz, Yehuda Lindell], Introduction to modern cryptography, [Taylor & Francis Group, LLC], 2008
+Gynvael Coldwind, Zrozumieć programowanie, PWN, 2015
+
+Todd Fredrich, RESTful Service Best Practices, https://github.com/tfredrich/RestApiTutorial.com/raw/master/media/RESTful%20Best%20Practices-v1_2.pdf, 2013
+
+HMAC: Keyed-Hashing for Message Authentication, [H. Krawczyk, M. Bellare, R. Canetti], https://tools.ietf.org/pdf/rfc2104.pdf, 1997
+[The Base16, Base32, and Base64 Data Encodings], S. Josefsson, https://tools.ietf.org/pdf/rfc3548.pdf, Ed., 2003
+Uniform Resource Identifier (URI): Generic Syntax, [T. Berners-Lee, R. Fielding, L. Masinter], https://tools.ietf.org/pdf/rfc3986.pdf, 2005
+HOTP: An HMAC-Based One-Time Password Algorithm, [D. M’Raihi, M. Bellare, F. Hoornaert, D. Naccache, O. Ranen], https://tools.ietf.org/pdf/rfc4226.pdf, 2005
+TOTP: Time-Based One-Time Password Algorithm, [D. M’Raihi, S. Machani, M. Pei, J. Rydell], https://tools.ietf.org/pdf/rfc6238.pdf, 2011
+HMAC-based Extract-and-Expand Key Derivation Function (HKDF), [H. Krawczyk, P. Eronen], https://tools.ietf.org/pdf/rfc5869.pdf, 2010
+US Secure Hash Algorithm 1 (SHA1), [D. Eastlake, 3rd, P. Jones], https://tools.ietf.org/html/rfc3174, 2001
+
+Recommendation for Key Management, [Elaine Barker, William Barker, William Burr, Tim Polk, Miles Smid], http://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-57p1r3.pdf, 2012
+Advanced Encryption Standard, [Morris J. Dworkin, Elaine B. Barker, James R. Nechvatal, James Foti, Lawrence E. Bassham, E Roback, James F. Dray Jr.], 2001
