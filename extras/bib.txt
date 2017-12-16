@@ -15,3 +15,7 @@ US Secure Hash Algorithm 1 (SHA1), [D. Eastlake, 3rd, P. Jones], https://tools.i
 
 Recommendation for Key Management, [Elaine Barker, William Barker, William Burr, Tim Polk, Miles Smid], http://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-57p1r3.pdf, 2012
 Advanced Encryption Standard, [Morris J. Dworkin, Elaine B. Barker, James R. Nechvatal, James Foti, Lawrence E. Bassham, E Roback, James F. Dray Jr.], 2001
+
+
+
+Additional bib:
