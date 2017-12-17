@@ -1,5 +1,10 @@
 %
 % Klasa do pisania prac dyplomowych - inzynierskich i magisterskich - w SGGW
+%
+% Wersja 1.01 z 2017.12.13
+% Autor: Leszek Chmielewski
+% Zmiana: poprawka stylu podpisow rys i tab: \RequirePackage[...]{caption}
+
 % Wersja 1.0 z 2017.01.16.
 % Autor: Lukasz Adamczyk
 %
@@ -25,6 +30,8 @@
 \RequirePackage[utf8]{inputenc}
 \RequirePackage[nottoc,numbib]{tocbibind} %bibliografia z numerem i w spisie tresci
 \RequirePackage{xifthen}
+\RequirePackage[labelsep=period]{caption} %kropka oddziela numer od tytulu rysunku lub tabeli
+%\RequirePackage[labelfont=bf,labelsep=period]{caption} %tytuly rys i tab: gruba czcionka, kropka
 
 \RequirePackage[a4paper,top=2.5cm,bottom=2.5cm,inner=3.5cm,outer=2cm]{geometry}
 
