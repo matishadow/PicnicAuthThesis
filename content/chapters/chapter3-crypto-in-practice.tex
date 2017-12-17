@@ -4,8 +4,31 @@
 \subsection{Kodowanie transportowe}
 \subsubsection{Kodowanie Base64}
 \subsubsection{Kodowanie Base32}
-\subsection{Czas uniksowy}
-\subsection{Ujednolicony Identyfikator Zasobów}
 
+\subsection{Czas uniksowy}
+Czas uniksowy jest sposobem na reprezentację punktu w czasie, polegającym na mierzeniu sekund, które
+upłynęły od daty 1 stycznia 1970 (UTC). W systemach uniksowych zwykle reprezentowany jest w postaci
+32-bitowej liczby całkowitej ze znakiem. \\
+W przypadku architektur typu serwer-klient wskazane jest synchronizowanie czasu wykorzystując czas~uniksowy,
+gdyż nie zależy on od lokalizacji w której jest mierzony. Właściwość ta eliminuje problem synchronizacji 
+czasu pomiędzy strefami czasowymi.
+
+\subsection{Ujednolicony identyfikator zasobów}
+Ujednolicony identyfikator zasobów (ang. Uniform Resource Identifier, URI) jest ciągiem znaków jednoznacznie identyfikującym dany zasób. \\
+Składnia identyfikatora jest wyrażana następująco: \\
+\centerline{schemat ":" ścieżka ["?" zapytanie] ["\#" fragment]} 
+Warto zauważyć, że składnia ta determinuje schemat (protokół), jaki wykorzystywany jest przy interakcji z identyfikowanym zasobem. \\
+
+Przykłady identyfikatorów:
+\begin{itemize}
+	\item ftp://randomftp.com/files/file.docx
+	\item https://www.randomwebsite.pl/index.html
+	\item mailto:jan.nowak@wp.pl
+	\item tel:+48-25-123-88
+\end{itemize}
+
+Szczegóły dotyczące standardu URI są opisane w dokumencie RFC~3986 \cite{uri}. 
+
+ 
 \section{Hasło jednorazowe}
-\section{Interfejs ,,Windows Data Protection''}
+\section{Interfejs Windows Data Protection}
