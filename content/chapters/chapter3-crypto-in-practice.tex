@@ -16,6 +16,15 @@ Bardziej współczesnym przykładem wykorzystania kodowania transportowego jest 
 Aby ujednolicić implementacje kodowania transportowego został stworzony dokument RFC 4648 \cite{encoding}, w którym opisany jest prawidłowy sposób implementacji oraz to jaki typ kodowania wybrać w zależności od nałożonych wymagań.
 
 \subsubsection{Kodowanie Base64}
+Najczęściej spotykanym typem kodowania transportowego jest kodowanie Base64. Kodowanie to konwertuje dowolny ciąg bajtów do postaci ciągu złożonego z małych i wielkich liter, cyfr oraz znaków '+' i '/'. 
+Jeżeli po zakodowaniu końcowa część danych jest mniejsza niż 24 używany jest także znak '=' jako dopełnienie. \\
+Sam proces kodowania polega na pobraniu 24 bitów danych a następnie podzieleniu ich na 4 grupy po 6 bitów. Każda z grup jest interpretowana jako indeks tablicy ustalonego alfabetu Base64.
+Dla każdej z grup za pomocą indeksu odczytywany jest znak a następnie dopisywany jest on do ciągu zakodowanego. \\ \\
+
+Istnieje również odmiana kodowania Base64 przystosowana do użycia w przypadku adresów URL czy nazw plików.
+W alternatywie tej zamiast znaków '+', '/', które mogłyby zostać błędnie zinterpretowane np w środowisku systemu plików,
+używane są znaki '-' oraz '_'.
+
 \subsubsection{Kodowanie Base32}
 
 \subsection{Czas uniksowy}
@@ -44,4 +53,5 @@ Szczegóły dotyczące standardu URI są opisane w dokumencie RFC~3986 \cite{uri
 
  
 \section{Hasło jednorazowe}
+
 \section{Interfejs Windows Data Protection}
