@@ -6,6 +6,15 @@ wyjaśnienie pojęć wykorzystywanych w mechanizmie haseł jednorazowych, lecz k
 związane z kryptografią. 
 
 \subsection{Kodowanie transportowe}
+Kodowanie transportowe wykorzystywane jest w przypadku, gdy zachodzi potrzeba transferu danych
+w środowiskach, które pozwalają na przesyłanie wyłącznie znaków ASCII. \\ \\
+Użycie kodowania transportowego jest konieczne w celu zachowania kompatybilności przy pracy z protokołami, 
+które przystosowane są do pracy na danych 7-bitowych. W takim przypadku najstarszy bit jest zerowany, co
+mogłoby uszkodzić przesyłane dane. W przypadku przesyłania wyłącznie znaków ASCII zerowanie najstarszego bitu
+nie jest problemem, gdyż wszystkie znaki w podstawowej tablicy ASCII mają ten bit wyzerowany.\\
+Bardziej współczesnym przykładem wykorzystania kodowania transportowego jest osadzanie danych graficznych bezpośrednio w kodzie HTML. Konieczne jest wówczas zakodowanie danych w celu wyeliminowania ryzyka pojawienia się znaków '<' oraz '>', które mogłyby być zinterpretowane jako tagi HTML. \\ \\
+Aby ujednolicić implementacje kodowania transportowego został stworzony dokument RFC 4648 \cite{encoding}, w którym opisany jest prawidłowy sposób implementacji oraz to jaki typ kodowania wybrać w zależności od nałożonych wymagań.
+
 \subsubsection{Kodowanie Base64}
 \subsubsection{Kodowanie Base32}
 
