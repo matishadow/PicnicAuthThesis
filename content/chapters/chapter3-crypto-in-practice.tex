@@ -17,15 +17,41 @@ Aby ujednolicić implementacje kodowania transportowego został stworzony dokume
 
 \subsubsection{Kodowanie Base64}
 Najczęściej spotykanym typem kodowania transportowego jest kodowanie Base64. Kodowanie to konwertuje dowolny ciąg bajtów do postaci ciągu złożonego z małych i wielkich liter, cyfr oraz znaków '+' i '/'. 
-Jeżeli po zakodowaniu końcowa część danych jest mniejsza niż 24 używany jest także znak '=' jako dopełnienie. \\
+Jeżeli po zakodowaniu końcowa część danych jest mniejsza niż 24 bity używany jest także znak '=' jako dopełnienie. \\
 Sam proces kodowania polega na pobraniu 24 bitów danych a następnie podzieleniu ich na 4 grupy po 6 bitów. Każda z grup jest interpretowana jako indeks tablicy ustalonego alfabetu Base64.
-Dla każdej z grup za pomocą indeksu odczytywany jest znak a następnie dopisywany jest on do ciągu zakodowanego. \\ \\
-
+Dla każdej z grup za pomocą indeksu odczytywany jest znak a następnie dopisywany jest on do ciągu zakodowanego. \\
 Istnieje również odmiana kodowania Base64 przystosowana do użycia w przypadku adresów URL czy nazw plików.
 W alternatywie tej zamiast znaków '+', '/', które mogłyby zostać błędnie zinterpretowane np w środowisku systemu plików,
-używane są znaki '-' oraz '_'.
+używane są znaki '-' oraz '\_'.
 
 \subsubsection{Kodowanie Base32}
+W porównaniu do kodowania Base64, dane zakodowane w Base32 są dużo bardziej czytelne dla ludzi.
+Właściwość ta spowodowana jest faktem, że w kodowaniu Base32 nie ma znaczenia wielkość liter, dzięki czemu przykładowo
+nie ma problemu z rozróżnieniem małej litery 'L' z wielką literą 'I' ('l' oraz 'I'). \\
+Alfabet kodowania Base32 składa się z 32 znaków ASCII oraz znaku '=' pełniącego funkcje dopełnienia.
+Proces kodowania polega na pobraniu 40 bitów danych a następnie ustawienie ich w osiem 5-bitowych grup. 
+Każda z 8 grup interpretowana jest jako jeden ze znaków alfabetu Base32. \\
+Podobnie jak przy kodowaniu Base64, wymagane jest tutaj wstawienie dopełnienia w sytuacji, gdy długość ostatniej z grup jest mniejsza od 40 bitów.
+
+\begin{table}[h!]
+\centering
+\caption{Alfabet w kodowaniu Base32}
+\begin{tabular}{ |c c|c c|c c|c c| } 
+ \hline
+ Indeks & Znak & Indeks & Znak & Indeks & Znak & Indeks & Znak \\ 
+ \hline
+ 0 & A & 9  & J & 18 & S & 27 & 3 \\ 
+ 1 & B & 10 & K & 19 & T & 28 & 4 \\ 
+ 2 & C & 11 & L & 20 & U & 29 & 5 \\ 
+ 3 & D & 12 & M & 21 & V & 30 & 6 \\ 
+ 4 & E & 13 & N & 22 & W & 31 & 7 \\ 
+ 5 & F & 14 & O & 23 & X &    &   \\ 
+ 6 & G & 15 & P & 24 & Y &    &   \\  
+ 7 & H & 16 & Q & 25 & Z &    &   \\ 
+ 8 & I & 17 & R & 26 & 2 &    &   \\ 
+ \hline
+\end{tabular}
+\end{table}
 
 \subsection{Czas uniksowy}
 Czas uniksowy jest sposobem na reprezentację punktu w czasie, polegającym na mierzeniu sekund, które
