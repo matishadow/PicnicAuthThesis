@@ -2,8 +2,46 @@
 
 \section{Kryptografia symetryczna oraz asymetryczna}
 \section{Szyfry blokowe}
+Jednym z podstawowych elementów systemów kryptograficznych jest szyfr blokowy. Jest to algorytm operujący na bloku danych o ustalonej długości. Długość wynikowego bloku danych jest równa długości bloku podanego na wejściu. \\
+Szyfry blokowe oparte są o tzw. ,,sieć substytucji-permutacji''. 
+
 \section{Szyfry strumieniowe}
-\section{Funkcja skrótu}
+\section{Kryptograficzna funkcja skrótu}
+Funkcją skrótu nazywana jest funkcja, która dla danych wejściowych o dowolnym rozmiarze zwraca dane o z góry ustalonej długości. Funkcje skrótu znajdują zastosowanie w takich dziedzinach jak struktury danych (tablice mieszające, filtr Blooma), algorytmy dopasowania wzorca (algorytm Karpa-Rabina) czy też w kryptografii. \\ \\
+Aby funkcja skrótu mogła zostać użyta w systemach kryptograficznych musi posiadać ona szereg parametrów. \\
+Jednym z nich jest odporność na kolizje. Kolizją nazywamy przypadek, gdy dla dwóch różnych argumentów funkcja skrótu zwraca ten sam wynik. Nie jest oczywiście możliwe aby całkowicie uniknąć kolizji, gdyż zbiór danych o dowolnym rozmiarze jest mapowany na zbiór skończony, zależy nam jednak aby proces znajdywania kolizji dla określonych danych był uważany za ,,trudny''. (Przez ,,trudny'' należy tutaj rozumieć problem, który nie jest możliwy do rozwiązania w rozsądnej ilości czasu.) \\
+Kolejny z parametrów jest częściowo związany z poprzednim. Zależy nam, aby rozpatrywana funkcja była funkcją jednokierunkową. Oznacza to, że dla danego wyniku funkcji skrótu, znalezienie argumentu jest również problemem ,,trudnym''.
+(Sam fakt istnienia funkcji jednokierunkowych nie został formalnie udowodniony. \cite{oneway}) \\
+Niezwykle ważne jest też, aby nawet niewielka zmiana danych wejściowych, spowodowała znaczną zmianę danych otrzymanych na wyjściu (wymagane jest aby przynajmniej połowa bitów uległa zmianie).
+
+\subsection{Message Digest 5}
+Funkcja MD5 jest wykorzystywana do generowania 128-bitowego skrótu. Została stworzona przez Rona Rivesta w 1991 roku. \\
+W uproszczeniu, algorytm MD5 można przedstawić w następujących krokach \cite{crypto101}:
+\begin{enumerate}
+	\itemsep0em
+	\item Dodanie dopełnienia. W pierwszej kolejności dopisywany jest jeden bit o wartości 1, a następnie dopisywane są zera, aż do momentu, gdy długość danych wynosić będzie 448 bitów modulo 512. Dopełnienie dopisywane jest nawet w przypadku, gdy długość danych wynosi 448 bitów.
+	\item Pozostałe 64 bity wypełniane są liczbą reprezentującą długość wiadomości (sprzed wypełnienia) modulo $2^{64}$. 
+	\item Inicjalizacja stanu MD5 w postaci czterech 32-bitowych zmiennych A, B, C i D. Są one inicjalizowane stałymi zdefiniowanymi w specyfikacji (przedstawione w systemie szesnastkowym): 
+		\begin{itemize}
+			\item A: 01 23 45 67
+			\item B: 89 ab cd ef
+			\item C: fe dc ba 98
+			\item D: 76 54 32 10
+		\end{itemize}
+	\item Dane wejściowe dzielone są na bloki po 512 bitów. Kolejno na każdym z bloków wykonywane są operacje bitowe zmieniające zmiennych. 
+	\item Wynikiem działania algorytmu jest 128-bitowa wartość składająca się z omawianych czterech zmiennych w kolejności A, B, C, D.
+\end{enumerate} 
+Szczegółowa specyfikacja algorytmy znajduje się w dokumencie RFC 1321 \cite{md5rfc}. \\
+Analiza kryptograficzna funkcji MD5 wykazała wiele podatności i błędów przez co obecnie nie jest wskazane używanie MD5 w zastosowaniach kryptograficznych. 
+W roku 2004 została opublikowana praca wykazująca podatność funkcji MD5 na ataki kolizyjne (ang. collision attack) \cite{md5cert}. Cztery lata później został znaleziony atak na kody uwierzytelnienia wiadomości bazujące na funkcji MD5 \cite{md5hmac}.
+
+\subsection{Secure Hash Algorithm 1}
+
+
+\subsection{Secure Hash Algorithm 2}
+\subsection{Secure Hash Algorithm 3}
+
+
 \section{Kod uwierzytelnienia wiadomości}
 \section{MAC bazujący na funkcji skrótu}
 \section{Funkcje typu key stretching}
