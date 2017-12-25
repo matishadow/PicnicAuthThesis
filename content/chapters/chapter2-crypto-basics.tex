@@ -18,7 +18,6 @@ Niezwykle ważne jest też, aby nawet niewielka zmiana danych wejściowych, spow
 Funkcja MD5 jest wykorzystywana do generowania 128-bitowego skrótu. Została stworzona przez Rona Rivesta w 1991 roku. \\
 W uproszczeniu, algorytm MD5 można przedstawić w następujących krokach \cite{crypto101}:
 \begin{enumerate}
-	\itemsep0em
 	\item Dodanie dopełnienia. W pierwszej kolejności dopisywany jest jeden bit o wartości 1, a następnie dopisywane są zera, aż do momentu, gdy długość danych wynosić będzie 448 bitów modulo 512. Dopełnienie dopisywane jest nawet w przypadku, gdy długość danych wynosi 448 bitów.
 	\item Pozostałe 64 bity wypełniane są liczbą reprezentującą długość wiadomości (sprzed wypełnienia) modulo $2^{64}$. 
 	\item Inicjalizacja stanu MD5 w postaci czterech 32-bitowych zmiennych A, B, C i D. Są one inicjalizowane stałymi zdefiniowanymi w specyfikacji (przedstawione w systemie szesnastkowym): 
@@ -36,13 +35,110 @@ Analiza kryptograficzna funkcji MD5 wykazała wiele podatności i błędów prze
 W roku 2004 została opublikowana praca wykazująca podatność funkcji MD5 na ataki kolizyjne (ang. collision attack) \cite{md5cert}. Cztery lata później został znaleziony atak na kody uwierzytelnienia wiadomości bazujące na funkcji MD5 \cite{md5hmac}.
 
 \subsection{Secure Hash Algorithm 1}
-
+SHA-1 jest funkcją bazującą na MD4 (podobnie jak MD5), o długości skrótu wynoszącej 160 bitów \cite{cryptoirf}. \\
+Wewnętrzny stan funkcji składa się z pięciu zmiennych: A, B, C, D oraz E, każda o rozmiarze 32 bitów. \\
+Pseudokod algorytmu można przedstawić w następujących krokach:
+\begin{enumerate}
+	\item Inicjalizacja zmiennych następującymi stałymi (przedstawione w systemie szesnastkowym):
+		\begin{itemize}
+			\item A = 0x67452301
+			\item B = 0xEFCDAB89
+			\item C = 0x98BADCFE
+			\item D = 0x10325476
+			\item E = 0xC3D2E1F0
+		\end{itemize}
+	\item Zaaplikowanie dopełnienia:
+		\begin{enumerate}
+			\item Dopisanie na koniec danych bitu o wartości 1. \\ 
+			Przykładowo jeśli przetwarzane są dane \textit{01011001}, to są one dopełniane do \textit{010110011}.
+			\item Następnie dopisywane są bity o wartości 0, aż do momentu, gdy długość danych wynosić będzie 448 bitów modulo 512. \\
+			Mając dane \textit{00101101 01000010 10011101 10001010 00101101 10011101}, po zastosowaniu dopełnienia z kroku (a) otrzymujemy \textit{00101101 01000010 10011101 10001010 00101101 10011101 1}. Jako że długość danych wynosi 49 bitów, wymagane jest dopisanie 399 zer. Po zastosowaniu dopełnienia otrzymujemy (reprezentacja heksadecymalna): \\
+			\textit{2d429d8a 2d9d8000 00000000 00000000 \\ 
+					00000000 00000000 00000000 00000000 \\ 
+					00000000 00000000 00000000 00000000 \\ 
+					00000000 00000000 }
+			\item W ostatnim kroku na miejsce ostatnich 64 bitów dopisywana jest długość danych. 
+			\textit{2d429d8a 2d9d8000 00000000 00000000 \\ 
+					00000000 00000000 00000000 00000000 \\ 
+					00000000 00000000 00000000 00000000 \\ 
+					00000000 00000000 00000000 00000031 }
+		\end{enumerate}
+	\item Podzielenie wiadomości na 512-bitowe bloki.
+	\item Dla każdego z bloków należy wykonać następujące operacje:
+		\begin{enumerate}
+			\item Podzielenie bloku na szesnaście 32-bitowych części $w[i], 0 \leq i \leq 15$.
+			\item Rozszerzenie 16 części do 80 korzystając ze wzoru: \\
+				$w[i] = (w[i-3] \xor w[i-8] \xor w[i-14] \xor w[i-16]) << 1$
+			\item Inicjalizacja zmiennych pomocniczych dla danego bloku
+				\begin{itemize}
+					\item a = A
+					\item b = B
+					\item c = C
+					\item d = D
+					\item e = E
+				\end{itemize}
+			\item Dla każdej z 80 części $w[i]$ należy wykonać:
+				\begin{enumerate}
+					\item jeżeli $0 \leq i \leq 19$ 
+				        \begin{itemize} 
+				        	\item $f = (b \BitAnd c) \BitOr ((\BitNeg b) \BitAnd d)$
+				            \item $k = 0x5A827999$
+				        \end{itemize}
+					\item jeżeli $20 \leq i \leq 39$
+						\begin{itemize} 
+            				\item $f = b \xor c \xor d$
+            				\item $k = 0x6ED9EBA1$
+            			\end{itemize}
+				    \item jeżeli $40 \leq i \leq 59$
+				        \begin{itemize} 
+				        	\item $f = (b \BitAnd c) \BitOr (b \BitAnd d) \BitOr (c \BitAnd d)$ 
+            				\item $k = 0x8F1BBCDC$
+			            \end{itemize}
+        			\item jeżeli $60 \leq i \leq 79$
+        				\begin{itemize} 
+				            \item $f = b \xor c \xor d$
+    	        			\item $k = 0xCA62C1D6$
+            			\end{itemize}
+            		\item następnie
+            			\begin{itemize}
+            				\item $t = (a <<< 5) + f + e + k + w[i]$ 
+					        \item $e = d$ 
+					        \item $d = c$
+					        \item $c = b <<< 30$
+					        \item $b = a$ 
+					        \item $a = t$ 
+            			\end{itemize}
+				\end{enumerate}
+			\item Aktualizacja wewnętrznego stanu funkcji			
+				\begin{itemize}
+					\item A = A + a
+					\item B = B + b
+					\item C = C + c
+					\item D = D + d
+					\item E = E + e
+				\end{itemize}
+		\end{enumerate}
+	\item Zwrócenie wyniku w postaci: \\
+		$(A << 128) \BitOr (B << 96) \BitOr (C << 64) \BitOr (D << 32) \BitOr E$
+\end{enumerate}
+W dokumencie RFC 3174 zostały zawarte szczegóły dotyczące algorytmu, jak również przykładowa implementacja \cite{sha1rfc}. \\ \\
+Podobnie jak MD5, funkcja SHA-1 również nie jest uważana za bezpieczną. \\
+Do roku 2017 wszystkie przedstawione ataki uznawane były za niepraktyczne z uwagi na zbyt dużą moc obliczeniową, jaka byłaby potrzebna do ich wykonania.
+Przykładem może być tutaj atak opublikowany w październiku 2015 roku o nazwie \textit{The SHAppening}. Koszt wynajęcia sprzętu potrzebnego do przeprowadzenia ataku (wygenerowania jednej kolizji) estymowany był na 75 000 - 120 000 dolarów amerykańskich \cite{shap}. \\
+Pierwszy praktyczny atak na SHA-1 został ogłoszony w lutym 2017 roku. Zostały wygenerowane dwa pliki w formacie PDF, dla których wynik funkcji skrótu SHA-1 jest taki sam. Wszystkie systemy, w których wykorzystywana jest funkcja SHA-1 są narażone na ten atak, przykładowo umożliwia on fałszowanie podpisów cyfrowych dokumentów, czy też certyfikatów HTTPS. \cite{shatt}
 
 \subsection{Secure Hash Algorithm 2}
-\subsection{Secure Hash Algorithm 3}
+SHA-2 jest rodziną funkcji składającą się z SHA-224, SHA-256, SHA-384, SHA-512, SHA-512/224, SHA-512/256. Funkcje te generują skróty o długościach odpowiednio: 224, 256, 384, 512, 224 oraz 256 bitów. 
+W porównaniu do SHA-1 są znacznie odporniejsze na kolizję, dzięki czemu zalecane jest ich używanie w zastosowaniach takich jak podpisy cyfrowe czy uwierzytelnianie wiadomości.
 
+\subsubsection{SHA-256}
+
+
+\subsection{Secure Hash Algorithm 3}
+Wewnętrzna budowa funkcji z rodziny SHA-3 znacząco się różni w odniesieniu do omawianych wcześniej. 
+Poprzednie funkcje oparte były o schemat Merkle–Damgård. Funkcje z rodziny SHA-3 oparte są o tak zwaną ,,architekturę gąbki''. W obu przypadkach funkcja zawiera wewnętrzny stan. Różnica jest jednak w sposobie otrzymywania wyniku na podstawie tego stanu. Poprzednio zwrócenie przez funkcję wyniku było równoznaczne ze zwróceniem wewnętrznego stanu funkcji. W przypadku SHA-3 tak się nie dzieje. Wewnętrzny stan przepuszczany jest kolejne cykle algorytmu. Na wynik funkcji składają się części wewnętrznego stanu, pobierane w kolejnych cyklach. Skutkuje to tym, że nigdy nie jest ujawniany cały wewnętrzny stan funkcji. \\
+Ulepszona wewnętrzna konstrukcja algorytmu zapobiega atakom typu ,,length extension'', na który podatne są funkcje MD5, SHA-1 oraz SHA-2 \cite{keccak}.
 
 \section{Kod uwierzytelnienia wiadomości}
 \section{MAC bazujący na funkcji skrótu}
-\section{Funkcje typu key stretching}
 \section{Pojęcia entropii}
