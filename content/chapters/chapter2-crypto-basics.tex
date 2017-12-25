@@ -128,11 +128,98 @@ Przykładem może być tutaj atak opublikowany w październiku 2015 roku o nazwi
 Pierwszy praktyczny atak na SHA-1 został ogłoszony w lutym 2017 roku. Zostały wygenerowane dwa pliki w formacie PDF, dla których wynik funkcji skrótu SHA-1 jest taki sam. Wszystkie systemy, w których wykorzystywana jest funkcja SHA-1 są narażone na ten atak, przykładowo umożliwia on fałszowanie podpisów cyfrowych dokumentów, czy też certyfikatów HTTPS. \cite{shatt}
 
 \subsection{Secure Hash Algorithm 2}
-SHA-2 jest rodziną funkcji składającą się z SHA-224, SHA-256, SHA-384, SHA-512, SHA-512/224, SHA-512/256. Funkcje te generują skróty o długościach odpowiednio: 224, 256, 384, 512, 224 oraz 256 bitów. 
-W porównaniu do SHA-1 są znacznie odporniejsze na kolizję, dzięki czemu zalecane jest ich używanie w zastosowaniach takich jak podpisy cyfrowe czy uwierzytelnianie wiadomości.
+SHA-2 jest rodziną funkcji składającą się z SHA-224, SHA-256, SHA-384, SHA-512, SHA-512/224, SHA-512/256. Funkcje te generują skróty o długościach odpowiednio: 224, 256, 384, 512, 224 oraz 256 bitów.
 
 \subsubsection{SHA-256}
-
+Jedną z najczęściej używanych funkcji z rodziny SHA-2 jest SHA-256. Proces uzyskiwania skrótu SHA-256 jest następujący:
+\begin{enumerate}
+	\item Inicjalizacja stanu wewnętrznego funkcji (przedstawione w systemie szesnastkowym):
+		\begin{itemize}
+			\item A = 0x6a09e667
+			\item B = 0xbb67ae85
+			\item C = 0x3c6ef372
+			\item D = 0xa54ff53a
+			\item E = 0x510e527f
+			\item F = 0x9b05688c
+			\item G = 0x1f83d9ab
+			\item H = 0x5be0cd19
+		\end{itemize}
+	\item Inicjalizacja pomocniczych stałych. \\
+			$$
+			k[0..63] := \\
+			\begin{matrix}
+				0x428a2f98, & 0x71374491, & 0xb5c0fbcf, & 0xe9b5dba5, \\
+				0x3956c25b, & 0x59f111f1, & 0x923f82a4, & 0xab1c5ed5, \\
+				0xd807aa98, & 0x12835b01, & 0x243185be, & 0x550c7dc3, \\
+				0x72be5d74, & 0x80deb1fe, & 0x9bdc06a7, & 0xc19bf174, \\
+				0xe49b69c1, & 0xefbe4786, & 0x0fc19dc6, & 0x240ca1cc, \\
+				0x2de92c6f, & 0x4a7484aa, & 0x5cb0a9dc, & 0x76f988da, \\
+				0x983e5152, & 0xa831c66d, & 0xb00327c8, & 0xbf597fc7, \\
+				0xc6e00bf3, & 0xd5a79147, & 0x06ca6351, & 0x14292967, \\
+				0x27b70a85, & 0x2e1b2138, & 0x4d2c6dfc, & 0x53380d13, \\
+				0x650a7354, & 0x766a0abb, & 0x81c2c92e, & 0x92722c85, \\
+				0xa2bfe8a1, & 0xa81a664b, & 0xc24b8b70, & 0xc76c51a3, \\
+				0xd192e819, & 0xd6990624, & 0xf40e3585, & 0x106aa070, \\
+				0x19a4c116, & 0x1e376c08, & 0x2748774c, & 0x34b0bcb5, \\
+				0x391c0cb3, & 0x4ed8aa4a, & 0x5b9cca4f, & 0x682e6ff3, \\
+				0x748f82ee, & 0x78a5636f, & 0x84c87814, & 0x8cc70208, \\
+				0x90befffa, & 0xa4506ceb, & 0xbef9a3f7, & 0xc67178f2  	
+			\end{matrix}
+			$$
+	\item Zaaplikowanie dopełnienia. Proces ten przebiega identycznie jak w przypadku SHA-1.
+	\item Podzielenie wiadomości na 512-bitowe bloki.
+	\item Dla każdego z bloków należy wykonać następujące operacje:
+		\begin{enumerate}
+			\item Podzielenie bloku na szesnaście 32-bitowych części $w[i], 0 \leq i \leq 15$.
+			\item Rozszerzenie 16 części do 64 korzystając ze wzoru: \\
+				$s0 := (w[i-15] >>> 7) \xor (w[i-15] >>> 18) \xor (w[i-15] >> 3)$ \\
+			    $s1 := (w[i-2] >>> 17) \xor (w[i-2] >>> 19) \xor (w[i-2] >> 10)$ \\
+				$w[i] := w[i-16] + s0 + w[i-7] + s1$
+			\item Inicjalizacja zmiennych pomocniczych dla danego bloku
+				\begin{itemize}
+					\item a = A
+					\item b = B
+					\item c = C
+					\item d = D
+					\item e = E
+					\item f = F
+					\item g = G
+					\item h = H
+				\end{itemize}
+			\item Dla każdej z 64 części $w[i]$ należy wykonać:
+				\begin{itemize}
+					\item $S1 := (e >>> 6) \xor (e >>> 11) \xor (e >>> 25)$
+			        \item $ch := (e \BitAnd f) \xor ((\BitNeg e) \BitAnd g)$
+			        \item $t1 := h + S1 + ch + k[i] + w[i]$
+			        \item $S0 := (a >>> 2) \xor (a >>> 13) \xor (a >>> 22)$
+			        \item $m := (a \BitAnd b) \xor (a \BitAnd c) \xor (b \BitAnd c)$
+			        \item $t2 := S0 + m$
+			        \item $h := g$
+			        \item $g := f$
+			        \item $f := e$
+			        \item $e := d + t1$
+			        \item $d := c$
+			        \item $c := b$
+			        \item $b := a$
+			        \item $a := t1 + t2$
+				\end{itemize}
+			\item Aktualizacja wewnętrznego stanu funkcji			
+				\begin{itemize}
+					\item A = A + a
+					\item B = B + b
+					\item C = C + c
+					\item D = D + d
+					\item E = E + e
+					\item F = F + f
+					\item G = G + g
+					\item H = H + h
+				\end{itemize}
+		\end{enumerate}
+	\item Zwrócenie wyniku w postaci: \\
+		$(A << 224) \BitOr (B << 192) \BitOr (C << 160) \BitOr \\ 
+		 (D << 128) \BitOr (E << 96) \BitOr (F << 64) \BitOr (G << 32) \BitOr H$
+\end{enumerate}
+W porównaniu do SHA-1 są znacznie odporniejsze na kolizję, dzięki czemu zalecane jest ich używanie w zastosowaniach takich jak podpisy cyfrowe czy uwierzytelnianie wiadomości.
 
 \subsection{Secure Hash Algorithm 3}
 Wewnętrzna budowa funkcji z rodziny SHA-3 znacząco się różni w odniesieniu do omawianych wcześniej. 
