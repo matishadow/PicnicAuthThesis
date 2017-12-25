@@ -1,6 +1,23 @@
 \chapter{Elementy kryptografii}
 
 \section{Kryptografia symetryczna oraz asymetryczna}
+Współczesną kryptografię można podzielić na kryptografię symetryczną oraz kryptografię asymetryczną. 
+W dużym uproszczeniu, w przypadku kryptografii symetrycznej używany jest jeden, wspólny klucz kryptograficzny a w kryptografii asymetrycznej obecna jest para kluczy kryptograficznych - publiczny oraz prywatny. Przez co kryptografia asymetryczna często nazywana jest kryptografią klucza publicznego. 
+
+\subsection{Szyfrowanie symetryczne}
+Szyfrowanie symetryczne przy użyciu klucza kryptograficznego ,,miesza'' dane w taki sposób, że nie jest możliwe odzyskanie danych wejściowych bez użycia tego samego klucza. Algorytmy szyfrowania znacznie różnią się między sobą, jednak można pośród nich wyróżnić szyfry blokowe oraz szyfry strumieniowe. \\
+Szyfry symetryczne idealnie nadają się do szyfrowania dużych ilości danych. 
+
+\subsection{Szyfrowanie asymetryczne}
+Algorytmy używane w szyfrach asymetrycznych opierają się na rozwiązywaniu bardzo trudnych matematycznych problemów. 
+Konstrukcja tych szyfrów pozwala niemal natychmiastowo rozwiązać zadany problem (i co za tym idzie odszyfrować dane) mając odpowiedni klucz, a w przypadku nieposiadania owego klucza, problem staje się niemożliwy do rozwiązania w~rozsądnym czasie.
+Zwykle wykorzystywane jest tutaj zagadnienie faktoryzacji dużych liczb oraz znajdywania dyskretnych logarytmów. \\
+Algorytmy asymetryczne działają na danych o ustalonej długości - zwykle od 1024 do 2048 bitów. Wykorzystywane są one zwykle tylko do przesłania klucza symetrycznego, który jest używane do szyfrowania pozostałej komunikacji. 
+Spowodowane jest to tym, że algorytmy symetryczne są dużo bardziej wydajne niż asymetryczne. \\
+Szyfrowanie asymetryczne poprawia nieco problem dystrybucji klucza. W odróżnieniu od szyfrowania symetrycznego, wymagane jest użycie $O(N)$ kluczy zamiast $O(N^2)$ \mbox{kluczy}. \\ 
+Przykładami algorytmów asymetrycznych jest RSA lub ElGamal. \\ \\ \\
+W praktyce rzadko kiedy korzysta się z wyłącznie kryptografii symetrycznej lub wyłącznie asymetrycznej. Zwykle w skład systemów kryptograficznych wchodzą elementy kryptografii symetrycznej jak również asymetrycznej.
+
 \section{Szyfry blokowe}
 Jednym z podstawowych elementów systemów kryptograficznych jest szyfr blokowy. Jest to algorytm operujący na bloku danych o ustalonej długości. Długość wynikowego bloku danych jest równa długości bloku podanego na wejściu. \\
 Szyfry blokowe oparte są o tzw. ,,sieć substytucji-permutacji''. 
@@ -9,7 +26,7 @@ Szyfry blokowe oparte są o tzw. ,,sieć substytucji-permutacji''.
 \section{Kryptograficzna funkcja skrótu}
 Funkcją skrótu nazywana jest funkcja, która dla danych wejściowych o dowolnym rozmiarze zwraca dane o z góry ustalonej długości. Funkcje skrótu znajdują zastosowanie w takich dziedzinach jak struktury danych (tablice mieszające, filtr Blooma), algorytmy dopasowania wzorca (algorytm Karpa-Rabina) czy też w kryptografii. \\ \\
 Aby funkcja skrótu mogła zostać użyta w systemach kryptograficznych musi posiadać ona szereg parametrów. \\
-Jednym z nich jest odporność na kolizje. Kolizją nazywamy przypadek, gdy dla dwóch różnych argumentów funkcja skrótu zwraca ten sam wynik. Nie jest oczywiście możliwe aby całkowicie uniknąć kolizji, gdyż zbiór danych o dowolnym rozmiarze jest mapowany na zbiór skończony, zależy nam jednak aby proces znajdywania kolizji dla określonych danych był uważany za ,,trudny''. (Przez ,,trudny'' należy tutaj rozumieć problem, który nie jest możliwy do rozwiązania w rozsądnej ilości czasu.) \\
+Jednym z nich jest odporność na kolizje. Kolizją nazywamy przypadek, gdy dla dwóch różnych argumentów funkcja skrótu zwraca ten sam wynik. Nie jest oczywiście możliwe, aby całkowicie uniknąć kolizji, gdyż zbiór danych o dowolnym rozmiarze jest mapowany na zbiór skończony, zależy nam jednak aby proces znajdywania kolizji dla określonych danych był uważany za ,,trudny''. (Przez ,,trudny'' należy tutaj rozumieć problem, który nie jest możliwy do rozwiązania w rozsądnej ilości czasu.) \\
 Kolejny z parametrów jest częściowo związany z poprzednim. Zależy nam, aby rozpatrywana funkcja była funkcją jednokierunkową. Oznacza to, że dla danego wyniku funkcji skrótu, znalezienie argumentu jest również problemem ,,trudnym''.
 (Sam fakt istnienia funkcji jednokierunkowych nie został formalnie udowodniony. \cite{oneway}) \\
 Niezwykle ważne jest też, aby nawet niewielka zmiana danych wejściowych, spowodowała znaczną zmianę danych otrzymanych na wyjściu (wymagane jest aby przynajmniej połowa bitów uległa zmianie).
@@ -128,7 +145,7 @@ Przykładem może być tutaj atak opublikowany w październiku 2015 roku o nazwi
 Pierwszy praktyczny atak na SHA-1 został ogłoszony w lutym 2017 roku. Zostały wygenerowane dwa pliki w formacie PDF, dla których wynik funkcji skrótu SHA-1 jest taki sam. Wszystkie systemy, w których wykorzystywana jest funkcja SHA-1 są narażone na ten atak, przykładowo umożliwia on fałszowanie podpisów cyfrowych dokumentów, czy też certyfikatów HTTPS. \cite{shatt}
 
 \subsection{Secure Hash Algorithm 2}
-SHA-2 jest rodziną funkcji składającą się z SHA-224, SHA-256, SHA-384, SHA-512, SHA-512/224, SHA-512/256. Funkcje te generują skróty o długościach odpowiednio: 224, 256, 384, 512, 224 oraz 256 bitów.
+SHA-2 jest rodziną funkcji składającą się z \mbox{SHA-224}, \mbox{SHA-256}, \mbox{SHA-384}, \mbox{SHA-512}, \mbox{SHA-512/224}, \mbox{SHA-512/256}. Funkcje te generują skróty o długościach odpowiednio: 224, 256, 384, 512, 224 oraz 256 bitów.
 
 \subsubsection{SHA-256}
 Jedną z najczęściej używanych funkcji z rodziny SHA-2 jest SHA-256. Proces uzyskiwania skrótu SHA-256 jest następujący:
@@ -227,5 +244,7 @@ Poprzednie funkcje oparte były o schemat Merkle–Damgård. Funkcje z rodziny S
 Ulepszona wewnętrzna konstrukcja algorytmu zapobiega atakom typu ,,length extension'', na który podatne są funkcje MD5, SHA-1 oraz SHA-2 \cite{keccak}.
 
 \section{Kod uwierzytelnienia wiadomości}
+
 \section{MAC bazujący na funkcji skrótu}
+
 \section{Pojęcia entropii}
