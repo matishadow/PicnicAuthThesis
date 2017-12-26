@@ -46,6 +46,12 @@ Do wygenerowania pseudolosowego ciągu wykorzystywana jest wcześniej stworzona 
 Następnie zamienione są wartości $S[i]$ oraz $S[j]$. W celu otrzymania bajtu, który zostanie wykorzystany do zaszyfrowania wiadomości, pobierana jest wartość $S[S[i] + S[j]]$ z tablicy~S.
 
 \subsection{Salsa20}
+W porównaniu do RC4, Salsa20 jest relatywnie nowym szyfrem strumieniowym, stworzonym przez Daniela J. Bernsteina. 
+Bazuje on na operacjach \textit{ARX (add–rotate–xor)}, to jest operacji składających się z dodawania modulo, obrotów bitowych oraz funkcji \textit{XOR}. 
+Zaletą stosowania szyfrów \textit{ARX} jest to, że odporne są one na ataki czasowe, polegające na mierzeniu czasu,
+jaki potrzebny jest do przeprowadzenia operacji kryptograficznych. \\
+Niezwykle interesującą cechą szyfru Salsa20 jest możliwość rozpoczęcia procesu odszyfrowywania od dowolnego miejsca w strumieniu danych. Mając więc duży plik, możliwe jest odszyfrowywanie tylko tej jego części, która nas interesuje. \\
+Na chwilę obecną nie są znane żadne praktyczne ataki na szyfr Salsa20, może on zostać użyty jako alternatywa do szyfru blokowego AES.
 
 \section{Kryptograficzna funkcja skrótu}
 Funkcją skrótu nazywana jest funkcja, która dla danych wejściowych o dowolnym rozmiarze zwraca dane o z góry ustalonej długości. Funkcje skrótu znajdują zastosowanie w takich dziedzinach jak struktury danych (tablice mieszające, filtr Blooma), algorytmy dopasowania wzorca (algorytm Karpa-Rabina) czy też w kryptografii. \\ \\
