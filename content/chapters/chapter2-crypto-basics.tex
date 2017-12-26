@@ -21,6 +21,28 @@ W praktyce rzadko kiedy korzysta się z wyłącznie kryptografii symetrycznej lu
 \section{Szyfry blokowe}
 Jednym z podstawowych elementów systemów kryptograficznych jest szyfr blokowy. Jest to algorytm operujący na bloku danych o ustalonej długości. Długość wynikowego bloku danych jest równa długości bloku podanego na wejściu. \\
 Szyfry blokowe oparte są o tzw. ,,sieć substytucji-permutacji''. 
+Oznacza to, że dla każdego możliwego bloku jest ustalany dokładnie jeden blok mu odpowiadający. Za pomocą klucza kryptograficznego determinowane jest, który blok odpowiada któremu. \\
+Dla zobrazowania tej definicji poniżej znajduje się szyfr o długości bloku równej 4 bity:
+\begin{table}[h!]
+\centering
+\caption{Przykładowy szyfr blokowy o 4-bitowym bloku}
+\begin{tabular}{ |c|c| } 
+ \hline
+	0000: 0010 & 1000: 1111 \\
+	0001: 0000 & 1001: 0011 \\
+	0010: 0110 & 1010: 1011 \\
+	0011: 1101 & 1011: 0001 \\
+	0100: 1110 & 1100: 1100 \\
+	0101: 0101 & 1101: 1001 \\
+	0110: 0100 & 1110: 0111 \\
+	0111: 1000 & 1111: 1010 \\
+ \hline
+\end{tabular}
+\end{table} \\
+Niezwykle ważną cechą jaka wynika z powyższej charakterystyki szyfru blokowego jest fakt, że znając pewną liczbę par (wiadomość, zaszyfrowana wiadomość), nie ujawnia to żadnych informacji o innych parach, szyfrowanych tym samym kluczem.
+Jedyną możliwą formą odszyfrowania wiadomości, nie posiadając klucza, jest wtedy metoda siłowa czyli wypróbowanie wszystkich możliwych kombinacji. 
+Biorąc pod uwagę powyższy przykład, mając 16 różnych bloków, liczba ich permutacji wynosi 16! = 20922789888000. 
+Prawdziwe szyfry posiadają znacznie większy rozmiar bloku, zwykle od 128 do 256 bitów. Przykładowo dla szyfru z rozmiarem bloku równym 128 bitów, należałoby sprawdzić aż $(2^{128})!$ możliwych kluczy.
 
 \subsection{Tryby pracy szyfrów blokowych}
 \subsection{DES}
