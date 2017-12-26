@@ -22,7 +22,31 @@ W praktyce rzadko kiedy korzysta się z wyłącznie kryptografii symetrycznej lu
 Jednym z podstawowych elementów systemów kryptograficznych jest szyfr blokowy. Jest to algorytm operujący na bloku danych o ustalonej długości. Długość wynikowego bloku danych jest równa długości bloku podanego na wejściu. \\
 Szyfry blokowe oparte są o tzw. ,,sieć substytucji-permutacji''. 
 
+\subsection{Tryby pracy szyfrów blokowych}
+\subsection{DES}
+\subsection{AES}
+\subsection{Twofish}
+
 \section{Szyfry strumieniowe}
+Pisząc o szyfrach strumieniowych mam tutaj na myśli natywne szyfry strumieniowe, które zostały stworzone z myślą o pracy w trybie strumieniowym. 
+Pomimo istnienia dwóch typów szyfrów strumieniowych - synchroniczny oraz asynchronicznych, w praktyce używany jest prawie wyłącznie pierwszy typ. \\
+W odróżnieniu od szyfrów blokowy, które szyfrowały cały blok danych, szyfry strumieniowe szyfrują każdy bit osobno. 
+Przy użyciu klucza kryptograficznego generują one wystarczająco długi, pseudolosowy ciąg bitów. 
+Następnie wykonywana jest operacja XOR pomiędzy wygenerowanym ciągiem a wiadomością jaką chcemy zaszyfrować. 
+Deszyfrowanie polega na ponownym wygenerowaniu ciągu bitów na podstawie klucza a następnie wykonanie operacji XOR na bitach zaszyfrowanej wiadomości oraz tych wygenerowanych z klucza.
+
+\subsection{RC4}
+Obecnie najczęściej spotykanym szyfrem strumieniowym jest RC4. Mimo, że wielokrotnie wykazano wiele podatności w konstrukcji RC4, szyfr ten jest ciągle używany w protokołach takich jak TLS czy WEP. \\
+Schemat działania algorytmu jest niezwykle prosty. 
+Składa się z inicjalizacji klucza oraz generacji pseudolosowego ciągu. \\
+W etapie inicjalizacji klucza tworzona jest tablica permutacji S, składają się z 256 bajtów. 
+Początkowo znajdują się w niej kolejne liczby od 0 do 255. 
+Następnie dokonywane jest przejście po elementach tablicy, korzystając z indeksu \textit{i}. Na każdym kroku pętli obliczany jest indeks \textit{j}, poprzez dodanie aktualnej wartości \textit{j} (zaczynającej się od 0) do wartości klucza znajdującej się pod indeksem \textit{i} oraz do wartości tablicy S znajdującej się pod indeksem \textit{i}. W przypadku, gdyby któryś z indeksu wyszedł poza zakres rozpatrywanych tablic, używa się operacji modulo długość tablicy. Mając obliczony indeks \textit{j} zamienia się element $S[i]$ z elementem $S[j]$. \\
+Do wygenerowania pseudolosowego ciągu wykorzystywana jest wcześniej stworzona tablica permutacji S. W pierwszej kolejności dla każdego indeksu \textit{i}, obliczany jest indeks $j := j + S[i]$. 
+Następnie zamienione są wartości $S[i]$ oraz $S[j]$. W celu otrzymania bajtu, który zostanie wykorzystany do zaszyfrowania wiadomości, pobierana jest wartość $S[S[i] + S[j]]$ z tablicy~S.
+
+\subsection{Salsa20}
+
 \section{Kryptograficzna funkcja skrótu}
 Funkcją skrótu nazywana jest funkcja, która dla danych wejściowych o dowolnym rozmiarze zwraca dane o z góry ustalonej długości. Funkcje skrótu znajdują zastosowanie w takich dziedzinach jak struktury danych (tablice mieszające, filtr Blooma), algorytmy dopasowania wzorca (algorytm Karpa-Rabina) czy też w kryptografii. \\ \\
 Aby funkcja skrótu mogła zostać użyta w systemach kryptograficznych musi posiadać ona szereg parametrów. \\
