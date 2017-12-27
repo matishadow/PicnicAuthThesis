@@ -58,31 +58,60 @@ Posiada on niezwykle niebezpieczną wadę. Dany blok wiadomości zostanie zaszyf
 Przykładowo mając wiadomość: $$|\textbf{ABCD}|EFGH|\textbf{ABCD}|IJKL|$$ oraz szyfr blokowy o długości bloku 4 bajty, zaszyfrowana wiadomość będzie wyglądać następująco: $$|\textbf{IEKG}|BKLD|\textbf{IEKG}|FHDL|$$\\
 Wadę tę można zobrazować szyfrując w trybie ECB dane dowolnej grafiki. 
 Grafika po zaszyfrowaniu nie jest w pełni czytelna ale z pewnością można stwierdzić co na niej jest. \\
-Tryb ECB podatny jest również na atak typu \textit{oracle}.
+Tryb ECB podatny jest również na atak typu \textit{oracle}. \\
 
 \begin{figure}
     \centering
     \begin{subfigure}{0.3\textwidth}
-        \includegraphics[width=\textwidth]{content/chapters/images/logo}
+        \includegraphics[width=\textwidth]{content/images/logo}
         \caption{Logo projektu.}
         \label{fig:logo}
     \end{subfigure}
     \begin{subfigure}{0.3\textwidth}
-        \includegraphics[width=\textwidth]{content/chapters/images/logo-ecb}
+        \includegraphics[width=\textwidth]{content/images/logo-ecb}
         \caption{AES w trybie ECB.}
         \label{fig:logo-ecb}
     \end{subfigure}
     \begin{subfigure}{0.3\textwidth}
-        \includegraphics[width=\textwidth]{content/chapters/images/logo-cbc}
+        \includegraphics[width=\textwidth]{content/images/logo-cbc}
         \caption{AES w trybie CBC.}
         \label{fig:logo-cbc}
     \end{subfigure}
     \caption{Wizualizacja trybów szyfrowania.}
+\end{figure} 
+
+\subsubsection{CBC}
+Najczęściej używanym trybem jest \textit{CBC - Cipher Block Chaining (ang.)}. 
+W tym trybie, blok wiadomości najpierw jest XORowany z poprzednim zaszyfrowanym blokiem a następnie
+on sam jest poddawany procesowi szyfrowania. W przypadku pierwszego bloku, dla którego nie ma bloku poprzedniego, 
+wprowadzane jest pojęcie \textit{wektora inicjalizującego}. \\ 
+Wektor ten powinien być niemożliwy do zgadnięcia a w idealnej sytuacji powinien on być kryptograficznie losowy. Nie jest konieczne, aby wektor inicjalizujący był tajny, zwykle jest wysyłany razem z zaszyfrowaną wiadomością. Ważne jest jednak, aby atakujący nie był w stanie go przewidzieć przed samym procesem szyfrowania. \\ 
+Proces deszyfrowania jest analogiczny. W pierwszej kolejności, zaszyfrowany blok poddawany jest działaniu szyfru 
+blokowego, po czym jest on XORowany z poprzednim zaszyfrowanym blokiem. Na pierwszy blok musi zostać użyta funkcja XOR
+z takim samym wektorem inicjalizującym, jaki został użyty podczas szyfrowania. \\\\
+Tryb CBC sam w sobie można uznać za bezpieczny (w odróżnieniu od ECB), 
+należy jednak o paru najczęściej popełnianych błędach:
+\begin{enumerate}
+	\item Używanie tego samego wektora inicjalizującego dla paru wiadomości.
+	\item Używanie przewidywalnych wektorów inicjalizujących, na przykład bazujących na liczniku.
+	\item Używanie klucza jako wektora inicjalizującego. 
+\end{enumerate}
+Jednym z najbardziej znanych ataków na system bazujący na trybie CBC był atak o nazwie \textit{BEAST} \cite{beast}. 
+Błędem, który został wykorzystany, było użycie zaszyfrowanego bloku poprzedniej wysłanej wiadomości jako wektora inicjalizującego.
+\begin{figure}
+    \centering
+	\includegraphics[width=\textwidth]{content/images/cbc-dec-scheme}
+    \caption{Schemat deszyfrowania w trybie CBC.}
+\end{figure}
+\begin{figure}
+    \centering
+	\includegraphics[width=\textwidth]{content/images/cbc-enc-scheme}
+    \caption{Schemat szyfrowania w trybie CBC.}
 \end{figure}
 
-
-\subsubsection{ECB}
 \subsubsection{CTR}
+Warto wspomnieć jeszcze o trybie \textit{CTR - Counter (ang.)}, gdyż sposób jego działania jest zbliżony 
+do szyfrów strumieniowych.
 
 \subsection{DES}
 \subsection{AES}
