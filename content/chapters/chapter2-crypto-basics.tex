@@ -100,18 +100,33 @@ Jednym z najbardziej znanych ataków na system bazujący na trybie CBC był atak
 Błędem, który został wykorzystany, było użycie zaszyfrowanego bloku poprzedniej wysłanej wiadomości jako wektora inicjalizującego.
 \begin{figure}
     \centering
-	\includegraphics[width=\textwidth]{content/images/cbc-dec-scheme}
-    \caption{Schemat deszyfrowania w trybie CBC.}
+	\includegraphics[width=\textwidth]{content/images/cbc-enc-scheme}
+    \caption{Schemat szyfrowania w trybie CBC.}
 \end{figure}
 \begin{figure}
     \centering
-	\includegraphics[width=\textwidth]{content/images/cbc-enc-scheme}
-    \caption{Schemat szyfrowania w trybie CBC.}
+	\includegraphics[width=\textwidth]{content/images/cbc-dec-scheme}
+    \caption{Schemat deszyfrowania w trybie CBC.}
 \end{figure}
 
 \subsubsection{CTR}
 Warto wspomnieć jeszcze o trybie \textit{CTR - Counter (ang.)}, gdyż sposób jego działania jest zbliżony 
-do szyfrów strumieniowych.
+do szyfrów strumieniowych. Wykorzystywany jest w nim \textit{liczba używana jednorazowo (z angielskiego ,,nonce'')}
+oraz licznik. Licznik jest zwiększany dla każdego z bloków wiadomości. 
+Na wejście szyfru blokowego podawana jest wyżej wymieniona liczba połączona z licznikiem. Następnie wynik
+działania szyfru jest XORowany z blokiem wiadomości. \\
+Krytyczne jest tutaj generowanie nowej liczby \textit{nonce} dla każdej z wiadomości. 
+
+\begin{figure}
+    \centering
+	\includegraphics[width=\textwidth]{content/images/ctr-enc-scheme}
+    \caption{Schemat szyfrowania w trybie CTR.}
+\end{figure}
+\begin{figure}
+    \centering
+	\includegraphics[width=\textwidth]{content/images/ctr-dec-scheme}
+    \caption{Schemat deszyfrowania w trybie CTR.}
+\end{figure}
 
 \subsection{DES}
 \subsection{AES}
@@ -156,13 +171,11 @@ W uproszczeniu, algorytm MD5 można przedstawić w następujących krokach \cite
 \begin{enumerate}
 	\item Dodanie dopełnienia. W pierwszej kolejności dopisywany jest jeden bit o wartości 1, a następnie dopisywane są zera, aż do momentu, gdy długość danych wynosić będzie 448 bitów modulo 512. Dopełnienie dopisywane jest nawet w przypadku, gdy długość danych wynosi 448 bitów.
 	\item Pozostałe 64 bity wypełniane są liczbą reprezentującą długość wiadomości (sprzed wypełnienia) modulo $2^{64}$. 
-	\item Inicjalizacja stanu MD5 w postaci czterech 32-bitowych zmiennych A, B, C i D. Są one inicjalizowane stałymi zdefiniowanymi w specyfikacji (przedstawione w systemie szesnastkowym): 
-		\begin{itemize}
-			\item A: 01 23 45 67
-			\item B: 89 ab cd ef
-			\item C: fe dc ba 98
-			\item D: 76 54 32 10
-		\end{itemize}
+	\item Inicjalizacja stanu MD5 w postaci czterech 32-bitowych zmiennych A, B, C i D. Są one inicjalizowane stałymi zdefiniowanymi w specyfikacji (przedstawione w systemie szesnastkowym): \\
+		$A := 01 23 45 67$ \\
+		$B := 89 ab cd ef$ \\
+		$C := fe dc ba 98$ \\
+		$D := 76 54 32 10$ 
 	\item Dane wejściowe dzielone są na bloki po 512 bitów. Kolejno na każdym z bloków wykonywane są operacje bitowe zmieniające zmiennych. 
 	\item Wynikiem działania algorytmu jest 128-bitowa wartość składająca się z omawianych czterech zmiennych w kolejności A, B, C, D.
 \end{enumerate} 
@@ -175,14 +188,12 @@ SHA-1 jest funkcją bazującą na MD4 (podobnie jak MD5), o długości skrótu w
 Wewnętrzny stan funkcji składa się z pięciu zmiennych: A, B, C, D oraz E, każda o rozmiarze 32 bitów. \\
 Pseudokod algorytmu można przedstawić w następujących krokach:
 \begin{enumerate}
-	\item Inicjalizacja zmiennych następującymi stałymi (przedstawione w systemie szesnastkowym):
-		\begin{itemize}
-			\item A = 0x67452301
-			\item B = 0xEFCDAB89
-			\item C = 0x98BADCFE
-			\item D = 0x10325476
-			\item E = 0xC3D2E1F0
-		\end{itemize}
+	\item Inicjalizacja zmiennych następującymi stałymi (przedstawione w systemie szesnastkowym): \\
+		$A := 0x67452301$ \\
+		$B := 0xEFCDAB89$ \\
+		$C := 0x98BADCFE$ \\
+		$D := 0x10325476$ \\
+		$E := 0xC3D2E1F0$ 
 	\item Zaaplikowanie dopełnienia:
 		\begin{enumerate}
 			\item Dopisanie na koniec danych bitu o wartości 1. \\ 
@@ -205,54 +216,40 @@ Pseudokod algorytmu można przedstawić w następujących krokach:
 			\item Podzielenie bloku na szesnaście 32-bitowych części $w[i], 0 \leq i \leq 15$.
 			\item Rozszerzenie 16 części do 80 korzystając ze wzoru: \\
 				$w[i] = (w[i-3] \xor w[i-8] \xor w[i-14] \xor w[i-16]) << 1$
-			\item Inicjalizacja zmiennych pomocniczych dla danego bloku
-				\begin{itemize}
-					\item a = A
-					\item b = B
-					\item c = C
-					\item d = D
-					\item e = E
-				\end{itemize}
+			\item Inicjalizacja zmiennych pomocniczych dla danego bloku \\
+				$a := A$ \\
+				$b := B$ \\
+				$c := C$ \\
+				$d := D$ \\
+				$e := E$ 
 			\item Dla każdej z 80 części $w[i]$ należy wykonać:
 				\begin{enumerate}
-					\item jeżeli $0 \leq i \leq 19$ 
-				        \begin{itemize} 
-				        	\item $f = (b \BitAnd c) \BitOr ((\BitNeg b) \BitAnd d)$
-				            \item $k = 0x5A827999$
-				        \end{itemize}
-					\item jeżeli $20 \leq i \leq 39$
-						\begin{itemize} 
-            				\item $f = b \xor c \xor d$
-            				\item $k = 0x6ED9EBA1$
-            			\end{itemize}
-				    \item jeżeli $40 \leq i \leq 59$
-				        \begin{itemize} 
-				        	\item $f = (b \BitAnd c) \BitOr (b \BitAnd d) \BitOr (c \BitAnd d)$ 
-            				\item $k = 0x8F1BBCDC$
-			            \end{itemize}
-        			\item jeżeli $60 \leq i \leq 79$
-        				\begin{itemize} 
-				            \item $f = b \xor c \xor d$
-    	        			\item $k = 0xCA62C1D6$
-            			\end{itemize}
-            		\item następnie
-            			\begin{itemize}
-            				\item $t = (a <<< 5) + f + e + k + w[i]$ 
-					        \item $e = d$ 
-					        \item $d = c$
-					        \item $c = b <<< 30$
-					        \item $b = a$ 
-					        \item $a = t$ 
-            			\end{itemize}
+					\item jeżeli $0 \leq i \leq 19$ \\
+			        	$f := (b \BitAnd c) \BitOr ((\BitNeg b) \BitAnd d)$ \\
+			            $k := 0x5A827999$
+					\item jeżeli $20 \leq i \leq 39$ \\
+           				$f := b \xor c \xor d$ \\
+          				$k := 0x6ED9EBA1$
+				    \item jeżeli $40 \leq i \leq 59$ \\
+			        	$f := (b \BitAnd c) \BitOr (b \BitAnd d) \BitOr (c \BitAnd d)$ \\
+           				$k := 0x8F1BBCDC$
+        			\item jeżeli $60 \leq i \leq 79$ \\
+			            $f := b \xor c \xor d$
+   	        			$k := 0xCA62C1D6$
+            		\item następnie \\
+           				$t := (a <<< 5) + f + e + k + w[i]$ \\
+				        $e := d$ \\
+				        $d := c$\\
+				        $c := b <<< 30$\\
+				        $b := a$ \\
+				        $a := t$
 				\end{enumerate}
-			\item Aktualizacja wewnętrznego stanu funkcji			
-				\begin{itemize}
-					\item A = A + a
-					\item B = B + b
-					\item C = C + c
-					\item D = D + d
-					\item E = E + e
-				\end{itemize}
+			\item Aktualizacja wewnętrznego stanu funkcji \\
+				$A := A + a$ \\
+				$B := B + b$ \\
+				$C := C + c$ \\
+				$D := D + d$ \\
+				$E := E + e$
 		\end{enumerate}
 	\item Zwrócenie wyniku w postaci: \\
 		$(A << 128) \BitOr (B << 96) \BitOr (C << 64) \BitOr (D << 32) \BitOr E$
@@ -269,17 +266,15 @@ SHA-2 jest rodziną funkcji składającą się z \mbox{SHA-224}, \mbox{SHA-256},
 \subsubsection{SHA-256}
 Jedną z najczęściej używanych funkcji z rodziny SHA-2 jest SHA-256. Proces uzyskiwania skrótu SHA-256 jest następujący:
 \begin{enumerate}
-	\item Inicjalizacja stanu wewnętrznego funkcji (przedstawione w systemie szesnastkowym):
-		\begin{itemize}
-			\item A = 0x6a09e667
-			\item B = 0xbb67ae85
-			\item C = 0x3c6ef372
-			\item D = 0xa54ff53a
-			\item E = 0x510e527f
-			\item F = 0x9b05688c
-			\item G = 0x1f83d9ab
-			\item H = 0x5be0cd19
-		\end{itemize}
+	\item Inicjalizacja stanu wewnętrznego funkcji (przedstawione w systemie szesnastkowym): \\
+		$A := 0x6a09e667$ \\
+		$B := 0xbb67ae85$ \\
+		$C := 0x3c6ef372$ \\
+		$D := 0xa54ff53a$ \\
+		$E := 0x510e527f$ \\
+		$F := 0x9b05688c$ \\
+		$G := 0x1f83d9ab$ \\
+		$H := 0x5be0cd19$
 	\item Inicjalizacja pomocniczych stałych. \\
 			$$
 			k[0..63] := \\
@@ -311,45 +306,39 @@ Jedną z najczęściej używanych funkcji z rodziny SHA-2 jest SHA-256. Proces u
 				$s0 := (w[i-15] >>> 7) \xor (w[i-15] >>> 18) \xor (w[i-15] >> 3)$ \\
 			    $s1 := (w[i-2] >>> 17) \xor (w[i-2] >>> 19) \xor (w[i-2] >> 10)$ \\
 				$w[i] := w[i-16] + s0 + w[i-7] + s1$
-			\item Inicjalizacja zmiennych pomocniczych dla danego bloku
-				\begin{itemize}
-					\item a = A
-					\item b = B
-					\item c = C
-					\item d = D
-					\item e = E
-					\item f = F
-					\item g = G
-					\item h = H
-				\end{itemize}
-			\item Dla każdej z 64 części $w[i]$ należy wykonać:
-				\begin{itemize}
-					\item $S1 := (e >>> 6) \xor (e >>> 11) \xor (e >>> 25)$
-			        \item $ch := (e \BitAnd f) \xor ((\BitNeg e) \BitAnd g)$
-			        \item $t1 := h + S1 + ch + k[i] + w[i]$
-			        \item $S0 := (a >>> 2) \xor (a >>> 13) \xor (a >>> 22)$
-			        \item $m := (a \BitAnd b) \xor (a \BitAnd c) \xor (b \BitAnd c)$
-			        \item $t2 := S0 + m$
-			        \item $h := g$
-			        \item $g := f$
-			        \item $f := e$
-			        \item $e := d + t1$
-			        \item $d := c$
-			        \item $c := b$
-			        \item $b := a$
-			        \item $a := t1 + t2$
-				\end{itemize}
-			\item Aktualizacja wewnętrznego stanu funkcji			
-				\begin{itemize}
-					\item A = A + a
-					\item B = B + b
-					\item C = C + c
-					\item D = D + d
-					\item E = E + e
-					\item F = F + f
-					\item G = G + g
-					\item H = H + h
-				\end{itemize}
+			\item Inicjalizacja zmiennych pomocniczych dla danego bloku \\
+				$a := A$ \\
+				$b := B$ \\
+				$c := C$ \\
+				$d := D$ \\
+				$e := E$ \\
+				$f := F$ \\
+				$g := G$ \\
+				$h := H$
+			\item Dla każdej z 64 części $w[i]$ należy wykonać: \\
+				$S1 := (e >>> 6) \xor (e >>> 11) \xor (e >>> 25)$ \\
+		        $ch := (e \BitAnd f) \xor ((\BitNeg e) \BitAnd g)$ \\
+		        $t1 := h + S1 + ch + k[i] + w[i]$ \\
+		        $S0 := (a >>> 2) \xor (a >>> 13) \xor (a >>> 22)$ \\
+		        $m := (a \BitAnd b) \xor (a \BitAnd c) \xor (b \BitAnd c)$ \\
+		        $t2 := S0 + m$ \\
+		        $h := g$ \\
+		        $g := f$ \\
+		        $f := e$ \\
+		        $e := d + t1$ \\
+		        $d := c$ \\
+		        $c := b$ \\
+		        $b := a$ \\
+		        $a := t1 + t2$
+			\item Aktualizacja wewnętrznego stanu funkcji \\
+				$A := A + a$ \\
+				$B := B + b$ \\
+				$C := C + c$ \\
+				$D := D + d$ \\
+				$E := E + e$ \\
+				$F := F + f$ \\
+				$G := G + g$ \\
+				$H := H + h$ 
 		\end{enumerate}
 	\item Zwrócenie wyniku w postaci: \\
 		$(A << 224) \BitOr (B << 192) \BitOr (C << 160) \BitOr \\ 
