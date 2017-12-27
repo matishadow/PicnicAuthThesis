@@ -45,9 +45,47 @@ Biorąc pod uwagę powyższy przykład, mając 16 różnych bloków, liczba ich 
 Prawdziwe szyfry posiadają znacznie większy rozmiar bloku, zwykle od 128 do 256 bitów. Przykładowo dla szyfru z rozmiarem bloku równym 128 bitów, należałoby sprawdzić aż $(2^{128})!$ możliwych kluczy.
 
 \subsection{Tryby pracy szyfrów blokowych}
+Nietrudno zauważyć jedną wadę szyfrów blokowych, która znacząco ogranicza proces szyfrowania. 
+A mianowicie przy użyciu szyfrów blokowych, jesteśmy w stanie zaszyfrować dane o długości równej długości bloku. 
+Zwykle chcielibyśmy jednak szyfrować wiadomości dłuższe niż 16 czy 32 bajty. 
+Z tego powodu zostały stworzone uniwersalne konstrukcje, możliwe do użycia z dowolnym szyfrem blokowym, 
+pozwalające zaszyfrować dane o dowolnej długości.
+
+\subsubsection{ECB}
+Rozwiązaniem przychodzącym natychmiast na myśl jest podzielenie wiadomości na bloki~i zaszyfrowanie każdego bloku oddzielnie. \\
+Tryb ten nosi nazwę \textit{ECB (elektroniczna książka kodowa)}. \\
+Posiada on niezwykle niebezpieczną wadę. Dany blok wiadomości zostanie zaszyfrowany do zawsze tego samego bloku szyfrogramu. \\
+Przykładowo mając wiadomość: $$|\textbf{ABCD}|EFGH|\textbf{ABCD}|IJKL|$$ oraz szyfr blokowy o długości bloku 4 bajty, zaszyfrowana wiadomość będzie wyglądać następująco: $$|\textbf{IEKG}|BKLD|\textbf{IEKG}|FHDL|$$\\
+Wadę tę można zobrazować szyfrując w trybie ECB dane dowolnej grafiki. 
+Grafika po zaszyfrowaniu nie jest w pełni czytelna ale z pewnością można stwierdzić co na niej jest. \\
+Tryb ECB podatny jest również na atak typu \textit{oracle}.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.3\textwidth}
+        \includegraphics[width=\textwidth]{content/chapters/images/logo}
+        \caption{Logo projektu.}
+        \label{fig:logo}
+    \end{subfigure}
+    \begin{subfigure}{0.3\textwidth}
+        \includegraphics[width=\textwidth]{content/chapters/images/logo-ecb}
+        \caption{AES w trybie ECB.}
+        \label{fig:logo-ecb}
+    \end{subfigure}
+    \begin{subfigure}{0.3\textwidth}
+        \includegraphics[width=\textwidth]{content/chapters/images/logo-cbc}
+        \caption{AES w trybie CBC.}
+        \label{fig:logo-cbc}
+    \end{subfigure}
+    \caption{Wizualizacja trybów szyfrowania.}
+\end{figure}
+
+
+\subsubsection{ECB}
+\subsubsection{CTR}
+
 \subsection{DES}
 \subsection{AES}
-\subsection{Twofish}
 
 \section{Szyfry strumieniowe}
 Pisząc o szyfrach strumieniowych mam tutaj na myśli natywne szyfry strumieniowe, które zostały stworzone z myślą o pracy w trybie strumieniowym. 
