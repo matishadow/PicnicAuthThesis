@@ -1,0 +1,13 @@
+Opisz krótko tematykę proponowanej pracy!
+
+
+
+
+"Implementacja serwisu umożliwiającego dwuetapową weryfikację użytkownika."
+
+
+Funkcjonalność serwisu skierowana jest do platform chcących podnieść bezpieczeństwo swoich użytkowników poprzez wdrożenie dwuetapowej weryfikacji - podczas logowania użytkownik oprócz standardowych danych logowania, proszony jest o podanie hasła jednorazowego. 
+Do generowania haseł jednorazowych użyte zostaną algorytmy bazujące na kryptografii symetrycznej.
+Projekt będzie opierał się na architekturze REST API oraz prostych w użyciu bibliotekach utylizujących funkcjonalności API.
+Zostanie porównany algorytm wykorzystujący licznik z algorytmem wykorzystującym aktualny czas oraz różne kanały dostarczania haseł jednorazowych.
+Zbadane zostaną ataki na mechanizmy kryptograficzne wymagane do generowania haseł jednorazowych.
