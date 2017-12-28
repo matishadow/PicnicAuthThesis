@@ -128,7 +128,21 @@ Krytyczne jest tutaj generowanie nowej liczby \textit{nonce} dla każdej z wiado
     \caption{Schemat deszyfrowania w trybie CTR.}
 \end{figure}
 
-\subsection{DES}
+\subsection{Data Encryption Standard}
+Szyfr blokowy DES był pierwszym algorytmem, zatwierdzonym przez \textit{Narodowe Biuro Standaryzacji} 
+(obecnie \textit{Narodowy Instytut Standaryzacji i Technologii}), jako bezpieczny standard szyfrowania symetrycznego.
+Przez ponad 20 lat stowarzyszenia naukowe poddawały go intensywnym analizom. \\
+W tym czasie został wielokrotnie złamany, głównie przez długość klucza jaką posiada szyfr - zaledwie 56 bitów. \\
+Jednym ze skutecznych ataków na DES było przedsięwzięcie, dokonane w styczniu 1999 roku, składające się z kooperacji platformy \textit{distributed.net} 
+oraz urządzenia stworzonego przez \textit{Electronic Frontier Foundation} o nazwie \textit{Deep Crack}. 
+Atak bazował wyłącznie na metodzie siłowej, więc należało sprawdzić $2^{56} = 72\ 057\ 594\ 037\ 927\ 936$ różnych kluczy.
+W mniej niż 24 godziny szyfr DES został sukcesywnie złamany. 
+Przy dzisiejszej mocy obliczeniowej może on zostać złamany przez jedną maszynę w około jeden dzień \cite{desday}. \\
+Próbą uratowania szyfru była propozycja algorytmu 3DES. 
+Polegał on na zaszyfrowaniu danych szyfrem DES, odszyfrowaniu ich, a następnie ponownym zaszyfrowaniu. 
+Zamiast 3-krotnego szyfrowania, 3DES został zaprojektowany sposób umożliwiający zachowanie kompatybilności z systemami, w których możliwe było użycie jedynie wersji podstawowej algorytmu. \\
+Pomimo zwiększonej długości klucza w przypadku 3DES, w porównaniu do AES jest mniej bezpieczny i nadzwyczajnie wolny (AES potrzebuje 12.6 cykli procesora do zaszyfrowania bajtu danych, 3DES aż 134.5 \cite{crypto101}).
+
 \subsection{AES}
 
 \section{Szyfry strumieniowe}
