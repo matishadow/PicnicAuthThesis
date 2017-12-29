@@ -120,12 +120,12 @@ Na wejście szyfru blokowego podawana jest wyżej wymieniona liczba połączona 
 działania szyfru jest XORowany z blokiem wiadomości. \\
 Krytyczne jest tutaj generowanie nowej liczby \textit{nonce} dla każdej z wiadomości. 
 
-\begin{figure}
+\begin{figure}[H]
     \centering
 	\includegraphics[width=\textwidth]{content/images/ctr-enc-scheme}
     \caption{Schemat szyfrowania w trybie CTR.}
 \end{figure}
-\begin{figure}
+\begin{figure}[H]
     \centering
 	\includegraphics[width=\textwidth]{content/images/ctr-dec-scheme}
     \caption{Schemat deszyfrowania w trybie CTR.}
@@ -153,27 +153,49 @@ Zostały one poddane intensywnej kryptoanalizie.
 Ostatecznie wygrał algorytm stworzony przez Vincenta Rijmena oraz Joana Daemena - Rijndael. 
 Rijndael jest rodziną szyfrów, których rozmiar bloku oraz rozmiar klucza może wynosić: 128, 160, 192, 224 i 256 bitów. 
 Za standard (AES) uznany został Rijndael z długością bloku równą 128 bitów oraz rozmiarze klucza równym 128, 192 lub 256 bitów. \\ \\
-Algorytm składa się z wielu przebiegów. Każdy przebieg składa się z następujących kroków:
+Algorytm składa się z wielu przebiegów. Liczba przebiegów zależy od rozmiaru klucza. \\
+Pierwszym etapem algorytmu jest rozszerzenie klucza. 
+Jako że, w każdym przebiegu potrzebny jest 128-bitowy klucz, zachodzi konieczność wygenerowania wielu kluczy, 
+na podstawie głównego klucza. \\
+W pierwszej kolejności główny klucz jest ładowany do macierzy 4 na 4 bajty. 
+Ostatnia kolumna jest obracana (bajt z góry jest wstawiany na dół) a następnie 
+wartość każdej komórki z obróconej kolumny podawana jest do nieliniowej funkcji zamiany, 
+specyficznej dla algorytmu AES, zamieniającej podany bajt na inny.
+Następnie kolumna ta jest XORowana ze stałą przebiegu (inną dla każdego przebiegu). 
+Na koniec XORowana jest ona z pierwszą kolumną klucza poprzedniego przebiegu. \\
+Pozostałe kolumny liczone są XORując poprzednią kolumnę z kolumną na tym samym miejscu, ale z klucza poprzedniego przebiegu. \\ 
+Po wygenerowaniu klucz, algorytm rozpoczyna przebiegi. \\
+Każdy przebieg składa się z następujących kroków:
 \begin{enumerate}
-	\item Rozszerzenie klucza. \\
-			Jako że, w każdym przebiegu potrzebny jest 128-bitowy klucz, zachodzi konieczność wygenerowania wielu kluczy, 
-			na podstawie głównego klucza. \\
-			W pierwszej kolejności główny klucz jest ładowany do macierzy 4 na 4 bajty. 
-			Ostatnia kolumna jest obracana (bajt z góry jest wstawiany na dół) a następnie 
-			wartość każdej komórki z obróconej kolumny podawana jest do nieliniowej funkcji zamiany, 
-			specyficznej dla algorytmu AES, zamieniającej podany bajt na inny.
-			Następnie kolumna ta jest XORowana ze stałą przebiegu (inną dla każdego przebiegu). 
-			Na koniec XORowana jest ona z pierwszą kolumną z poprzedniego przebiegu. \\
-			Pozostałe kolumny liczone są XORując poprzednią kolumnę z kolumną na tym samym miejscu, ale
-			z poprzedniego przebiegu.
 	\item Zamiana bajtów.
-	\item Zamiana wierszy.
+			Każdy z bajtów macierze przechodzi przez funkcję zamiany AES. (...) \\
+			\begin{figure}[H]
+			    \centering
+			    \includegraphics[width=\textwidth]{content/images/sub-bytes}
+				\caption{Wizualizacja zamiany bajtów.}
+			\end{figure}
+	\item Przesuwanie wierszy. \\
+			\begin{figure}[H]
+			    \centering
+			    \includegraphics[width=\textwidth]{content/images/shift-row}
+				\caption{Wizualizacja przesunięcia wierszy.}
+			\end{figure}
 	\item Mieszanie kolumn.
+			\begin{figure}[H]
+			    \centering
+			    \includegraphics[width=\textwidth]{content/images/mix-cols}
+				\caption{Wizualizacja mieszania kolumn.}
+			\end{figure}
+	\item Dodanie klucza przebiegu.
+			\begin{figure}[H]
+			    \centering
+			    \includegraphics[width=\textwidth]{content/images/add-key}
+				\caption{Wizualizacja dodania klucza przebiegu.}
+			\end{figure}
 \end{enumerate}
 Na chwile obecną nie są znane żadne praktyczne ataki na AES a co do szybkości działania na współczesnych komputerach,
 znacząco przyczynił się producent procesorów, implementując w nich natywne instrukcje procesora, których 
 jedynym zadaniem jest realizacja algorytmu AES.
-
 
 \section{Szyfry strumieniowe}
 Pisząc o szyfrach strumieniowych mam tutaj na myśli natywne szyfry strumieniowe, które zostały stworzone z myślą o pracy w trybie strumieniowym. 
@@ -244,7 +266,7 @@ Pseudokod algorytmu można przedstawić w następujących krokach:
 			Przykładowo jeśli przetwarzane są dane \textit{01011001}, to są one dopełniane do \textit{010110011}.
 			\item Następnie dopisywane są bity o wartości 0, aż do momentu, gdy długość danych wynosić będzie 448 bitów modulo 512. \\
 			Mając dane \textit{00101101 01000010 10011101 10001010 00101101 10011101}, po zastosowaniu dopełnienia z kroku (a) otrzymujemy \textit{00101101 01000010 10011101 10001010 00101101 10011101 1}. Jako że długość danych wynosi 49 bitów, wymagane jest dopisanie 399 zer. Po zastosowaniu dopełnienia otrzymujemy (reprezentacja heksadecymalna): \\
-			\textit{2d429d8a 2d9d8000 0 0 \\ 
+			\textit{2d429d8a 2d9d8000 00000000 00000000 \\ 
 					00000000 00000000 00000000 00000000 \\ 
 					00000000 00000000 00000000 00000000 \\ 
 					00000000 00000000 }
