@@ -143,12 +143,39 @@ Polegał on na zaszyfrowaniu danych szyfrem DES, odszyfrowaniu ich, a następnie
 Zamiast 3-krotnego szyfrowania, 3DES został zaprojektowany sposób umożliwiający zachowanie kompatybilności z systemami, w których możliwe było użycie jedynie wersji podstawowej algorytmu. \\
 Pomimo zwiększonej długości klucza w przypadku 3DES, w porównaniu do AES jest mniej bezpieczny i nadzwyczajnie wolny (AES potrzebuje 12.6 cykli procesora do zaszyfrowania bajtu danych, 3DES aż 134.5 \cite{crypto101}).
 
-\subsection{AES}
+\subsection{Advanced Encryption Standard}
+Po problemach z DES agencja NIST ogłosiła konkurs na algorytm, który mógłby stać się nowym standardem.
+Do konkursu zgłoszone zostały między innymi: \textit{Rijndael}, \textit{Serpent}, \textit{Twofish}, \textit{MARS} czy \textit{RC6}. 
+Zostały one poddane intensywnej kryptoanalizie. 
+Ostatecznie wygrał algorytm stworzony przez Vincenta Rijmena oraz Joana Daemena - Rijndael. 
+Rijndael jest rodziną szyfrów, których rozmiar bloku oraz rozmiar klucza może wynosić: 128, 160, 192, 224 i 256 bitów. 
+Za standard (AES) uznany został Rijndael z długością bloku równą 128 bitów oraz rozmiarze klucza równym 128, 192 lub 256 bitów. \\ \\
+Algorytm składa się z wielu przebiegów. Każdy przebieg składa się z następujących kroków:
+\begin{enumerate}
+	\item Rozszerzenie klucza. \\
+			Jako że, w każdym przebiegu potrzebny jest 128-bitowy klucz, zachodzi konieczność wygenerowania wielu kluczy, 
+			na podstawie głównego klucza. \\
+			W pierwszej kolejności główny klucz jest ładowany do macierzy 4 na 4 bajty. 
+			Ostatnia kolumna jest obracana (bajt z góry jest wstawiany na dół) a następnie 
+			wartość każdej komórki z obróconej kolumny podawana jest do nieliniowej funkcji zamiany, 
+			specyficznej dla algorytmu AES, zamieniającej podany bajt na inny.
+			Następnie kolumna ta jest XORowana ze stałą przebiegu (inną dla każdego przebiegu). 
+			Na koniec XORowana jest ona z pierwszą kolumną z poprzedniego przebiegu. \\
+			Pozostałe kolumny liczone są XORując poprzednią kolumnę z kolumną na tym samym miejscu, ale
+			z poprzedniego przebiegu.
+	\item Zamiana bajtów.
+	\item Zamiana wierszy.
+	\item Mieszanie kolumn.
+\end{enumerate}
+Na chwile obecną nie są znane żadne praktyczne ataki na AES a co do szybkości działania na współczesnych komputerach,
+znacząco przyczynił się producent procesorów, implementując w nich natywne instrukcje procesora, których 
+jedynym zadaniem jest realizacja algorytmu AES.
+
 
 \section{Szyfry strumieniowe}
 Pisząc o szyfrach strumieniowych mam tutaj na myśli natywne szyfry strumieniowe, które zostały stworzone z myślą o pracy w trybie strumieniowym. 
 Pomimo istnienia dwóch typów szyfrów strumieniowych - synchroniczny oraz asynchronicznych, w praktyce używany jest prawie wyłącznie pierwszy typ. \\
-W odróżnieniu od szyfrów blokowy, które szyfrowały cały blok danych, szyfry strumieniowe szyfrują każdy bit osobno. 
+W odróżnieniu od szyfrów blokowych, które szyfrowały cały blok danych, szyfry strumieniowe szyfrują każdy bit osobno. 
 Przy użyciu klucza kryptograficznego generują one wystarczająco długi, pseudolosowy ciąg bitów. 
 Następnie wykonywana jest operacja XOR pomiędzy wygenerowanym ciągiem a wiadomością jaką chcemy zaszyfrować. 
 Deszyfrowanie polega na ponownym wygenerowaniu ciągu bitów na podstawie klucza a następnie wykonanie operacji XOR na bitach zaszyfrowanej wiadomości oraz tych wygenerowanych z klucza.
