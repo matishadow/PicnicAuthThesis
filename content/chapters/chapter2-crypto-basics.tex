@@ -476,7 +476,9 @@ Skutkuje to tym, że nigdy nie jest ujawniany cały wewnętrzny stan funkcji. \\
 Ulepszona wewnętrzna konstrukcja algorytmu zapobiega atakom typu ,,length extension'', 
 na który podatne są funkcje MD5, SHA-1 oraz SHA-2 \cite{keccak}.
 
-\section{Kod uwierzytelnienia wiadomości}
+\section{Uwierzytelnienie i integralność}
+
+\subsection{Kod uwierzytelnienia wiadomości}
 W celu zagwarantowania prywatności kanału komunikacji samo szyfrowanie nie jest wystarczające. 
 Potwierdzeniem tej tezy są ataki typu \textit{,,Man in the middle''}, w których atakujący podszywa się 
 pod osobę, do której przesyłamy wiadomość. Wysyłając wiadomość jesteśmy przekonani, że wysyłamy ją do docelowej osoby,
@@ -503,11 +505,29 @@ który umożliwia atakującemu odszyfrowanie pierwszych czterech bajtów zaszyfr
 specyficzną konstrukcją pakietu SSH (pole reprezentujące długość pakietu jest również zaszyfrowane).
 Na drugi sposób również istnieje atak zaproponowany przez Serge'a Vaudenaya \cite{tls}.
 
-\section{MAC bazujący na funkcji skrótu}
+\subsection{MAC bazujący na funkcji skrótu}
 Praktycznie jedynym poprawnie działającym mechanizmem generującym kody uwierzytelnienia wiadomości są algorytmy
 MAC bazujące na funkcji skrótu (Hash-based Message Authentication Code ang.). 
 Oprócz klucza kryptograficznego oraz wiadomości algorytm HMAC pobiera dodatkowo funkcję skrótu. 
+Dowolna funkcja skrótu może zostać tutaj użyta: SHA1, SHA-256, SHA-3 czy nawet MD5. 
+Nie jest tutaj wymagane aby użyta funkcja skrótu była odporna na kolizję więc HMAC zbudowany na
+funkcji MD5 jest uważany za bezpieczny \cite{hmacmd5}. \\
+Schemat generacji HMAC można przedstawić następująco:
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=\textwidth, height=\textheight/2, keepaspectratio]{content/images/hmac}
+    \caption{Schemat HMAC.}
+\end{figure} 
+\noindent
+Wartości stałych nie mają tutaj znaczenia. Ważne jest jednak aby miały długość równą długości bloku
+użytej funkcji skrótu oraz aby były od siebie różne. 
+Na etapie konkatenacji wynik działania funkcji XOR jest dostawiany z lewej strony.
 
+\section{Generatory liczb losowych}
 
+\subsection{Pojęcie entropii}
 
-\section{Pojęcia entropii}
+\subsection{Generatory prawdziwie losowych liczb}
+
+\subsection{Kryptograficzne generatory liczb pseudolosowych}
+
