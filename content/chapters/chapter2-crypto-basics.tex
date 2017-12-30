@@ -167,32 +167,83 @@ Pozostałe kolumny liczone są XORując poprzednią kolumnę z kolumną na tym s
 Po wygenerowaniu klucz, algorytm rozpoczyna przebiegi. \\
 Każdy przebieg składa się z następujących kroków:
 \begin{enumerate}
-	\item Zamiana bajtów.
-			Każdy z bajtów macierze przechodzi przez funkcję zamiany AES. (...) \\
+	\item Zamiana bajtów. \\
+			Funkcja zamiany algorytmu AES jest złożeniem dwóch funkcji: $f(g(a_{xy})).$ \\
+			Wynikiem wewnętrznej funkcji \textit{g} jest liczba odwrotna do zadanej nad ciałem skończonym.
+			Jest to równoznaczne z zamianą zadanej liczby do postaci wielomianowej (wielomian o maksymalnym 
+			stopniu równym 7, w którym współczynnikami są bity liczby) a następnie znalezienie takiego
+			wielomianu, który po przemnożeniu przez wielomian liczby da w wyniku 1. \\
+			Funkcja \textit{f} jest przekształceniem wyrażanym następująco: \\
+			\begin{figure}[H]
+			    \centering
+			    \includegraphics[scale=0.5]{content/images/affin}
+				\caption{Przekształcenie \textit{f}.}
+			\end{figure}
+			Możliwe jest też jednorazowe wygenerowania tablicy odwzorowania dla zadanych wielomianów,
+			dzięki czemu zamiast za każdym razem obliczać wartość funkcji, wystarczy odczytać wartość tablicy
+			pod odpowiednim indeksem. 
+			\begin{figure}[H]
+			    \centering
+			    \includegraphics[width=\textwidth]{content/images/sbox}
+				\caption{Macierz odwzorowania funkcji zamiany.}
+			\end{figure}
+			Przykładowo bajt 0xc4, za pomocą powyższej tablicy, konwertowany jest do wartości 28.
 			\begin{figure}[H]
 			    \centering
 			    \includegraphics[width=\textwidth]{content/images/sub-bytes}
 				\caption{Wizualizacja zamiany bajtów.}
 			\end{figure}
 	\item Przesuwanie wierszy. \\
+			Każdy z wierszy jest przesuwany o odpowiednio 0, 1, 2, 3 komórki w lewo. 
+			Komórki macierzy, które wyszły poza macierz są dostawiane z prawej strony.
 			\begin{figure}[H]
 			    \centering
 			    \includegraphics[width=\textwidth]{content/images/shift-row}
 				\caption{Wizualizacja przesunięcia wierszy.}
 			\end{figure}
-	\item Mieszanie kolumn.
+	\item Mieszanie kolumn. \\
+			Kolumna zapisywana jest w postaci wielomianu, następnie 
+			wielomian ten jest mnożony przez specjalny wielomian $03x^3+01x^2+01x+02$. 
+			Na koniec brana jest reszta z dzielenia przez wielomian $x^4 + 1$. \\ 
+			Całość powyższych operacji można uprościć do mnożenia macierzowego: 
+			$$
+				\begin{bmatrix}
+					2 1 1 3 \\
+					3 2 1 1 \\
+					1 3 2 1 \\
+					1 1 3 2
+				\end{bmatrix}
+				\times
+				\begin{bmatrix}
+					b_{01} \\
+					b_{12} \\
+					b_{23} \\
+					b_{30} \\
+				\end{bmatrix}
+				=
+				\begin{bmatrix}
+					c_{01} \\
+					c_{11} \\
+					c_{21} \\
+					c_{31} \\
+				\end{bmatrix}
+			$$
+			W przypadku ostatniego przebiegu krok ten jest pomijany.
 			\begin{figure}[H]
 			    \centering
 			    \includegraphics[width=\textwidth]{content/images/mix-cols}
 				\caption{Wizualizacja mieszania kolumn.}
 			\end{figure}
-	\item Dodanie klucza przebiegu.
+	\item Dodanie klucza przebiegu. \\
+			Ostatnim etapem przebiegu jest użycie funkcji XOR pomiędzy każdym elementem macierzy
+			a każdym elementem klucza przebiegu.
 			\begin{figure}[H]
 			    \centering
 			    \includegraphics[width=\textwidth]{content/images/add-key}
 				\caption{Wizualizacja dodania klucza przebiegu.}
 			\end{figure}
 \end{enumerate}
+W celu odszyfrowania danych cały proces jest powtarzany w odwrotnej kolejności. \\
 Na chwile obecną nie są znane żadne praktyczne ataki na AES a co do szybkości działania na współczesnych komputerach,
 znacząco przyczynił się producent procesorów, implementując w nich natywne instrukcje procesora, których 
 jedynym zadaniem jest realizacja algorytmu AES.
