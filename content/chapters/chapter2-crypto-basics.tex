@@ -172,7 +172,7 @@ Każdy przebieg składa się z następujących kroków:
 			Wynikiem wewnętrznej funkcji \textit{g} jest liczba odwrotna do zadanej nad ciałem skończonym.
 			Jest to równoznaczne z zamianą zadanej liczby do postaci wielomianowej (wielomian o maksymalnym 
 			stopniu równym 7, w którym współczynnikami są bity liczby) a następnie znalezienie takiego
-			wielomianu, który po przemnożeniu przez wielomian liczby da w wyniku 1. \\
+			wielomianu, który po przemnożeniu przez wielomian liczby, modulo $x^8+x^4+x^3+x+1$, da w wyniku 1. \\
 			Funkcja \textit{f} jest przekształceniem wyrażanym następująco: \\
 			\begin{figure}[H]
 			    \centering
@@ -469,6 +469,9 @@ Poprzednie funkcje oparte były o schemat Merkle–Damgård. Funkcje z rodziny S
 Ulepszona wewnętrzna konstrukcja algorytmu zapobiega atakom typu ,,length extension'', na który podatne są funkcje MD5, SHA-1 oraz SHA-2 \cite{keccak}.
 
 \section{Kod uwierzytelnienia wiadomości}
+Kod uwierzytelnienia wiadomości (Message authentication code ang.) jest niewielką porcją danych przesyłaną razem 
+z wiadomością, mającą na celu uwierzytelnienie i zapewnienie integralności wiadomości. 
+Algorytmy generujące MAC przyjmują 
 
 \section{MAC bazujący na funkcji skrótu}
 
