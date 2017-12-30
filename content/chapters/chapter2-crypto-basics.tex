@@ -465,14 +465,49 @@ W porównaniu do SHA-1 są znacznie odporniejsze na kolizję, dzięki czemu zale
 
 \subsection{Secure Hash Algorithm 3}
 Wewnętrzna budowa funkcji z rodziny SHA-3 znacząco się różni w odniesieniu do omawianych wcześniej. 
-Poprzednie funkcje oparte były o schemat Merkle–Damgård. Funkcje z rodziny SHA-3 oparte są o tak zwaną ,,architekturę gąbki''. W obu przypadkach funkcja zawiera wewnętrzny stan. Różnica jest jednak w sposobie otrzymywania wyniku na podstawie tego stanu. Poprzednio zwrócenie przez funkcję wyniku było równoznaczne ze zwróceniem wewnętrznego stanu funkcji. W przypadku SHA-3 tak się nie dzieje. Wewnętrzny stan przepuszczany jest kolejne cykle algorytmu. Na wynik funkcji składają się części wewnętrznego stanu, pobierane w kolejnych cyklach. Skutkuje to tym, że nigdy nie jest ujawniany cały wewnętrzny stan funkcji. \\
-Ulepszona wewnętrzna konstrukcja algorytmu zapobiega atakom typu ,,length extension'', na który podatne są funkcje MD5, SHA-1 oraz SHA-2 \cite{keccak}.
+Poprzednie funkcje oparte były o schemat Merkle–Damgård. 
+Funkcje z rodziny SHA-3 oparte są o tak zwaną ,,architekturę gąbki''. 
+W obu przypadkach funkcja zawiera wewnętrzny stan. 
+Różnica jest jednak w sposobie otrzymywania wyniku na podstawie tego stanu. 
+Poprzednio zwrócenie przez funkcję wyniku było równoznaczne ze zwróceniem wewnętrznego stanu funkcji. 
+W przypadku SHA-3 tak się nie dzieje. Wewnętrzny stan przepuszczany jest kolejne cykle algorytmu. 
+Na wynik funkcji składają się części wewnętrznego stanu, pobierane w kolejnych cyklach. 
+Skutkuje to tym, że nigdy nie jest ujawniany cały wewnętrzny stan funkcji. \\
+Ulepszona wewnętrzna konstrukcja algorytmu zapobiega atakom typu ,,length extension'', 
+na który podatne są funkcje MD5, SHA-1 oraz SHA-2 \cite{keccak}.
 
 \section{Kod uwierzytelnienia wiadomości}
-Kod uwierzytelnienia wiadomości (Message authentication code ang.) jest niewielką porcją danych przesyłaną razem 
-z wiadomością, mającą na celu uwierzytelnienie i zapewnienie integralności wiadomości. 
-Algorytmy generujące MAC przyjmują 
+W celu zagwarantowania prywatności kanału komunikacji samo szyfrowanie nie jest wystarczające. 
+Potwierdzeniem tej tezy są ataki typu \textit{,,Man in the middle''}, w których atakujący podszywa się 
+pod osobę, do której przesyłamy wiadomość. Wysyłając wiadomość jesteśmy przekonani, że wysyłamy ją do docelowej osoby,
+gdy tak naprawdę wysyłamy ją do atakującego. Odbiorca również sądzi, że otrzymana wiadomość jest wysłana 
+przez spodziewanego nadawcę, mimo że wysłał ją atakujący. Pomimo tego, że atakujący nie jest w stanie przeczytać
+przechwyconej wiadomości, gdyż jest zaszyfrowana, to może próbować ją modyfikować. \\
+Kod uwierzytelnienia wiadomości (Message Authentication Code ang.) są jedną z metod na uwierzytelnienie i zapewnienie 
+integralności danych. Przesyłane są razem z wiadomością w formie niewielkiej porcji danych.
+Algorytmy generujące MAC przyjmują klucz kryptograficzny o z góry określonej długości oraz dowolne dane 
+o dowolnej długości (podobnie jak w przypadku funkcji skrótu) i w wyniku zwracają kod o ustalonej długości.
+Algorytmy te umożliwiają również weryfikację danego kodu na podstawie klucza oraz wiadomości. \\
+Po wygenerowaniu kodu uwierzytelniającego pozostaje jeszcze kwestia sposobu dołączenia go do wiadomości.
+Sposobów tych je wiele. \\
+Przykładowo możemy w pierwszej kolejności wygenerować MAC z danej wiadomości a następnie ją zaszyfrować. 
+Wysyłana jest wtedy zaszyfrowana wiadomość oraz wygenerowany kod. Jednym z protokołów, w których 
+MAC jest wykorzystywany w taki sposób jest protokół SSH. \\
+Możliwe jest też wygenerowanie MAC, doklejenie go do wiadomości i zaszyfrowanie całości.
+Ten schemat wykorzystywany jest w protokole TLS. \\
+Trzecim sposobem jest zaszyfrowanie wiadomości, po czym wygenerowanie MAC z zaszyfrowanej wiadomości.
+Tego sposobu używa na przykład protokół IPSec. \\
+Okazuje się, że ostatni wspomniany sposób jest najbezpieczniejszy, należy sprawdzić kod uwierzytelnienia wiadomości
+przed próbą jej odszyfrowania. W przypadku protokołu SSH, który wykorzystuje pierwszy sposób, istnieje atak, 
+który umożliwia atakującemu odszyfrowanie pierwszych czterech bajtów zaszyfrowanego bloku. Jest to spowodowane 
+specyficzną konstrukcją pakietu SSH (pole reprezentujące długość pakietu jest również zaszyfrowane).
+Na drugi sposób również istnieje atak zaproponowany przez Serge'a Vaudenaya \cite{tls}.
 
 \section{MAC bazujący na funkcji skrótu}
+Praktycznie jedynym poprawnie działającym mechanizmem generującym kody uwierzytelnienia wiadomości są algorytmy
+MAC bazujące na funkcji skrótu (Hash-based Message Authentication Code ang.). 
+Oprócz klucza kryptograficznego oraz wiadomości algorytm HMAC pobiera dodatkowo funkcję skrótu. 
+
+
 
 \section{Pojęcia entropii}
