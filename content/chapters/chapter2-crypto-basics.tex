@@ -519,15 +519,51 @@ Schemat generacji HMAC można przedstawić następująco:
     \caption{Schemat HMAC.}
 \end{figure} 
 \noindent
-Wartości stałych nie mają tutaj znaczenia. Ważne jest jednak aby miały długość równą długości bloku
+Wartości stałych nie mają tutaj większego znaczenia. Ważne jest jednak aby miały długość równą długości bloku
 użytej funkcji skrótu oraz aby były od siebie różne. 
 Na etapie konkatenacji wynik działania funkcji XOR jest dostawiany z lewej strony.
 
 \section{Generatory liczb losowych}
 
 \subsection{Pojęcie entropii}
+Entropia jest miarą średniej ilości informacji w danej wiadomości. 
+Im więcej informacji jest zawartych w wiadomości, tym większa jest jej entropia. Przykładowo 
+dla wiadomości składającej się z samych bitów o wartości 1, entropia wynosi 0 bitów, gdyż wybierając 
+losowo jeden z bitów, ze stuprocentowym prawdopodobieństwem otrzymamy bit o wartości 1.
+Mając wiadomość o długości 64 bity, w której każdy bit ma losową wartość, entropia wynosi 64 bity.
+W przypadku wiadomości o długości 32 znaki, w której mogą pojawić się litery: a, b, c i d
+a prawdopodobieństwo wystąpienia każdej z liter jest równe $25\%$ to entropia wynosi 2 bity. \\
+Wartość entropii jest liczona za pomocą wzoru:
+$$
+	H(X) := - \sum_x P(X=x) \log_2 P(X=x)
+$$
+$P(X=x)$ jest prawdopodobieństwem, że zmienna $X$ przybierze wartość $x$. \\
+W zastosowaniach kryptograficznych konieczne jest aby entropia kluczy była wysoka. 
+W przeciwnym razie pojawi się możliwość złamania kluczy metodą siłową.
 
 \subsection{Generatory prawdziwie losowych liczb}
+Oczywistym jest fakt, że przy użyciu wyłącznie deterministycznych metod nie jesteśmy w stanie stworzyć
+generatorów prawdziwie losowych liczb. Do stworzenia takich generatorów konieczne jest bazowanie na 
+zjawiskach fizycznych takich jak procesy termiczne czy procesy kwantowe. \\
+Jednym z takich generatorów dostępnych publicznie jest platforma \textit{RANDOM.ORG}, wykorzystująca 
+szumy atmosferyczne do generacji liczb prawdziwie losowych.
 
 \subsection{Kryptograficzne generatory liczb pseudolosowych}
-
+Idealnym byłoby używanie generatorów prawdziwie losowych liczb do zastosowań kryptograficznych, takich 
+jak na przykład generowanie klucza symetrycznego. Często jednak nie mamy dostępu do takich generatorów
+lub użycie ich byłoby zbyt kosztowne. Szczęśliwie okazuje się, że do codziennych zastosowań 
+wystarczającym jest użycie kryptograficznie bezpiecznych generatorów liczb pseudolosowych. \\ \\
+Algorytmami używanymi w kryptografii do generacji liczb pseudolosowych są:
+\begin{itemize}
+	\item \textit{Yarrow}
+	\item \textit{Blum Blum Shub}
+	\item \textit{Dual\_EC\_DRBG}
+	\item \textit{Mersenne Twister}
+\end{itemize}
+Warto zaznaczyć, że samodzielna implementacja algorytmów jest wyjątkowo niewskazana. 
+Jest to obszar kryptografii, w którym niezwykle łatwo jest popełnić błąd, który
+będzie powodował złamanie całego systemu kryptograficznego. \\
+W razie potrzeby wygenerowania liczb pseudolosowych zalecane jest użycie interfejsu 
+wystawionego przez używany system operacyjny. Na systemach z rodziny \textit{Unix}
+interfejsem tym jest \texttt{/dev/urandom} zaś na systemach \textit{Windows} należy korzystać
+z \texttt{CryptGenRandom}.
