@@ -2,7 +2,7 @@
 
 \section{Kryptografia symetryczna oraz asymetryczna}
 Współczesną kryptografię można podzielić na kryptografię symetryczną oraz kryptografię asymetryczną. 
-W dużym uproszczeniu, w przypadku kryptografii symetrycznej używany jest jeden, wspólny klucz kryptograficzny a w kryptografii asymetrycznej obecna jest para kluczy kryptograficznych - publiczny oraz prywatny. Kryptografia asymetryczna często nazywana jest kryptografią klucza publicznego. 
+W dużym uproszczeniu, w przypadku kryptografii symetrycznej używany jest jeden, wspólny klucz kryptograficzny a w kryptografii asymetrycznej obecna jest para kluczy - publiczny oraz prywatny. Kryptografia asymetryczna często nazywana jest kryptografią klucza publicznego. 
 
 \subsection{Szyfrowanie symetryczne}
 Szyfrowanie symetryczne przy użyciu klucza kryptograficznego ,,miesza'' dane w taki sposób, 
@@ -15,10 +15,11 @@ Szyfry symetryczne idealnie nadają się do szyfrowania dużych ilości danych.
 Algorytmy używane w szyfrach asymetrycznych opierają się na rozwiązywaniu bardzo trudnych matematycznych problemów. 
 Konstrukcja tych szyfrów pozwala niemal natychmiastowo rozwiązać zadany problem (i co za tym idzie odszyfrować dane) mając odpowiedni klucz, a w przypadku nieposiadania owego klucza, problem staje się niemożliwy do rozwiązania w~rozsądnym czasie.
 Zwykle wykorzystywane jest tutaj zagadnienie faktoryzacji dużych liczb oraz znajdywania dyskretnych logarytmów. \\
-Algorytmy asymetryczne działają na danych o ustalonej długości - zwykle od 1024 do 2048 bitów. Wykorzystywane są one zwykle tylko do przesłania klucza symetrycznego, który jest używane do szyfrowania pozostałej komunikacji. 
-Spowodowane jest to tym, że algorytmy symetryczne są dużo bardziej wydajne niż asymetryczne. \\
+Algorytmy asymetryczne działają na danych o ustalonej długości - zwykle od 1024 do 2048 bitów. 
+Na ogół wykorzystywane są one tylko do bezpiecznego przesłania klucza symetrycznego, który jest używany do szyfrowania pozostałej komunikacji. 
+Spowodowane jest to tym, że algorytmy symetryczne są dużo bardziej wydajne niż te asymetryczne. \\
 Szyfrowanie asymetryczne poprawia nieco problem dystrybucji klucza. W odróżnieniu od szyfrowania symetrycznego, wymagane jest użycie $O(N)$ kluczy zamiast $O(N^2)$ \mbox{kluczy}. \\ 
-Przykładami algorytmów asymetrycznych jest RSA lub ElGamal. \\ \\ \\
+Przykładami algorytmów asymetrycznych jest RSA lub ElGamal. \\ \\
 W praktyce rzadko kiedy korzysta się z wyłącznie kryptografii symetrycznej lub wyłącznie asymetrycznej. Zwykle w skład systemów kryptograficznych wchodzą elementy kryptografii symetrycznej jak również asymetrycznej.
 
 \section{Szyfry blokowe}
@@ -44,12 +45,12 @@ Dla zobrazowania tej definicji poniżej znajduje się szyfr o długości bloku r
 \end{table} \\
 Niezwykle ważną cechą jaka wynika z powyższej charakterystyki szyfru blokowego jest fakt, że znając pewną liczbę par (wiadomość, zaszyfrowana wiadomość), nie ujawnia to żadnych informacji o innych parach, szyfrowanych tym samym kluczem.
 Jedyną możliwą formą odszyfrowania wiadomości, nie posiadając klucza, jest wtedy metoda siłowa czyli wypróbowanie wszystkich możliwych kombinacji. 
-Biorąc pod uwagę powyższy przykład, mając 16 różnych bloków, liczba ich permutacji wynosi 16! = 20922789888000. 
+Biorąc pod uwagę powyższy przykład czyli mając 16 różnych bloków, liczba ich permutacji wynosi 16! = 20922789888000. 
 Prawdziwe szyfry posiadają znacznie większy rozmiar bloku, zwykle od 128 do 256 bitów. Przykładowo dla szyfru z rozmiarem bloku równym 128 bitów, należałoby sprawdzić aż $(2^{128})!$ możliwych kluczy.
 
 \subsection{Tryby pracy szyfrów blokowych}
 Nietrudno zauważyć jedną wadę szyfrów blokowych, która znacząco ogranicza proces szyfrowania. 
-A mianowicie przy użyciu szyfrów blokowych, jesteśmy w stanie zaszyfrować dane o długości równej długości bloku. 
+A mianowicie używając szyfrów blokowych, jesteśmy w stanie zaszyfrować dane o długości równej długości jednego bloku. 
 Zwykle chcielibyśmy jednak szyfrować wiadomości dłuższe niż 16 czy 32 bajty. 
 Z tego powodu zostały stworzone uniwersalne konstrukcje, możliwe do użycia z dowolnym szyfrem blokowym, 
 pozwalające zaszyfrować dane o dowolnej długości.
@@ -93,9 +94,9 @@ Proces deszyfrowania jest analogiczny. W pierwszej kolejności, zaszyfrowany blo
 blokowego, po czym jest on XORowany z poprzednim zaszyfrowanym blokiem. Na pierwszy blok musi zostać użyta funkcja XOR
 z takim samym wektorem inicjalizującym, jaki został użyty podczas szyfrowania. \\\\
 Tryb CBC sam w sobie można uznać za bezpieczny (w odróżnieniu od ECB), 
-należy jednak o paru najczęściej popełnianych błędach:
+należy jednak pamiętać o paru najczęściej popełnianych błędach:
 \begin{enumerate}
-	\item Używanie tego samego wektora inicjalizującego dla paru wiadomości.
+	\item Używanie tego samego wektora inicjalizującego dla więcej niż jednej wiadomości.
 	\item Używanie przewidywalnych wektorów inicjalizujących, na przykład bazujących na liczniku.
 	\item Używanie klucza jako wektora inicjalizującego. 
 \end{enumerate}
@@ -116,7 +117,7 @@ Błędem, który został wykorzystany, było użycie zaszyfrowanego bloku poprze
 Warto wspomnieć jeszcze o trybie \textit{CTR - Counter (ang.)}, gdyż sposób jego działania jest zbliżony 
 do szyfrów strumieniowych. Wykorzystywany jest w nim \textit{liczba używana jednorazowo (z angielskiego ,,nonce'')}
 oraz licznik. Licznik jest zwiększany dla każdego z bloków wiadomości. 
-Na wejście szyfru blokowego podawana jest wyżej wymieniona liczba połączona z licznikiem. Następnie wynik
+Na wejście szyfru blokowego podawana jest wyżej wspomniana liczba połączona z licznikiem. Następnie wynik
 działania szyfru jest XORowany z blokiem wiadomości. \\
 Krytyczne jest tutaj generowanie nowej liczby \textit{nonce} dla każdej z wiadomości. 
 
@@ -135,22 +136,22 @@ Krytyczne jest tutaj generowanie nowej liczby \textit{nonce} dla każdej z wiado
 Szyfr blokowy DES był pierwszym algorytmem, zatwierdzonym przez \textit{Narodowe Biuro Standaryzacji} 
 (obecnie \textit{Narodowy Instytut Standaryzacji i Technologii}), jako bezpieczny standard szyfrowania symetrycznego.
 Przez ponad 20 lat stowarzyszenia naukowe poddawały go intensywnym analizom. \\
-W tym czasie został wielokrotnie złamany, głównie przez długość klucza jaką posiada szyfr - zaledwie 56 bitów. \\
+W tym czasie został wielokrotnie złamany, głównie z powodu długość klucza jaką posiada szyfr - zaledwie 56 bitów. \\
 Jednym ze skutecznych ataków na DES było przedsięwzięcie, dokonane w styczniu 1999 roku, składające się z kooperacji platformy \textit{distributed.net} 
 oraz urządzenia stworzonego przez \textit{Electronic Frontier Foundation} o nazwie \textit{Deep Crack}. 
-Atak bazował wyłącznie na metodzie siłowej, więc należało sprawdzić $2^{56} = 72\ 057\ 594\ 037\ 927\ 936$ różnych kluczy.
-W mniej niż 24 godziny szyfr DES został sukcesywnie złamany. 
-Przy dzisiejszej mocy obliczeniowej może on zostać złamany przez jedną maszynę w około jeden dzień \cite{desday}. \\
+Atak bazował wyłącznie na metodzie siłowej, należało więc sprawdzić $2^{56} = 72\ 057\ 594\ 037\ 927\ 936$ różnych kluczy.
+W mniej niż 24 godziny szyfr DES został sukcesywnie złamany. \\
+Dla porównania przy dzisiejszej mocy obliczeniowej może on zostać złamany przez jedną maszynę w około jeden dzień \cite{desday}. \\
 Próbą uratowania szyfru była propozycja algorytmu 3DES. 
 Polegał on na zaszyfrowaniu danych szyfrem DES, odszyfrowaniu ich, a następnie ponownym zaszyfrowaniu. 
-Zamiast 3-krotnego szyfrowania, 3DES został zaprojektowany sposób umożliwiający zachowanie kompatybilności z systemami, w których możliwe było użycie jedynie wersji podstawowej algorytmu. \\
+Zamiast 3-krotnego szyfrowania, 3DES został wybrany schemat operacji umożliwiający zachowanie kompatybilności z systemami, w których możliwe było użycie jedynie wersji podstawowej algorytmu. \\
 Pomimo zwiększonej długości klucza w przypadku 3DES, w porównaniu do AES jest mniej bezpieczny i nadzwyczajnie wolny (AES potrzebuje 12.6 cykli procesora do zaszyfrowania bajtu danych, 3DES aż 134.5 \cite{crypto101}).
 
 \subsection{Advanced Encryption Standard}
 Po problemach z DES agencja NIST ogłosiła konkurs na algorytm, który mógłby stać się nowym standardem.
 Do konkursu zgłoszone zostały między innymi: \textit{Rijndael}, \textit{Serpent}, \textit{Twofish}, \textit{MARS} czy \textit{RC6}. 
 Zostały one poddane intensywnej kryptoanalizie. 
-Ostatecznie wygrał algorytm stworzony przez Vincenta Rijmena oraz Joana Daemena - Rijndael. 
+Ostatecznie wygrał algorytm stworzony przez Vincenta Rijmena oraz Joana Daemena - Rijndael. \\
 Rijndael jest rodziną szyfrów, których rozmiar bloku oraz rozmiar klucza może wynosić: 128, 160, 192, 224 i 256 bitów. 
 Za standard (AES) uznany został Rijndael z długością bloku równą 128 bitów oraz rozmiarze klucza równym 128, 192 lub 256 bitów. \\ \\
 Algorytm składa się z wielu przebiegów. Liczba przebiegów zależy od rozmiaru klucza. \\
@@ -180,7 +181,7 @@ Każdy przebieg składa się z następujących kroków:
 				\caption{Przekształcenie \textit{f}.}
 			\end{figure}
 			Możliwe jest też jednorazowe wygenerowania tablicy odwzorowania dla zadanych wielomianów,
-			dzięki czemu zamiast za każdym razem obliczać wartość funkcji, wystarczy odczytać wartość tablicy
+			dzięki czemu zamiast za każdym razem obliczać wartość tej funkcji, wystarczy odczytać wartość tablicy
 			pod odpowiednim indeksem. 
 			\begin{figure}[H]
 			    \centering
@@ -268,16 +269,16 @@ Następnie zamienione są wartości $S[i]$ oraz $S[j]$. W celu otrzymania bajtu,
 
 \subsection{Salsa20}
 W porównaniu do RC4, Salsa20 jest relatywnie nowym szyfrem strumieniowym, stworzonym przez Daniela J. Bernsteina. 
-Bazuje on na operacjach \textit{ARX (add–rotate–xor)}, to jest operacji składających się z dodawania modulo, obrotów bitowych oraz funkcji \textit{XOR}. 
-Zaletą stosowania szyfrów \textit{ARX} jest to, że odporne są one na ataki czasowe, polegające na mierzeniu czasu,
-jaki potrzebny jest do przeprowadzenia operacji kryptograficznych. \\
+Bazuje on na operacjach \textit{ARX (add–rotate–xor)}, to jest operacjach składających się z dodawania modulo, obrotów bitowych oraz funkcji \textit{XOR}. 
+Zaletą stosowania szyfrów \textit{ARX} jest to, że odporne są one na ataki czasowe, 
+polegające na mierzeniu czasu, jaki potrzebny jest do przeprowadzenia operacji kryptograficznych i uzyskiwanie informacji na podstawie wyników pomiarów. \\
 Niezwykle interesującą cechą szyfru Salsa20 jest możliwość rozpoczęcia procesu odszyfrowywania od dowolnego miejsca w strumieniu danych. Mając więc duży plik, możliwe jest odszyfrowywanie tylko tej jego części, która nas interesuje. \\
 Na chwilę obecną nie są znane żadne praktyczne ataki na szyfr Salsa20, może on zostać użyty jako alternatywa do szyfru blokowego AES.
 
 \section{Kryptograficzna funkcja skrótu}
 Funkcją skrótu nazywana jest funkcja, która dla danych wejściowych o dowolnym rozmiarze zwraca dane o z góry ustalonej długości. Funkcje skrótu znajdują zastosowanie w takich dziedzinach jak struktury danych (tablice mieszające, filtr Blooma), algorytmy dopasowania wzorca (algorytm Karpa-Rabina) czy też w kryptografii. \\ \\
-Aby funkcja skrótu mogła zostać użyta w systemach kryptograficznych musi posiadać ona szereg parametrów. \\
-Jednym z nich jest odporność na kolizje. Kolizją nazywamy przypadek, gdy dla dwóch różnych argumentów funkcja skrótu zwraca ten sam wynik. Nie jest oczywiście możliwe, aby całkowicie uniknąć kolizji, gdyż zbiór danych o dowolnym rozmiarze jest mapowany na zbiór skończony, zależy nam jednak aby proces znajdywania kolizji dla określonych danych był uważany za ,,trudny''. (Przez ,,trudny'' należy tutaj rozumieć problem, który nie jest możliwy do rozwiązania w rozsądnej ilości czasu.) \\
+Aby funkcja skrótu mogła zostać użyta w systemach kryptograficznych musi posiadać szereg parametrów. \\
+Jednym z nich jest odporność na kolizje. Kolizją nazywamy przypadek, gdy dla dwóch różnych argumentów funkcja skrótu zwraca ten sam wynik. Nie jest oczywiście możliwe, aby móc całkowicie uniknąć kolizji, gdyż zbiór danych o dowolnym rozmiarze jest mapowany na zbiór skończony, zależy nam jednak aby proces znajdywania kolizji dla określonych danych był uważany za ,,trudny''. (Przez ,,trudny'' należy tutaj rozumieć problem, który nie jest możliwy do rozwiązania w rozsądnej ilości czasu.) \\
 Kolejny z parametrów jest częściowo związany z poprzednim. Zależy nam, aby rozpatrywana funkcja była funkcją jednokierunkową. Oznacza to, że dla danego wyniku funkcji skrótu, znalezienie argumentu jest również problemem ,,trudnym''.
 (Sam fakt istnienia funkcji jednokierunkowych nie został formalnie udowodniony. \cite{oneway}) \\
 Niezwykle ważne jest też, aby nawet niewielka zmiana danych wejściowych, spowodowała znaczną zmianę danych otrzymanych na wyjściu (wymagane jest aby przynajmniej połowa bitów uległa zmianie).
@@ -287,18 +288,18 @@ Funkcja MD5 jest wykorzystywana do generowania 128-bitowego skrótu. Została st
 W uproszczeniu, algorytm MD5 można przedstawić w następujących krokach \cite{crypto101}:
 \begin{enumerate}
 	\item Dodanie dopełnienia. W pierwszej kolejności dopisywany jest jeden bit o wartości 1, a następnie dopisywane są zera, aż do momentu, gdy długość danych wynosić będzie 448 bitów modulo 512. Dopełnienie dopisywane jest nawet w przypadku, gdy długość danych wynosi 448 bitów.
-	\item Pozostałe 64 bity wypełniane są liczbą reprezentującą długość wiadomości (sprzed wypełnienia) modulo $2^{64}$. 
-	\item Inicjalizacja stanu MD5 w postaci czterech 32-bitowych zmiennych A, B, C i D. Są one inicjalizowane stałymi zdefiniowanymi w specyfikacji (przedstawione w systemie szesnastkowym): \\
+	\item Pozostałe 64 bity wypełniane są liczbą reprezentującą długość wiadomości (sprzed dopełnienia) modulo $2^{64}$. 
+	\item Inicjalizacja stanu MD5 w postaci czterech 32-bitowych zmiennych A, B, C i D. Są one inicjalizowane stałymi zdefiniowanymi w specyfikacji algorytmu (przedstawione w systemie szesnastkowym): \\
 		$A := 01 23 45 67$ \\
 		$B := 89 ab cd ef$ \\
 		$C := fe dc ba 98$ \\
 		$D := 76 54 32 10$ 
-	\item Dane wejściowe dzielone są na bloki po 512 bitów. Kolejno na każdym z bloków wykonywane są operacje bitowe zmieniające zmiennych. 
-	\item Wynikiem działania algorytmu jest 128-bitowa wartość składająca się z omawianych czterech zmiennych w kolejności A, B, C, D.
+	\item Dane wejściowe dzielone są na bloki po 512 bitów. Kolejno na każdym z bloków wykonywane są operacje bitowe zmieniające stan zmiennych. 
+	\item Wynikiem działania algorytmu jest 128-bitowa wartość składająca się z czterech zmiennych w kolejności A, B, C, D.
 \end{enumerate} 
 Szczegółowa specyfikacja algorytmy znajduje się w dokumencie RFC 1321 \cite{md5rfc}. \\
 Analiza kryptograficzna funkcji MD5 wykazała wiele podatności i błędów przez co obecnie nie jest wskazane używanie MD5 w zastosowaniach kryptograficznych. 
-W roku 2004 została opublikowana praca wykazująca podatność funkcji MD5 na ataki kolizyjne (ang. collision attack) \cite{md5cert}. Cztery lata później został znaleziony atak na kody uwierzytelnienia wiadomości bazujące na funkcji MD5 \cite{md5hmac}.
+W roku 2004 została opublikowana praca wykazująca podatność funkcji MD5 na ataki kolizyjne (ang. collision attack) \cite{md5cert}. 
 
 \subsection{Secure Hash Algorithm 1}
 SHA-1 jest funkcją bazującą na MD4 (podobnie jak MD5), o długości skrótu wynoszącej 160 bitów \cite{cryptoirf}. \\
@@ -332,7 +333,7 @@ Pseudokod algorytmu można przedstawić w następujących krokach:
 		\begin{enumerate}
 			\item Podzielenie bloku na szesnaście 32-bitowych części $w[i], 0 \leq i \leq 15$.
 			\item Rozszerzenie 16 części do 80 korzystając ze wzoru: \\
-				$w[i] = (w[i-3] \xor w[i-8] \xor w[i-14] \xor w[i-16]) << 1$
+				$w[i] := (w[i-3] \xor w[i-8] \xor w[i-14] \xor w[i-16]) << 1$
 			\item Inicjalizacja zmiennych pomocniczych dla danego bloku \\
 				$a := A$ \\
 				$b := B$ \\
@@ -381,7 +382,7 @@ Pierwszy praktyczny atak na SHA-1 został ogłoszony w lutym 2017 roku. Zostały
 SHA-2 jest rodziną funkcji składającą się z \mbox{SHA-224}, \mbox{SHA-256}, \mbox{SHA-384}, \mbox{SHA-512}, \mbox{SHA-512/224}, \mbox{SHA-512/256}. Funkcje te generują skróty o długościach odpowiednio: 224, 256, 384, 512, 224 oraz 256 bitów.
 
 \subsubsection{SHA-256}
-Jedną z najczęściej używanych funkcji z rodziny SHA-2 jest SHA-256. Proces uzyskiwania skrótu SHA-256 jest następujący:
+Jedną z najczęściej używanych funkcji z rodziny SHA-2 jest SHA-256. Proces pozyskiwania skrótu SHA-256 jest następujący:
 \begin{enumerate}
 	\item Inicjalizacja stanu wewnętrznego funkcji: \\
 		$A := 1779033703$ \\
@@ -461,7 +462,7 @@ Jedną z najczęściej używanych funkcji z rodziny SHA-2 jest SHA-256. Proces u
 		$(A << 224) \BitOr (B << 192) \BitOr (C << 160) \BitOr \\ 
 		 (D << 128) \BitOr (E << 96) \BitOr (F << 64) \BitOr (G << 32) \BitOr H$
 \end{enumerate}
-W porównaniu do SHA-1 są znacznie odporniejsze na kolizję, dzięki czemu zalecane jest ich używanie w zastosowaniach takich jak podpisy cyfrowe czy uwierzytelnianie wiadomości.
+W porównaniu do SHA-1, funkcje SHA-2 są znacznie odporniejsze na kolizję, dzięki czemu zalecane jest ich używanie w zastosowaniach takich jak podpisy cyfrowe czy uwierzytelnianie wiadomości.
 
 \subsection{Secure Hash Algorithm 3}
 Wewnętrzna budowa funkcji z rodziny SHA-3 znacząco się różni w odniesieniu do omawianych wcześniej. 
@@ -485,7 +486,7 @@ pod osobę, do której przesyłamy wiadomość. Wysyłając wiadomość jesteśm
 gdy tak naprawdę wysyłamy ją do atakującego. Odbiorca również sądzi, że otrzymana wiadomość jest wysłana 
 przez spodziewanego nadawcę, mimo że wysłał ją atakujący. Pomimo tego, że atakujący nie jest w stanie przeczytać
 przechwyconej wiadomości, gdyż jest zaszyfrowana, to może próbować ją modyfikować. \\
-Kod uwierzytelnienia wiadomości (Message Authentication Code ang.) są jedną z metod na uwierzytelnienie i zapewnienie 
+Kody uwierzytelnienia wiadomości (Message Authentication Code ang.) są jedną z metod na uwierzytelnienie i zapewnienie 
 integralności danych. Przesyłane są razem z wiadomością w formie niewielkiej porcji danych.
 Algorytmy generujące MAC przyjmują klucz kryptograficzny o z góry określonej długości oraz dowolne dane 
 o dowolnej długości (podobnie jak w przypadku funkcji skrótu) i w wyniku zwracają kod o ustalonej długości.
@@ -509,9 +510,9 @@ Na drugi sposób również istnieje atak zaproponowany przez Serge'a Vaudenaya \
 Praktycznie jedynym poprawnie działającym mechanizmem generującym kody uwierzytelnienia wiadomości są algorytmy
 MAC bazujące na funkcji skrótu (Hash-based Message Authentication Code ang.). 
 Oprócz klucza kryptograficznego oraz wiadomości algorytm HMAC pobiera dodatkowo funkcję skrótu. 
-Dowolna funkcja skrótu może zostać tutaj użyta: SHA1, SHA-256, SHA-3 czy nawet MD5. 
+Jako argument może zostać użyta dowolna funkcja skrótu: SHA1, SHA-256, SHA-3 czy nawet MD5. 
 Nie jest tutaj wymagane aby użyta funkcja skrótu była odporna na kolizję więc HMAC zbudowany na
-funkcji MD5 jest uważany za bezpieczny \cite{hmacmd5}. \\
+funkcji MD5 jest uważany za bezpieczny \cite{hmacmd5}, chociaż nie jest to zalecane przy tworzeniu nowych systemów kryptograficznych. \\
 Schemat generacji HMAC można przedstawić następująco:
 \begin{figure}[H]
     \centering
@@ -527,12 +528,12 @@ Na etapie konkatenacji wynik działania funkcji XOR jest dostawiany z lewej stro
 
 \subsection{Pojęcie entropii}
 Entropia jest miarą średniej ilości informacji w danej wiadomości. 
-Im więcej informacji jest zawartych w wiadomości, tym większa jest jej entropia. Przykładowo 
-dla wiadomości składającej się z samych bitów o wartości 1, entropia wynosi 0 bitów, gdyż wybierając 
+Im więcej informacji jest zawartych w wiadomości, tym większa jest jej entropia. \\
+Przykładowo dla wiadomości składającej się z samych bitów o wartości 1, entropia wynosi 0 bitów, gdyż wybierając 
 losowo jeden z bitów, ze stuprocentowym prawdopodobieństwem otrzymamy bit o wartości 1.
 Mając wiadomość o długości 64 bity, w której każdy bit ma losową wartość, entropia wynosi 64 bity.
-W przypadku wiadomości o długości 32 znaki, w której mogą pojawić się litery: a, b, c i d
-a prawdopodobieństwo wystąpienia każdej z liter jest równe $25\%$ to entropia wynosi 2 bity. \\
+W przypadku wiadomości o długości 32 znaki, w której mogą pojawić się litery: a, b, c i d,
+a prawdopodobieństwo wystąpienia każdej z liter jest równe $25\%$ entropia wynosi 2~bity. \\
 Wartość entropii jest liczona za pomocą wzoru:
 $$
 	H(X) := - \sum_x P(X=x) \log_2 P(X=x)
@@ -550,7 +551,7 @@ szumy atmosferyczne do generacji liczb prawdziwie losowych.
 
 \subsection{Kryptograficzne generatory liczb pseudolosowych}
 Idealnym byłoby używanie generatorów prawdziwie losowych liczb do zastosowań kryptograficznych, takich 
-jak na przykład generowanie klucza symetrycznego. Często jednak nie mamy dostępu do takich generatorów
+jak na przykład generacja klucza symetrycznego. Często jednak nie mamy dostępu do takich generatorów
 lub użycie ich byłoby zbyt kosztowne. Szczęśliwie okazuje się, że do codziennych zastosowań 
 wystarczającym jest użycie kryptograficznie bezpiecznych generatorów liczb pseudolosowych. \\ \\
 Algorytmami używanymi w kryptografii do generacji liczb pseudolosowych są:
@@ -565,5 +566,5 @@ Jest to obszar kryptografii, w którym niezwykle łatwo jest popełnić błąd, 
 będzie powodował złamanie całego systemu kryptograficznego. \\
 W razie potrzeby wygenerowania liczb pseudolosowych zalecane jest użycie interfejsu 
 wystawionego przez używany system operacyjny. Na systemach z rodziny \textit{Unix}
-interfejsem tym jest \texttt{/dev/urandom} zaś na systemach \textit{Windows} należy korzystać
+interfejsem tym jest \texttt{/dev/urandom}, zaś na systemach \textit{Windows} należy korzystać
 z \texttt{CryptGenRandom}.
