@@ -79,5 +79,28 @@ Szczegóły dotyczące standardu URI są opisane w dokumencie RFC~3986 \cite{uri
 
  
 \section{Hasło jednorazowe}
+Hasło jednorazowe jest jedną z możliwych form uwierzytelnienia przy używaniu uwierzytelnienia wieloetapowego. \\
+W odróżnieniu od zwykłego, statycznego hasła, haseł jednorazowych można użyć tylko raz. 
+Dzięki czemu przechwycenie przez atakującego, raz użytego hasła, nie daje możliwości uwierzytelnienia. \\
+Hasła jednorazowe eliminują również problem zbyt niskiej entropii w hasłach. 
+Często zdarza się, że hasła tworzone przez użytkowników są zbyt słabe, przez co nie zapewniają wystarczającego
+poziomu bezpieczeństwa. Hasła jednorazowe powstają przy użyciu bezpiecznych generatorów liczb pseudolosowych, 
+dzięki czemu zapewniony jest wystarczający poziom entropii (pod warunkiem, że generatory te są w odpowiedni 
+sposób używane). \\ \\
+Istnieje wiele metod generacji haseł jednorazowych o różnym stopniu bezpieczeństwa. 
+Niektóre z tych metod to:
+\begin{enumerate}
+	\item Użycie łańcucha wyników funkcji skrótu.
+	\item Użycie mechanizmu HMAC w połączeniu z synchronizowanym licznikiem.
+	\item Użycie mechanizmu HMAC z synchronizacją czasu.
+\end{enumerate}
+Standard uwierzytelniania za pomocą haseł jednorazowych zdefiniowany jest w dokumencie RFC 2289 \cite{otprfc}.
+
+\subsection{Hasło oparte o HMAC}
+
+
+\subsection{Hasło oparte o czas}
+\subsection{Porównanie HOTP i TOTP}
+\subsection{Porównanie kanałów dostarczania}
 
 \section{Interfejs Windows Data Protection}
