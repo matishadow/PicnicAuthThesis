@@ -94,10 +94,26 @@ Niektóre z tych metod to:
 	\item Użycie mechanizmu HMAC w połączeniu z synchronizowanym licznikiem.
 	\item Użycie mechanizmu HMAC z synchronizacją czasu.
 \end{enumerate}
-Standard uwierzytelniania za pomocą haseł jednorazowych zdefiniowany jest w dokumencie RFC 2289 \cite{otprfc}.
+Standard uwierzytelniania za pomocą haseł jednorazowych zdefiniowany jest w dokumencie \textit{RFC 2289} \cite{otprfc}.
 
 \subsection{Hasło oparte o HMAC}
-
+Do generacji haseł tego typu wykorzystywana jest funkcja HMAC. Może być tu użyta dowolna funkcja skrótu, jednak 
+musi być ona taka sama po stronie generującej jak i weryfikującej. 
+Na wejście funkcji podawane są dwa argumenty, symetryczny klucz oraz licznik. 
+Konieczne jest aby obie wartości były zsynchronizowane pomiędzy użytkownikiem a stroną uwierzytelniającą. 
+Przy każdej udanej walidacji hasła jednorazowego licznik zwiększany jest o 1. \\
+Przykładowo używając funkcji skrótu SHA-1, wynik HMAC-SHA-1 o długości 160 bitów jest obcinany do kilku znakowego hasła. 
+Hasło powinno być używane w postaci numerycznej a za minimalną bezpieczną długość hasła uznawane jest sześć cyfr.
+Minimalną długością klucza kryptograficznego jest 128 bitów, rekomendowane jest jednak używanie przynajmniej 160-bitowego 
+klucza. \\ \\
+Proces generacji hasła jednorazowego można przedstawić następująco: \\
+$$HOTP(K, C) = Przytnij(\hmac(K, C))$$
+Przycięcie przebiega w dwóch etapach. W pierwszym etapie 160-bitowy wynik funkcji HMAC skracany jest do czterech bajtów.
+Z 160 bitów pobierane są 4 ostatnie bity. 
+Wykorzystywane są one jako indeks, od którego pobieramy 4 bajty z wyniku funkcji HMAC.
+Drugi etap polega na obliczeniu reszty z dzielenia z poprzedniego wyniku przez $10^n$, gdzie \textit{n} jest 
+liczbą cyfr jaką chcemy ostatecznie otrzymać. \\
+Algorytm jak i przykładowa implementacja w języku \textit{Java} znajduje się w dokumencie \textit{RFC~4226}~\cite{hotprfc}.
 
 \subsection{Hasło oparte o czas}
 \subsection{Porównanie HOTP i TOTP}
