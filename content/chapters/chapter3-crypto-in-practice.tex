@@ -132,5 +132,19 @@ Ataki siłowe skierowane bezpośrednio na hasło jednorazowe są nieco mniej efe
 szukane hasło w każdym oknie czasowym jest inne.
 
 \subsection{Porównanie kanałów dostarczania}
+\subsubsection{,,Zdrapka''}
+\subsubsection{Short Message Service}
+\subsubsection{Poczta elektroniczna}
+\subsubsection{Aplikacja mobilna}
+\subsubsection{Token sprzętowy}
+\subsubsection{Ołówek i kartka papieru}
+Pomimo, że może wydawać się to niedorzeczne, możliwe jest wygenerowanie hasła jednorazowego, opartego na liczniku, 
+przy użyciu wyłącznie ołówka i kartki papieru. 
+Z badań przeprowadzonych przez Kena Shirriffa \cite{pandp} wynika, że obliczenie jednego kroku funkcji skrótu SHA-256
+zajmuje około 16 minut i 45 sekund. Używając konstrukcji HMAC funkcja skrótu jest używa dwa razy.
+Nietrudno więc policzyć że sam proces obliczania wyniku funkcji HMAC wyniósł by około $1.49$ dnia. \\
+Nie jest to efektywny sposób, lecz jeśli nie ufamy wszystkim poprzednim metodom i dysponujemy 
+wystarczającą ilością wolnego czasu, możemy wygenerować hasło jednorazowe bez pomocy zewnętrznych 
+systemów obliczeniowych.
 
 \section{Interfejs Windows Data Protection}
