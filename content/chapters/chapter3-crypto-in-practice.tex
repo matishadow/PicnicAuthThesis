@@ -116,7 +116,21 @@ liczbą cyfr jaką chcemy ostatecznie otrzymać. \\
 Algorytm jak i przykładowa implementacja w języku \textit{Java} znajduje się w dokumencie \textit{RFC~4226}~\cite{hotprfc}.
 
 \subsection{Hasło oparte o czas}
+Algorytm generacji haseł opartych o czas jest ulepszoną wersją poprzedniego. 
+Ponownie używana jest funkcja HMAC, jednak zamiast licznika wykorzystywany jest czas uniksowy.
+
+
 \subsection{Porównanie HOTP i TOTP}
+Przewagą haseł opartych o czas jest ich krótki czas ważności. 
+Ich użycie jest możliwe tylko w z góry określonym oknie czasowym. 
+Ważność haseł opartych o licznik jest praktycznie nieograniczona, są ważne aż do momentu ich użycia. \\
+W przypadku podejrzenia hasła opartego o czas, wygenerowanego na czyimś telefonie, atakujący nie jest 
+w stanie pójść do domu i spróbować użyć wykradzione hasło. 
+Przechwycone hasło oparte o licznik jest możliwe do użycia w dowolnej chwili. \\
+Drugim aspektem przemawiającym za używanie haseł opartych o czas jest kwestia ataków siłowych.
+Ataki siłowe skierowane bezpośrednio na hasło jednorazowe są nieco mniej efektywne, gdyż 
+szukane hasło w każdym oknie czasowym jest inne.
+
 \subsection{Porównanie kanałów dostarczania}
 
 \section{Interfejs Windows Data Protection}
