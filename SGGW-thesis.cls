@@ -1,15 +1,26 @@
 %
-% Klasa do pisania prac dyplomowych - inzynierskich i magisterskich - w SGGW
+% Klasa do pisania prac dyplomowych - licencjackich, inzynierskich i magisterskich - w SGGW
 %
-% Wersja 1.01 z 2017.12.13
-% Autor: Leszek Chmielewski
-% Zmiana: poprawka stylu podpisow rys i tab: \RequirePackage[...]{caption}
+% Wersja 1.02 z 2018.01.08.
+% Autor: Leszek Chmielewski <leszek_chmielewski@sggw.pl>
+% Zmiany:
+% 1. Poprawka z wielkosciach czcionek na pierwszych stronach.
+% 2. Poprawka w wielkosci interlinii - teraz jest 1.5, poza stronami poczatkowymi i koncowa.
+% 3. Globalne zmniejszenie odstepow w listach - enumerate, itemize, description.
+%    Zastosowano pakiet "enumitem". Jesli jest taka potrzeba, mozna korzystac
+%    z jego opcji w konkretnych listach. Moze to byc potrzebne w listach wielopoziomowych.
+% 4. Usunieto numer strony na stronie koncowej, zawierajacej oswiadczenie
+%    w zwiazku z udospepnieniem pracy.
+
+% Wersja 1.01 z 2017.12.13.
+% Autor: Leszek Chmielewski <leszek_chmielewski@sggw.pl>
+% Zmiana: poprawka stylu podpisow rys i tab. Zastosowano pakiet "caption".
 
 % Wersja 1.0 z 2017.01.16.
 % Autor: Lukasz Adamczyk
 %
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
-\ProvidesClass{SGGW-thesis}[2017/01/06 LaTeX class for writing Thesis in SGGW]
+\ProvidesClass{SGGW-thesis}[2018/01/08 LaTeX class for writing theses in SGGW]
 
 
 \DeclareOption{multip}{\@multiptrue}
@@ -30,8 +41,7 @@
 \RequirePackage[utf8]{inputenc}
 \RequirePackage[nottoc,numbib]{tocbibind} %bibliografia z numerem i w spisie tresci
 \RequirePackage{xifthen}
-\RequirePackage[labelsep=period]{caption} %kropka oddziela numer od tytulu rysunku lub tabeli
-%\RequirePackage[labelfont=bf,labelsep=period]{caption} %tytuly rys i tab: gruba czcionka, kropka
+\RequirePackage[labelfont=bf,labelsep=period]{caption} %tytuly rys i tab: gruba czcionka, kropka
 
 \RequirePackage[a4paper,top=2.5cm,bottom=2.5cm,inner=3.5cm,outer=2cm]{geometry}
 
@@ -45,8 +55,17 @@
   {\normalfont\LARGE\bfseries}{\thechapter}{1em}{}
 \titlespacing*{\chapter}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
 
+\usepackage{enumitem} %zmiana odleglosci w listach - zmniejszenie; jesli nie dziala, to trzeba stosowac opcje w konkretnych listach
+\setlist[itemize,1]{topsep=4pt,itemsep=-2pt}
+\setlist[itemize,2,3,4]{topsep=0pt,itemsep=-2pt}
+\setlist[enumerate,1]{topsep=4pt,itemsep=-3pt}
+\setlist[enumerate,2,3,4]{topsep=0pt,itemsep=-3pt}
+\setlist[description,1]{topsep=4pt,itemsep=-3pt}
+\setlist[description,2,3,4]{topsep=0pt,itemsep=-3pt}
+
 \renewcommand{\normalsize}{\fontsize{12}{13}\selectfont}
 
+\newcommand\Overnormal{\@setfontsize\Overnormal{14pt}{16}}	%definicja czcionki 14pt
 \newcommand\VeryLarge{\@setfontsize\VeryLarge{16pt}{21}}	%definicja czcionki 16pt
 \newcommand\VeryVeryLarge{\@setfontsize\VeryLarge{24pt}{30}} %definicja czcionki 24pt
 
@@ -92,25 +111,25 @@
 		{\VeryLarge{\@university}}\\
 		{\VeryLarge{\@dep}}\\
 		\vspace{3cm}
-		{\Large{\@author}}\\
-		{\large{\@album}}\\
+		{\Overnormal{\@author}}\\
+		{\normalsize{\@album}}\\
 		\vspace{3cm}
 		{\VeryVeryLarge{\@title}}\\
-		\vspace{1cm}
+		\vspace{0.5cm}
 		{\VeryLarge{\@Etitle}}\\
 		\vspace{1cm}
-		{\Large{\@thesis}}\\
+		{\Overnormal{\@thesis}}\\
 		\vspace{0.1cm}
-		{\Large{na kierunku \@course}}\\
+		{\Overnormal{na kierunku \@course}}\\
 
 	\begin{flushright}
 		\vfill
-		{\large{Praca wykonana pod kierunkiem}}\\
-		{\large{\@promotor}}\\
-		{\large{\@pworkplace}}\\
+		{\normalsize{Praca wykonana pod kierunkiem}}\\
+		{\normalsize{\@promotor}}\\
+		{\normalsize{\@pworkplace}}\\
 		\vspace{1cm}
 	\end{flushright}
-	{\large{Warszawa \@date}}\\
+	{\normalsize{Warszawa \@date}}\\
 	\end{center}
 	\newpage
 	\if@multip
@@ -125,18 +144,18 @@
 \newcommand{\twoppage}[6]{ %definicja strony z dwoma autorami pracy
 	\null
 	\vfill
-	\noindent{\large{Praca przygotowana zespo{\l}owo przez:}}\\
+	\noindent{\normalsize{Praca przygotowana zespo{\l}owo przez:}}\\
 	\begin{quote}
-	\noindent{\Large{1. #1}}\\
-	{\large{#2\\
+	\noindent{\Overnormal{1. #1}}\\
+	{\normalsize{#2\\
 	kt\'{o}ry jest autorem:\\
 	#3\\
 	}}
 	\end{quote}
 	\vfill
 	\begin{quote}
-	\noindent{\Large{2. #4}}\\
-	{\large{#5\\
+	\noindent{\Overnormal{2. #4}}\\
+	{\normalsize{#5\\
 	kt\'{o}ry jest autorem:\\
 	#6\\
 	}}
@@ -150,26 +169,26 @@
 \newcommand{\threeppage}[9]{ %definicja strony z trzema autorami pracy
 	\null
 	\vfill
-	\noindent{\large{Praca przygotowana zespo{\l}owo przez:}}\\
+	\noindent{\normalsize{Praca przygotowana zespo{\l}owo przez:}}\\
 	\begin{quote}
-		\noindent{\Large{1. #1}}\\
-		{\large{#2\\
+		\noindent{\Overnormal{1. #1}}\\
+		{\normalsize{#2\\
 		kt\'{o}ry jest autorem:\\
 		#3\\
 		}}
 	\end{quote}
 	\vfill
 	\begin{quote}
-		\noindent{\Large{2. #4}}\\
-		{\large{#5\\
+		\noindent{\Overnormal{2. #4}}\\
+		{\normalsize{#5\\
 		kt\'{o}ry jest autorem:\\
 		#6\\
 		}}
 	\end{quote}
 	\vfill
 	\begin{quote}
-		\noindent{\Large{3. #7}}\\
-		{\large{#8\\
+		\noindent{\Overnormal{3. #7}}\\
+		{\normalsize{#8\\
 		kt\'{o}ry jest autorem:\\
 		#9\\
 		}}
@@ -177,7 +196,8 @@
 	\vfill
 	\thispagestyle{empty}
 	\newpage
-	\pagestyle{plain}	
+	\pagestyle{plain}
+
 }
 \newcommand{\statementpage}{ %definicja strony z oswiadczeniami
 	\null
@@ -258,10 +278,14 @@
 	\pagestyle{empty}
 	\newpage
 	\pagestyle{plain}
+
+    \linespread{1.5}
+
 }
 \newcommand{\beforelastpage}[1][]{ %definicja strony przedostatniej
 	\newpage
-	\thispagestyle{plain}
+    \linespread{1.25}
+	\thispagestyle{empty}
 	\null
 	\vfill
 	\begin{flushleft}
@@ -276,5 +300,12 @@
 	\vfill
 }
 
-% ZMIANA ORYGINAŁU
-\renewcommand\bibname{Spis literatury}
+% Command for checking the current font sizes in points
+\makeatletter
+\newcommand\thecurrentfontsize[1]{{#1 The current font size is: \f@size pt\par}}
+\makeatother
+% usage:
+% tiny: \thefontsize\tiny
+% normal: \thefontsize{\normalsize}
+% \thefontsize\large
+% etc.
