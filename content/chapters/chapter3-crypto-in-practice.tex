@@ -118,7 +118,14 @@ Algorytm jak i przykładowa implementacja w języku \textit{Java} znajduje się 
 \subsection{Hasło oparte o czas}
 Algorytm generacji haseł opartych o czas jest ulepszoną wersją poprzedniego. 
 Ponownie używana jest funkcja HMAC, jednak zamiast licznika wykorzystywany jest czas uniksowy.
-
+Przed podaniem czasu uniksowego do funkcji HMAC jest on dzielony przez okno czasowe czyli 
+przez liczbę sekund, jaką dane hasło jest ważne. 
+Okno czasowe zwykle jest ustawiane na 30 lub 60 sekund. \\
+Wymogi dotyczące klucza kryptograficznego jak również proces przycinania wyniku funkcji HMAC 
+do postaci hasła jednorazowego jest identyczny jak w poprzednim algorytmie. \\
+W przypadku haseł opartych o czas konieczna jest synchronizacja zegarów pomiędzy stroną generującą hasło
+oraz stroną uwierzytelniającą. \\
+Dokumentem, w którym opisany jest algorytm jest \textit{RFC 6238} \cite{totprfc}.
 
 \subsection{Porównanie HOTP i TOTP}
 Przewagą haseł opartych o czas jest ich krótki czas ważności. 
