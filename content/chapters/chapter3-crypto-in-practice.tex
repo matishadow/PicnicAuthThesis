@@ -140,10 +140,47 @@ szukane hasło w każdym oknie czasowym jest inne.
 
 \subsection{Porównanie kanałów dostarczania}
 \subsubsection{,,Zdrapka''}
-\subsubsection{Short Message Service}
-\subsubsection{Poczta elektroniczna}
+Zwykle wysyłane pocztą w postaci dokumentu z wydrukowaną listą haseł lub zdrapki w rozmiarze 
+karty bankomatowej. W celu potwierdzenia transakcji użytkownik proszony jest o podanie 
+kolejnego z haseł zapisanych na zdrapce lub jedno z haseł ze zdrapki o numerze wybranym
+przez serwer w pseudolosowy sposób. \\
+Zgubienie takiej karty z hasłami jednorazowymi jest równoznaczne ze złamaniem jednego z etapów 
+w uwierzytelnianiu wieloetapowym. Również sam sposób dostarczania zdrapki w postaci listu
+nie jest uważany za całkowicie bezpieczny.
+
+\subsubsection{SMS}
+Obecnie najczęściej spotykanym kanałem dostarczania haseł jednorazowych są wiadomości SMS (Short Message Service). 
+W momencie wykonywania akcji wymagającej dodatkowego uwierzytelnienia, na telefon komórkowy użytkownika 
+wysyłane jest pojedyncze hasło jednorazowe. \\
+Pomijając koszty związane z wysyłaniem wiadomości SMS, kanał ten posiada zastrzeżeń w kwestii bezpieczeństwa.
+Standard szyfrowania \textit{A5/x} używany w wiadomościach został wielokrotnie złamany a wady protokołu 
+\textit{SS7 (Signaling System No. 7)}, odpowiedzialnego za przekierowywanie wiadomości pozwalają na 
+przekierowanie konkretnej wiadomości do atakującego. \\
+W lipcu 2016 roku \textit{Narodowy Instytut Standaryzacji i Technologii} wydał oświadczenie, w~którym
+zalecane jest nieużywanie tego kanału przy implementacji uwierzytelnienia dwuetapowego.
+
 \subsubsection{Aplikacja mobilna}
+Możliwe jest też wygenerowanie haseł jednorazowych korzystając z aplikacji mobilnych 
+dostępnych na smartfonach. Kod źródłowy takich aplikacji zwykle jest otwarty, dzięki czemu 
+łatwo jest sprawdzić czy hasła generowane w aplikacji nie są wysyłane gdzieś poza telefon. 
+Aplikacje te działają bez dostępu do sieci komórkowej czy do Internetu. \\
+Bezpieczeństwo tego kanału jest silnie zależne od stanu bezpieczeństwa samego telefonu. 
+Przykładowo blokada ekranu za pomocą silnego hasła zabezpiecza również dostęp do aplikacji generującej
+hasła jednorazowe. \\ \\
+Istnieje duża liczba aplikacji mobilnych, które można tutaj wykorzystać:
+\begin{itemize}
+	\item \textit{Google Authenticator}
+	\item \textit{Microsoft Authenticator}
+	\item \textit{Authy 2-Factor Authentication}
+	\item \textit{Duo Mobile}
+\end{itemize}
+
 \subsubsection{Token sprzętowy}
+Token jest niewielkim urządzeniem z wyświetlaczem, na którym pojawiają się kolejne hasła jednorazowe. \\
+Nieco bardziej bezpieczne tokeny oprócz wyświetlacza posiadają jeszcze klawiaturę numeryczną. 
+Wymagane jest wtedy podanie PINu przed uzyskaniem hasła jednorazowego. 
+Zgubienie lub kradzież tokenu nie jest wtedy problemem.
+
 \subsubsection{Ołówek i kartka papieru}
 Pomimo, że może wydawać się to niedorzeczne, możliwe jest wygenerowanie hasła jednorazowego, opartego na liczniku, 
 przy użyciu wyłącznie ołówka i kartki papieru. 
