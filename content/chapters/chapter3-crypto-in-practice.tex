@@ -112,8 +112,7 @@ Przycięcie przebiega w dwóch etapach. W pierwszym etapie 160-bitowy wynik funk
 Z 160 bitów pobierane są 4 ostatnie bity. 
 Wykorzystywane są one jako indeks, od którego pobieramy 4 bajty z wyniku funkcji HMAC.
 Drugi etap polega na obliczeniu reszty z dzielenia z poprzedniego wyniku przez $10^n$, gdzie \textit{n} jest 
-liczbą cyfr jaką chcemy ostatecznie otrzymać. \\
-Algorytm jak i przykładowa implementacja w języku \textit{Java} znajduje się w dokumencie \textit{RFC~4226}~\cite{hotprfc}.
+liczbą cyfr jaką chcemy ostatecznie otrzymać. Algorytm jak i przykładowa implementacja w języku \textit{Java} znajduje się w dokumencie \textit{RFC~4226}~\cite{hotprfc}.
 
 \subsection{Hasło oparte o czas}
 Algorytm generacji haseł opartych o czas jest ulepszoną wersją poprzedniego. 
@@ -179,7 +178,10 @@ Istnieje duża liczba aplikacji mobilnych, które można tutaj wykorzystać:
 Token jest niewielkim urządzeniem z wyświetlaczem, na którym pojawiają się kolejne hasła jednorazowe. \\
 Nieco bardziej bezpieczne tokeny oprócz wyświetlacza posiadają jeszcze klawiaturę numeryczną. 
 Wymagane jest wtedy podanie PINu przed uzyskaniem hasła jednorazowego. 
-Zgubienie lub kradzież tokenu nie jest wtedy problemem.
+Zgubienie lub kradzież tokenu nie jest wtedy problemem. \\
+Tokeny sprzętowe pomimo posiadania wysokiego poziomu bezpieczeństwa wiążą się z dosyć wysokimi kosztami
+użytkowania w porównaniu do aplikacji mobilnych. Pojawia się również problem synchronizacji zegara 
+w przypadku haseł opartych o czas.
 
 \subsubsection{Ołówek i kartka papieru}
 Pomimo, że może wydawać się to niedorzeczne, możliwe jest wygenerowanie hasła jednorazowego, opartego na liczniku, 
@@ -192,3 +194,31 @@ wystarczającą ilością wolnego czasu, możemy wygenerować hasło jednorazowe
 systemów obliczeniowych.
 
 \section{Interfejs Windows Data Protection}
+,,Jeśli wpisujesz do swojego kodu źródłowego litery A-E-S to robisz coś źle'' \cite{lettersaes}. 
+Używając kryptografii zalecane jest pracować na jak najwyższym poziomie abstrakcji jaki tylko 
+jest dostępny. Im głębiej wchodzi się w detale implementacyjne tym większa szansa, że 
+gdzieś zostanie popełniony błąd. A w tej dziedzinie, jeden błąd wystarczy by zaburzyć 
+bezpieczeństwo całego systemu kryptograficznego. \\
+\textit{Windows Data Protection} jest prostym, wysokopoziomowym interfejsem dostępnym w systemach 
+\textit{Windows}, począwszy od wersji \textit{Windows 2000}. 
+Podstawowym jego zadaniem jest zarządzanie kluczami kryptograficznymi, poprzez szyfrowanie symetryczne,
+wykorzystując klucze systemowe. \\ 
+Z każdą kolejną wersją systemu \textit{Windows} interfejs \textit{Interfejs Windows Data Protection} 
+jest wykorzystywany coraz powszechniej, obecnie wykorzystywany jest między innymi w takich miejscach jak:
+\begin{itemize}
+	\item \textit{Microsoft Outlook} przy standardzie \textit{S/MIME}
+	\item \textit{Credential Manager}
+	\item Przestrzeń \textit{Microsoft.Owin} 
+	\item \textit{Windows Live Mail}
+	\item Hasła Zdalnego Pulpitu
+	\item Hasła Sieci bezprzewodowych
+	\item Szyfrowanie bazy danych \textit{Microsoft SQL Server} 
+	\item Szyfrowany system plików EFS (Encrypting File System)
+\end{itemize}
+Bezpieczeństwo danych zaszyfrowanych tym interfejsem w znacznym stopniu zależne jest od hasła 
+systemu \textit{Windows}. W przypadku ujawnienia tego hasła lub ataku na bazę kont użytkowników system,
+zaszyfrowane dane narażone są na możliwe ataki. \\
+Używane algorytmy kryptograficzne różnią się w zależności o wersji systemu operacyjnego. 
+W systemie operacyjnym \textit{Windows 7} do szyfrowania symetrycznego wykorzystywane jest szyfr \textit{AES} 
+w trybie \textit{CBC} z kluczem o długości 256 bitów. 
+Do generowania skrótów używana jest funkcja \textit{SHA512} \cite{dpapi}.
