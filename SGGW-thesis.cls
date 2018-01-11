@@ -1,15 +1,34 @@
 %
-% Klasa do pisania prac dyplomowych - inzynierskich i magisterskich - w SGGW
+% Klasa do pisania prac dyplomowych - licencjackich, inzynierskich i magisterskich - w SGGW
 %
-% Wersja 1.01 z 2017.12.13
-% Autor: Leszek Chmielewski
-% Zmiana: poprawka stylu podpisow rys i tab: \RequirePackage[...]{caption}
+% Wersja 1.03 z 2018.01.10.
+% Autor: Lukasz Adamczyk
+% Zmiany:
+% 1. Poprawiono blad zwiazany z odstepami linii tekstu tytulu polskiego i angielskiego.
+
+% Wersja 1.02 z 2018.01.08.
+% Autor: Leszek Chmielewski <leszek_chmielewski@sggw.pl>
+% Wspolpraca: Michał Rosa, Pawel Wasil
+% Zmiany:
+% 1. Poprawka w wielkosciach czcionek na pierwszych stronach.
+% 2. Poprawka w wielkosci interlinii - teraz jest 1.5 poza stronami: tytulowa i oswiadczen.
+% 3. Globalne zmniejszenie odstepow w listach - enumerate, itemize, description.
+%    Zastosowano pakiet "enumitem". Jesli jest taka potrzeba, mozna korzystac
+%    z jego opcji globalnie (w preambule) lub w konkretnych listach.
+%    Moze to byc potrzebne w listach wielopoziomowych.
+% 4. Koncowe oswiadczenie bedzie na stronie predostatniej, zawsze nieparzystej.
+%    Ta strona i otaczajace ja puste strony nie beda numerowane.
+
+% Wersja 1.01 z 2017.12.13.
+% Autor: Leszek Chmielewski <leszek_chmielewski@sggw.pl>
+% Zmiany:
+% 1. Poprawka stylu podpisow rys i tab. Zastosowano pakiet "caption".
 
 % Wersja 1.0 z 2017.01.16.
 % Autor: Lukasz Adamczyk
 %
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
-\ProvidesClass{SGGW-thesis}[2017/01/06 LaTeX class for writing Thesis in SGGW]
+\ProvidesClass{SGGW-thesis}[2018/01/09 LaTeX class for writing theses in SGGW]
 
 
 \DeclareOption{multip}{\@multiptrue}
@@ -30,25 +49,32 @@
 \RequirePackage[utf8]{inputenc}
 \RequirePackage[nottoc,numbib]{tocbibind} %bibliografia z numerem i w spisie tresci
 \RequirePackage{xifthen}
-\RequirePackage[labelsep=period]{caption} %kropka oddziela numer od tytulu rysunku lub tabeli
-%\RequirePackage[labelfont=bf,labelsep=period]{caption} %tytuly rys i tab: gruba czcionka, kropka
+\RequirePackage[labelfont=bf,labelsep=period]{caption} %tytuly rys i tab: gruba czcionka, kropka
 
 \RequirePackage[a4paper,top=2.5cm,bottom=2.5cm,inner=3.5cm,outer=2cm]{geometry}
 
 \RequirePackage{polski}
 \selecthyphenation{polish}
 
-\linespread{1.25}
-
 \RequirePackage{titlesec} % zmiana formatu chapter do (1 Nazwa)
 \titleformat{\chapter}
   {\normalfont\LARGE\bfseries}{\thechapter}{1em}{}
 \titlespacing*{\chapter}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
 
+\RequirePackage{enumitem} %zmiana odleglosci w listach - generalne zmniejszenie
+% Jesli efekt nie jest wlasciwy, to trzeba stosowac opcje pakietu "enumitem" w konkretnych listach.
+\setlist[itemize]{itemsep=2pt,parsep=0pt,partopsep=0pt,topsep=2pt}
+\setlist[description]{itemsep=2pt,parsep=0pt,partopsep=0pt,topsep=2pt}
+\setlist[enumerate]{itemsep=2pt,parsep=0pt,partopsep=0pt,topsep=2pt}
+
+\RequirePackage{setspace} %zmiana odleglosci wierszy - \onehalfpsacing w tekscie pracy oraz \singlespacing w oswiadczeniach
+\singlespacing
+
 \renewcommand{\normalsize}{\fontsize{12}{13}\selectfont}
 
-\newcommand\VeryLarge{\@setfontsize\VeryLarge{16pt}{21}}	%definicja czcionki 16pt
-\newcommand\VeryVeryLarge{\@setfontsize\VeryLarge{24pt}{30}} %definicja czcionki 24pt
+\newcommand{\Overnormal}[1]{\@setfontsize\Overnormal{14pt}{16}{#1}}	%definicja czcionki 14pt
+\newcommand{\VeryLarge}[1]{\@setfontsize\VeryLarge{16pt}{18}{#1}}	%definicja czcionki 16pt
+\newcommand{\VeryVeryLarge}[1]{\@setfontsize\VeryVeryLarge{28pt}{30}{#1}} %definicja czcionki 24pt
 
 %definicje zmiennych
 \def\@album{}
@@ -89,28 +115,28 @@
 \renewcommand{\maketitle}{ %definicja strony tytulowej
 	\begin{center}
 		\thispagestyle{empty}
-		{\VeryLarge{\@university}}\\
-		{\VeryLarge{\@dep}}\\
+		{\VeryLarge{\@university}\par}
+		{\VeryLarge{\@dep}\par}
 		\vspace{3cm}
-		{\Large{\@author}}\\
-		{\large{\@album}}\\
-		\vspace{3cm}
-		{\VeryVeryLarge{\@title}}\\
-		\vspace{1cm}
-		{\VeryLarge{\@Etitle}}\\
-		\vspace{1cm}
-		{\Large{\@thesis}}\\
+		{\Overnormal{\@author}}\\
+		{\normalsize{\@album}}\\
+		\vspace{1.5cm}
+        {\VeryVeryLarge{\@title}\par}
+		\vspace{0.4cm}
+		{\VeryLarge{\@Etitle}\par}
+		\vspace{1.5cm}
+		{\Overnormal{\@thesis}}\\
 		\vspace{0.1cm}
-		{\Large{na kierunku \@course}}\\
+		{\Overnormal{na kierunku \@course}}\\
 
 	\begin{flushright}
 		\vfill
-		{\large{Praca wykonana pod kierunkiem}}\\
-		{\large{\@promotor}}\\
-		{\large{\@pworkplace}}\\
+		{\normalsize{Praca wykonana pod kierunkiem}}\\
+		{\normalsize{\@promotor}}\\
+		{\normalsize{\@pworkplace}}\\
 		\vspace{1cm}
 	\end{flushright}
-	{\large{Warszawa \@date}}\\
+	{\normalsize{Warszawa \@date}}\\
 	\end{center}
 	\newpage
 	\if@multip
@@ -125,18 +151,18 @@
 \newcommand{\twoppage}[6]{ %definicja strony z dwoma autorami pracy
 	\null
 	\vfill
-	\noindent{\large{Praca przygotowana zespo{\l}owo przez:}}\\
+	\noindent{\normalsize{Praca przygotowana zespo{\l}owo przez:}}\\
 	\begin{quote}
-	\noindent{\Large{1. #1}}\\
-	{\large{#2\\
+	\noindent{\Overnormal{1. #1}}\\
+	{\normalsize{#2\\
 	kt\'{o}ry jest autorem:\\
 	#3\\
 	}}
 	\end{quote}
 	\vfill
 	\begin{quote}
-	\noindent{\Large{2. #4}}\\
-	{\large{#5\\
+	\noindent{\Overnormal{2. #4}}\\
+	{\normalsize{#5\\
 	kt\'{o}ry jest autorem:\\
 	#6\\
 	}}
@@ -150,26 +176,26 @@
 \newcommand{\threeppage}[9]{ %definicja strony z trzema autorami pracy
 	\null
 	\vfill
-	\noindent{\large{Praca przygotowana zespo{\l}owo przez:}}\\
+	\noindent{\normalsize{Praca przygotowana zespo{\l}owo przez:}}\\
 	\begin{quote}
-		\noindent{\Large{1. #1}}\\
-		{\large{#2\\
+		\noindent{\Overnormal{1. #1}}\\
+		{\normalsize{#2\\
 		kt\'{o}ry jest autorem:\\
 		#3\\
 		}}
 	\end{quote}
 	\vfill
 	\begin{quote}
-		\noindent{\Large{2. #4}}\\
-		{\large{#5\\
+		\noindent{\Overnormal{2. #4}}\\
+		{\normalsize{#5\\
 		kt\'{o}ry jest autorem:\\
 		#6\\
 		}}
 	\end{quote}
 	\vfill
 	\begin{quote}
-		\noindent{\Large{3. #7}}\\
-		{\large{#8\\
+		\noindent{\Overnormal{3. #7}}\\
+		{\normalsize{#8\\
 		kt\'{o}ry jest autorem:\\
 		#9\\
 		}}
@@ -177,7 +203,8 @@
 	\vfill
 	\thispagestyle{empty}
 	\newpage
-	\pagestyle{plain}	
+	\pagestyle{plain}
+
 }
 \newcommand{\statementpage}{ %definicja strony z oswiadczeniami
 	\null
@@ -231,6 +258,9 @@
 	\pagestyle{plain}
 }
 \newcommand{\abstractpage}[6]{ %definicja strony ze streszczeniami
+
+    \onehalfspacing % od tego miejsca interlinia 1.5
+
 	\null
 	\vfill
 	\begin{center}
@@ -259,9 +289,12 @@
 	\newpage
 	\pagestyle{plain}
 }
-\newcommand{\beforelastpage}[1][]{ %definicja strony przedostatniej
-	\newpage
-	\thispagestyle{plain}
+\newcommand{\beforelastpage}[1][]{ %definicja strony przedostatniej; zawsze nieparzysta
+	\newpage\thispagestyle{empty}\null
+    \ifthenelse{\isodd{\value{page}}}{}{\newpage\thispagestyle{empty}\null}
+
+    \singlespacing % z powrotem interlinia pojedyncza
+	\thispagestyle{empty}
 	\null
 	\vfill
 	\begin{flushleft}
@@ -274,7 +307,6 @@
 		(czytelny podpis autora pracy)
 	\end{flushright}
 	\vfill
+	\newpage\null
+    \thispagestyle{empty}
 }
-
-% ZMIANA ORYGINAŁU
-\renewcommand\bibname{Spis literatury}

@@ -79,5 +79,146 @@ Szczegóły dotyczące standardu URI są opisane w dokumencie RFC~3986 \cite{uri
 
  
 \section{Hasło jednorazowe}
+Hasło jednorazowe jest jedną z możliwych form uwierzytelnienia przy używaniu uwierzytelnienia wieloetapowego. \\
+W odróżnieniu od zwykłego, statycznego hasła, haseł jednorazowych można użyć tylko raz. 
+Dzięki czemu przechwycenie przez atakującego, raz użytego hasła, nie daje możliwości uwierzytelnienia. \\
+Hasła jednorazowe eliminują również problem zbyt niskiej entropii w hasłach. 
+Często zdarza się, że hasła tworzone przez użytkowników są zbyt słabe, przez co nie zapewniają wystarczającego
+poziomu bezpieczeństwa. Hasła jednorazowe powstają przy użyciu bezpiecznych generatorów liczb pseudolosowych, 
+dzięki czemu zapewniony jest wystarczający poziom entropii (pod warunkiem, że generatory te są w odpowiedni 
+sposób używane). \\ \\
+Istnieje wiele metod generacji haseł jednorazowych o różnym stopniu bezpieczeństwa. 
+Niektóre z tych metod to:
+\begin{enumerate}
+	\item Użycie łańcucha wyników funkcji skrótu.
+	\item Użycie mechanizmu HMAC w połączeniu z synchronizowanym licznikiem.
+	\item Użycie mechanizmu HMAC z synchronizacją czasu.
+\end{enumerate}
+Standard uwierzytelniania za pomocą haseł jednorazowych zdefiniowany jest w dokumencie \textit{RFC 2289} \cite{otprfc}.
+
+\subsection{Hasło oparte o HMAC}
+Do generacji haseł tego typu wykorzystywana jest funkcja HMAC. Może być tu użyta dowolna funkcja skrótu, jednak 
+musi być ona taka sama po stronie generującej jak i weryfikującej. 
+Na wejście funkcji podawane są dwa argumenty, symetryczny klucz oraz licznik. 
+Konieczne jest aby obie wartości były zsynchronizowane pomiędzy użytkownikiem a stroną uwierzytelniającą. 
+Przy każdej udanej walidacji hasła jednorazowego licznik zwiększany jest o 1. \\
+Przykładowo używając funkcji skrótu SHA-1, wynik HMAC-SHA-1 o długości 160 bitów jest obcinany do kilku znakowego hasła. 
+Hasło powinno być używane w postaci numerycznej a za minimalną bezpieczną długość hasła uznawane jest sześć cyfr.
+Minimalną długością klucza kryptograficznego jest 128 bitów, rekomendowane jest jednak używanie przynajmniej 160-bitowego 
+klucza. \\ \\
+Proces generacji hasła jednorazowego można przedstawić następująco: \\
+$$HOTP(K, C) = Przytnij(\hmac(K, C))$$
+Przycięcie przebiega w dwóch etapach. W pierwszym etapie 160-bitowy wynik funkcji HMAC skracany jest do czterech bajtów.
+Z 160 bitów pobierane są 4 ostatnie bity. 
+Wykorzystywane są one jako indeks, od którego pobieramy 4 bajty z wyniku funkcji HMAC.
+Drugi etap polega na obliczeniu reszty z dzielenia z poprzedniego wyniku przez $10^n$, gdzie \textit{n} jest 
+liczbą cyfr jaką chcemy ostatecznie otrzymać. Algorytm jak i przykładowa implementacja w języku \textit{Java} znajduje się w dokumencie \textit{RFC~4226}~\cite{hotprfc}.
+
+\subsection{Hasło oparte o czas}
+Algorytm generacji haseł opartych o czas jest ulepszoną wersją poprzedniego. 
+Ponownie używana jest funkcja HMAC, jednak zamiast licznika wykorzystywany jest czas uniksowy.
+Przed podaniem czasu uniksowego do funkcji HMAC jest on dzielony przez okno czasowe czyli 
+przez liczbę sekund, jaką dane hasło jest ważne. 
+Okno czasowe zwykle jest ustawiane na 30 lub 60 sekund. \\
+Wymogi dotyczące klucza kryptograficznego jak również proces przycinania wyniku funkcji HMAC 
+do postaci hasła jednorazowego jest identyczny jak w poprzednim algorytmie. \\
+W przypadku haseł opartych o czas konieczna jest synchronizacja zegarów pomiędzy stroną generującą hasło
+oraz stroną uwierzytelniającą. \\
+Dokumentem, w którym opisany jest algorytm jest \textit{RFC 6238} \cite{totprfc}.
+
+\subsection{Porównanie HOTP i TOTP}
+Przewagą haseł opartych o czas jest ich krótki czas ważności. 
+Ich użycie jest możliwe tylko w z góry określonym oknie czasowym. 
+Ważność haseł opartych o licznik jest praktycznie nieograniczona, są ważne aż do momentu ich użycia. \\
+W przypadku podejrzenia hasła opartego o czas, wygenerowanego na czyimś telefonie, atakujący nie jest 
+w stanie pójść do domu i spróbować użyć wykradzione hasło. 
+Przechwycone hasło oparte o licznik jest możliwe do użycia w dowolnej chwili. \\
+Drugim aspektem przemawiającym za używanie haseł opartych o czas jest kwestia ataków siłowych.
+Ataki siłowe skierowane bezpośrednio na hasło jednorazowe są nieco mniej efektywne, gdyż 
+szukane hasło w każdym oknie czasowym jest inne.
+
+\subsection{Porównanie kanałów dostarczania}
+\subsubsection{,,Zdrapka''}
+Zwykle wysyłane pocztą w postaci dokumentu z wydrukowaną listą haseł lub zdrapki w rozmiarze 
+karty bankomatowej. W celu potwierdzenia transakcji użytkownik proszony jest o podanie 
+kolejnego z haseł zapisanych na zdrapce lub jedno z haseł ze zdrapki o numerze wybranym
+przez serwer w pseudolosowy sposób. \\
+Zgubienie takiej karty z hasłami jednorazowymi jest równoznaczne ze złamaniem jednego z etapów 
+w uwierzytelnianiu wieloetapowym. Również sam sposób dostarczania zdrapki w postaci listu
+nie jest uważany za całkowicie bezpieczny.
+
+\subsubsection{SMS}
+Obecnie najczęściej spotykanym kanałem dostarczania haseł jednorazowych są wiadomości SMS (Short Message Service). 
+W momencie wykonywania akcji wymagającej dodatkowego uwierzytelnienia, na telefon komórkowy użytkownika 
+wysyłane jest pojedyncze hasło jednorazowe. \\
+Pomijając koszty związane z wysyłaniem wiadomości SMS, kanał ten posiada zastrzeżeń w kwestii bezpieczeństwa.
+Standard szyfrowania \textit{A5/x} używany w wiadomościach został wielokrotnie złamany a wady protokołu 
+\textit{SS7 (Signaling System No. 7)}, odpowiedzialnego za przekierowywanie wiadomości pozwalają na 
+przekierowanie konkretnej wiadomości do atakującego. \\
+W lipcu 2016 roku \textit{Narodowy Instytut Standaryzacji i Technologii} wydał oświadczenie, w~którym
+zalecane jest nieużywanie tego kanału przy implementacji uwierzytelnienia dwuetapowego.
+
+\subsubsection{Aplikacja mobilna}
+Możliwe jest też wygenerowanie haseł jednorazowych korzystając z aplikacji mobilnych 
+dostępnych na smartfonach. Kod źródłowy takich aplikacji zwykle jest otwarty, dzięki czemu 
+łatwo jest sprawdzić czy hasła generowane w aplikacji nie są wysyłane gdzieś poza telefon. 
+Aplikacje te działają bez dostępu do sieci komórkowej czy do Internetu. \\
+Bezpieczeństwo tego kanału jest silnie zależne od stanu bezpieczeństwa samego telefonu. 
+Przykładowo blokada ekranu za pomocą silnego hasła zabezpiecza również dostęp do aplikacji generującej
+hasła jednorazowe. \\ \\
+Istnieje duża liczba aplikacji mobilnych, które można tutaj wykorzystać:
+\begin{itemize}
+	\item \textit{Google Authenticator}
+	\item \textit{Microsoft Authenticator}
+	\item \textit{Authy 2-Factor Authentication}
+	\item \textit{Duo Mobile}
+\end{itemize}
+
+\subsubsection{Token sprzętowy}
+Token jest niewielkim urządzeniem z wyświetlaczem, na którym pojawiają się kolejne hasła jednorazowe. \\
+Nieco bardziej bezpieczne tokeny oprócz wyświetlacza posiadają jeszcze klawiaturę numeryczną. 
+Wymagane jest wtedy podanie PINu przed uzyskaniem hasła jednorazowego. 
+Zgubienie lub kradzież tokenu nie jest wtedy problemem. \\
+Tokeny sprzętowe pomimo posiadania wysokiego poziomu bezpieczeństwa wiążą się z dosyć wysokimi kosztami
+użytkowania w porównaniu do aplikacji mobilnych. Pojawia się również problem synchronizacji zegara 
+w przypadku haseł opartych o czas.
+
+\subsubsection{Ołówek i kartka papieru}
+Pomimo, że może wydawać się to niedorzeczne, możliwe jest wygenerowanie hasła jednorazowego, opartego na liczniku, 
+przy użyciu wyłącznie ołówka i kartki papieru. 
+Z badań przeprowadzonych przez Kena Shirriffa \cite{pandp} wynika, że obliczenie jednego kroku funkcji skrótu SHA-256
+zajmuje około 16 minut i 45 sekund. Używając konstrukcji HMAC funkcja skrótu jest używa dwa razy.
+Nietrudno więc policzyć że sam proces obliczania wyniku funkcji HMAC wyniósł by około $1.49$ dnia. \\
+Nie jest to efektywny sposób, lecz jeśli nie ufamy wszystkim poprzednim metodom i dysponujemy 
+wystarczającą ilością wolnego czasu, możemy wygenerować hasło jednorazowe bez pomocy zewnętrznych 
+systemów obliczeniowych.
 
 \section{Interfejs Windows Data Protection}
+,,Jeśli wpisujesz do swojego kodu źródłowego litery A-E-S to robisz coś źle'' \cite{lettersaes}. 
+Używając kryptografii zalecane jest pracować na jak najwyższym poziomie abstrakcji jaki tylko 
+jest dostępny. Im głębiej wchodzi się w detale implementacyjne tym większa szansa, że 
+gdzieś zostanie popełniony błąd. A w tej dziedzinie, jeden błąd wystarczy by zaburzyć 
+bezpieczeństwo całego systemu kryptograficznego. \\
+\textit{Windows Data Protection} jest prostym, wysokopoziomowym interfejsem dostępnym w systemach 
+\textit{Windows}, począwszy od wersji \textit{Windows 2000}. 
+Podstawowym jego zadaniem jest zarządzanie kluczami kryptograficznymi, poprzez szyfrowanie symetryczne,
+wykorzystując klucze systemowe. \\ 
+Z każdą kolejną wersją systemu \textit{Windows} interfejs \textit{Interfejs Windows Data Protection} 
+jest wykorzystywany coraz powszechniej, obecnie wykorzystywany jest między innymi w takich miejscach jak:
+\begin{itemize}
+	\item \textit{Microsoft Outlook} przy standardzie \textit{S/MIME}
+	\item \textit{Credential Manager}
+	\item Przestrzeń \textit{Microsoft.Owin} 
+	\item \textit{Windows Live Mail}
+	\item Hasła Zdalnego Pulpitu
+	\item Hasła Sieci bezprzewodowych
+	\item Szyfrowanie bazy danych \textit{Microsoft SQL Server} 
+	\item Szyfrowany system plików EFS (Encrypting File System)
+\end{itemize}
+Bezpieczeństwo danych zaszyfrowanych tym interfejsem w znacznym stopniu zależne jest od hasła 
+systemu \textit{Windows}. W przypadku ujawnienia tego hasła lub ataku na bazę kont użytkowników system,
+zaszyfrowane dane narażone są na możliwe ataki. \\
+Używane algorytmy kryptograficzne różnią się w zależności o wersji systemu operacyjnego. 
+W systemie operacyjnym \textit{Windows 7} do szyfrowania symetrycznego wykorzystywane jest szyfr \textit{AES} 
+w trybie \textit{CBC} z kluczem o długości 256 bitów. 
+Do generowania skrótów używana jest funkcja \textit{SHA512} \cite{dpapi}.

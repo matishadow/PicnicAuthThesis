@@ -121,12 +121,12 @@ Na wejście szyfru blokowego podawana jest wyżej wspomniana liczba połączona 
 działania szyfru jest XORowany z blokiem wiadomości. \\
 Krytyczne jest tutaj generowanie nowej liczby \textit{nonce} dla każdej z wiadomości. 
 
-\begin{figure}[H]
+\begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/ctr-enc-scheme}
     \caption{Schemat szyfrowania w trybie CTR.}
 \end{figure}
-\begin{figure}[H]
+\begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/ctr-dec-scheme}
     \caption{Schemat deszyfrowania w trybie CTR.}
@@ -175,7 +175,7 @@ Każdy przebieg składa się z następujących kroków:
 			stopniu równym 7, w którym współczynnikami są bity liczby) a następnie znalezienie takiego
 			wielomianu, który po przemnożeniu przez wielomian liczby, modulo $x^8+x^4+x^3+x+1$, da w wyniku 1. \\
 			Funkcja \textit{f} jest przekształceniem wyrażanym następująco: \\
-			\begin{figure}[H]
+			\begin{figure}[t]
 			    \centering
 			    \includegraphics[scale=0.5]{content/images/affin}
 				\caption{Przekształcenie \textit{f}.}
@@ -183,13 +183,13 @@ Każdy przebieg składa się z następujących kroków:
 			Możliwe jest też jednorazowe wygenerowania tablicy odwzorowania dla zadanych wielomianów,
 			dzięki czemu zamiast za każdym razem obliczać wartość tej funkcji, wystarczy odczytać wartość tablicy
 			pod odpowiednim indeksem. 
-			\begin{figure}[H]
+			\begin{figure}[t]
 			    \centering
 			    \includegraphics[width=\textwidth]{content/images/sbox}
 				\caption{Macierz odwzorowania funkcji zamiany.}
 			\end{figure}
-			Przykładowo bajt 0xc4, za pomocą powyższej tablicy, konwertowany jest do wartości 28.
-			\begin{figure}[H]
+			Przykładowo bajt 0xc4, za pomocą powyższej tablicy, konwertowany jest do wartości~28.
+			\begin{figure}[t]
 			    \centering
 			    \includegraphics[width=\textwidth]{content/images/sub-bytes}
 				\caption{Wizualizacja zamiany bajtów.}
@@ -197,7 +197,7 @@ Każdy przebieg składa się z następujących kroków:
 	\item Przesuwanie wierszy. \\
 			Każdy z wierszy jest przesuwany o odpowiednio 0, 1, 2, 3 komórki w lewo. 
 			Komórki macierzy, które wyszły poza macierz są dostawiane z prawej strony.
-			\begin{figure}[H]
+			\begin{figure}[t]
 			    \centering
 			    \includegraphics[width=\textwidth]{content/images/shift-row}
 				\caption{Wizualizacja przesunięcia wierszy.}
@@ -230,7 +230,7 @@ Każdy przebieg składa się z następujących kroków:
 				\end{bmatrix}
 			$$
 			W przypadku ostatniego przebiegu krok ten jest pomijany.
-			\begin{figure}[H]
+			\begin{figure}[t]
 			    \centering
 			    \includegraphics[width=\textwidth]{content/images/mix-cols}
 				\caption{Wizualizacja mieszania kolumn.}
@@ -238,7 +238,7 @@ Każdy przebieg składa się z następujących kroków:
 	\item Dodanie klucza przebiegu. \\
 			Ostatnim etapem przebiegu jest użycie funkcji XOR pomiędzy każdym elementem macierzy
 			a każdym elementem klucza przebiegu.
-			\begin{figure}[H]
+			\begin{figure}[t]
 			    \centering
 			    \includegraphics[width=\textwidth]{content/images/add-key}
 				\caption{Wizualizacja dodania klucza przebiegu.}
@@ -379,7 +379,24 @@ Przykładem może być tutaj atak opublikowany w październiku 2015 roku o nazwi
 Pierwszy praktyczny atak na SHA-1 został ogłoszony w lutym 2017 roku. Zostały wygenerowane dwa pliki w formacie PDF, dla których wynik funkcji skrótu SHA-1 jest taki sam. Wszystkie systemy, w których wykorzystywana jest funkcja SHA-1 są narażone na ten atak, przykładowo umożliwia on fałszowanie podpisów cyfrowych dokumentów, czy też certyfikatów HTTPS. \cite{shatt}
 
 \subsection{Secure Hash Algorithm 2}
-SHA-2 jest rodziną funkcji składającą się z \mbox{SHA-224}, \mbox{SHA-256}, \mbox{SHA-384}, \mbox{SHA-512}, \mbox{SHA-512/224}, \mbox{SHA-512/256}. Funkcje te generują skróty o długościach odpowiednio: 224, 256, 384, 512, 224 oraz 256 bitów.
+SHA-2 jest rodziną funkcji składającą się z:
+\begin{itemize}
+	\item \mbox{SHA-224}
+	\item \mbox{SHA-256}
+	\item \mbox{SHA-384}
+	\item \mbox{SHA-512}
+	\item \mbox{SHA-512/224}
+	\item \mbox{SHA-512/256} \\
+\end{itemize} 
+Funkcje te generują skróty o długościach odpowiednio: 
+\begin{itemize}
+	\item 224
+	\item 256
+	\item 384
+	\item 512
+	\item 224
+	\item 256 bitów
+\end{itemize} 
 
 \subsubsection{SHA-256}
 Jedną z najczęściej używanych funkcji z rodziny SHA-2 jest SHA-256. Proces pozyskiwania skrótu SHA-256 jest następujący:
@@ -514,7 +531,7 @@ Jako argument może zostać użyta dowolna funkcja skrótu: SHA1, SHA-256, SHA-3
 Nie jest tutaj wymagane aby użyta funkcja skrótu była odporna na kolizję więc HMAC zbudowany na
 funkcji MD5 jest uważany za bezpieczny \cite{hmacmd5}, chociaż nie jest to zalecane przy tworzeniu nowych systemów kryptograficznych. \\
 Schemat generacji HMAC można przedstawić następująco:
-\begin{figure}[H]
+\begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth, height=\textheight/2, keepaspectratio]{content/images/hmac}
     \caption{Schemat HMAC.}
@@ -540,7 +557,7 @@ $$
 $$
 $P(X=x)$ jest prawdopodobieństwem, że zmienna $X$ przybierze wartość $x$. \\
 W zastosowaniach kryptograficznych konieczne jest aby entropia kluczy była wysoka. 
-W przeciwnym razie pojawi się możliwość złamania kluczy metodą siłową.
+W~przeciwnym razie pojawi się możliwość złamania kluczy metodą siłową.
 
 \subsection{Generatory prawdziwie losowych liczb}
 Oczywistym jest fakt, że przy użyciu wyłącznie deterministycznych metod nie jesteśmy w stanie stworzyć
