@@ -1,13 +1,81 @@
 \chapter{PicnicAuth}
 
 \section{Architektura projektu}
+Projekt składa się z trzech komponentów: serwera w architekturze REST (Representational state transfer) API, 
+informacyjnej strony internetowej oraz bibliotek klienckich. Komponenty te są od siebie niezależne, dzięki czemu 
+łatwa jest rozbudowa projektu, jak również wersjonowanie każdego z nich.
+
+\subsection{REST API}
+Pierwszym z nich jest serwer implementujący logikę aplikacji. 
+Jest on stworzony w technologii \textit{ASP.NET Web API 2} w języku programowania \textit{C\#}. \\
+Przy jego tworzeniu zostały zachowane zasady architektury REST, co pozwala na łatwą i sprawną integracją
+platform klienckim, niezależnie od użytej technologii. \\ \\
+Zasoby udostępniane przez REST API to:
+\begin{itemize}
+	\item \textit{[GET] /api/Companies/Me/AuthUsers} \\
+		Zwraca listę użytkowników dla aktualnie zalogowanego podmiotu.
+	\item \textit{[POST] /api/AuthUsers} \\
+		Tworzy nowego użytkownika i dodaje go do kolekcji użytkowników zalogowanego podmiotu.
+		W odpowiedzi zwracany jest sekret stworzonego użytkownika, jak również link 
+		do kodu QR kompatybilnego z aplikacjami mobilnymi.
+	\item \textit{[PATCH] /api/AuthUsers/{userId}/secret} \\
+		Generuje nowy sekret dla użytkownika o podanym \textit{userdId}.
+	\item \textit{[GET] /api/Companies/Me} \\ 
+		Zwraca dane zalogowanego podmiotu, takie jak login, adres poczty elektronicznej oraz unikalny identyfikator.
+	\item \textit{[POST] /api/Companies} \\
+		Tworzy nowe konto podmiotu. 
+	\item \textit{[GET] /api/AuthUsers/{userId}/hotp} \\
+		Zwraca hasło jednorazowe typu \textit{HOTP} dla użytkownika o podanym \textit{userId}.
+	\item \textit{[GET] /api/AuthUsers/{userId}/totp} \\
+		Zwraca hasło jednorazowe typu \textit{TOTP} dla użytkownika o podanym \textit{userId}.
+	\item \textit{[GET] /api/AuthUsers/{userId}/hotp/{hotp}} \\
+		Zwraca wynik weryfikacji podanego hasła jednorazowego typu \textit{HOTP}
+	\item \textit{[GET] /api/AuthUsers/{userId}/totp/{totp}} \\
+		Zwraca wynik weryfikacji podanego hasła jednorazowego typu \textit{TOTP}
+	\item \textit{[POST] /api/tokens}
+		Zwraca klucz API, który służy do uwierzytelnienia podmiotu. (Równoznaczne z logowaniem.)
+\end{itemize}
+Aplikacja przeznaczona jest do działania na serwerze \textit{IIS (Internet Information Service)} w~wersji~7.
+
+\subsection{Frontend}
+Strona internetowa projektu stworzona została w technologii \textit{Angular} w wersji~5 w konwencji 
+\textit{Single Page Application}. Znajduje się na niej instrukcja użycie projektu jak również informacje
+o aktualnej liczbie dostępnych bibliotek. Zawiera ona także przydatne odnośniki do repozytoriów, w których
+znajduje się kod źródłowy oraz do strony na której znajduje się dokumentacja API. \\
+Dodatkowymi funkcjonalnościami jakie oferuje strona jest stworzenie nowego konta dla podmiotu, używającego 
+projektu, jak również uzyskanie klucza API, umożliwiającego użycie bibliotek klienckich.
+
+\subsection{Biblioteki klienckie}
+W celu ułatwienia integracji z serwerem zaimplementowane zostały biblioteki klienckie.
+Umożliwiają one w prosty sposób użycie funkcjonalności serwera bez konieczności 
+studiowania dokumentacji i pisania kodu odpowiedzialnego za integrację. \\
+Przykładowo biblioteka w języku C\# udostępnia klasę \textit{PicnicAuthClient}, posiadająca metody:
+\begin{itemize}
+	\item Login
+	\item GetAuthUsers
+	\item AddAuthUser
+	\item GenereteNewSecret
+	\item GetLoggedCompany
+	\item AddCompany
+	\item GetHotpForAuthUser
+	\item ValidateHotpForAuthUser
+	\item GetTotpForAuthUser
+	\item ValidateTotpForAuthUser
+\end{itemize}
+Na chwilę obecną gotowe do użycia są biblioteki w następujących technologiach:
+\begin{enumerate}
+	\item C\#
+	\item Visual Basic
+	\item TypeScript
+	\item Python 3.6
+	\item Python 2.7
+	\item Ruby
+\end{enumerate}
+
 \section{Dostarczanie sekretu na urządzenie mobilne}
 \section{Generowanie OTP po stronie serwera}
 \section{Generowanie OTP po stronie użytkownika}
-
-
 \section{Przechowywanie sekretu użytkownika}
-\section{Biblioteki klienckie}
 \section{Przykład użycia projektu}
 \section{Planowane ulepszenia}
 
