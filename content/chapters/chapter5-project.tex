@@ -33,17 +33,45 @@ Zasoby udostępniane przez REST API to:
 	\item \textit{[GET] /api/AuthUsers/{userId}/totp/{totp}} \\
 		Zwraca wynik weryfikacji podanego hasła jednorazowego typu \textit{TOTP}
 	\item \textit{[POST] /api/tokens}
-		Zwraca klucz API, który służy do uwierzytelnienia podmiotu. (Równoznaczne z logowaniem.)
+		Zwraca klucz API, który służy do uwierzytelnienia podmiotu. (Równoznaczne z logowaniem,
+		zgodnym ze standardem \textit{OAuth}.)
 \end{itemize}
+Zasoby na których operuje API są w formacie JSON (JavaScript Object Notation), zarówno przy metodach, które
+przyjmują dane, jak i tych, które zwracają dane. \\
+Za pomocą pakietu \textit{Swashbuckle} skonfigurowana została automatyczna generacja dokumentacji API
+na podstawie publicznie wystawionych kontrolerów. 
+Oprócz podstawowych informacji o metodach znajdujących się w kontrolerach, takich jak nazwy czy typy parametrów, 
+w~dokumentacji umieszczane są także komentarze, którymi opisana jest dana metoda. Oprócz funkcji informacyjnej, 
+wygenerowana dokumentacja pozwala na wygodne testy każdej z metod. 
+Końcowy efekt wygenerowanej dokumentacji przedstawiony jest na Rysunku \ref{swagger}. \\
 Aplikacja przeznaczona jest do działania na serwerze \textit{IIS (Internet Information Service)} w~wersji~7.
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=\textwidth]{content/images/swagger}
+    \caption{Interaktywna dokumentacja API.}
+    \label{swagger}
+\end{figure}
 
 \subsection{Frontend}
-Strona internetowa projektu stworzona została w technologii \textit{Angular} w wersji~5 w konwencji 
+Strona internetowa projektu (Rysunek \ref{front-home}) stworzona została w technologii \textit{Angular} w wersji~5 w konwencji 
 \textit{Single Page Application}. Znajduje się na niej instrukcja użycie projektu jak również informacje
 o aktualnej liczbie dostępnych bibliotek. Zawiera ona także przydatne odnośniki do repozytoriów, w których
 znajduje się kod źródłowy oraz do strony na której znajduje się dokumentacja API. \\
-Dodatkowymi funkcjonalnościami jakie oferuje strona jest stworzenie nowego konta dla podmiotu, używającego 
-projektu, jak również uzyskanie klucza API, umożliwiającego użycie bibliotek klienckich.
+Dodatkowymi funkcjonalnościami jakie oferuje strona jest stworzenie nowego konta dla podmiotu 
+(przedstawione na Rysunku \ref{front-create}), jak również uzyskanie klucza API, 
+umożliwiającego użycie bibliotek klienckich.
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=\textwidth]{content/images/front-home}
+    \caption{Informacyjna strona internetowa projektu.}
+    \label{front-home}
+\end{figure}
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=\textwidth]{content/images/front-create}
+    \caption{Tworzenie konta podmiotu.}
+    \label{front-create}
+\end{figure}
 
 \subsection{Biblioteki klienckie}
 W celu ułatwienia integracji z serwerem zaimplementowane zostały biblioteki klienckie.
@@ -73,9 +101,63 @@ Na chwilę obecną gotowe do użycia są biblioteki w następujących technologi
 \end{enumerate}
 
 \section{Dostarczanie sekretu na urządzenie mobilne}
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=\textwidth]{content/images/code-srng}
+    \caption{Klasa zwracająca kryptograficznie bezpiecznie pseudolosowe dane.}
+    \label{code-srng}
+\end{figure}
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=\textwidth]{content/images/code-secretgenerator}
+    \caption{Klasa generująca sekret użytkownika.}
+    \label{code-secretgenerator}
+\end{figure}
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=\textwidth]{content/images/code-keyuri}
+    \caption{Klasa generująca KeyUri.}
+    \label{code-keyuri}
+\end{figure}
 \section{Generowanie OTP po stronie serwera}
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=\textwidth]{content/images/code-hmac}
+    \caption{Klasa generująca HMAC.}
+    \label{code-hmac}
+\end{figure}
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=\textwidth]{content/images/code-truncator}
+    \caption{Klasa odpowiedzialna za przycięcie wyniku HMAC do postaci hasła.}
+    \label{code-truncator}
+\end{figure}
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=\textwidth]{content/images/code-hotpgenerator}
+    \caption{Klasa generująca hasło jednorazowe oparte o licznik.}
+    \label{code-hotp}
+\end{figure}
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=\textwidth]{content/images/code-totpgenerator}
+    \caption{Klasa generująca hasło jednorazowe oparte o czas.}
+    \label{code-totp}
+\end{figure}
 \section{Generowanie OTP po stronie użytkownika}
 \section{Przechowywanie sekretu użytkownika}
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=\textwidth]{content/images/code-encrypt}
+    \caption{Klasa odpowiedzialna za szyfrowanie.}
+    \label{code-encrypt}
+\end{figure}
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=\textwidth]{content/images/code-decrypt}
+    \caption{Klasa odpowiedzialna za deszyfrowanie.}
+    \label{code-decrypt}
+\end{figure}
 \section{Przykład użycia projektu}
 \section{Planowane ulepszenia}
 
