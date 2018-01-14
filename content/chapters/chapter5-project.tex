@@ -44,6 +44,7 @@ Oprócz podstawowych informacji o metodach znajdujących się w kontrolerach, ta
 w~dokumentacji umieszczane są także komentarze, którymi opisana jest dana metoda. Oprócz funkcji informacyjnej, 
 wygenerowana dokumentacja pozwala na wygodne testy każdej z metod. 
 Końcowy efekt wygenerowanej dokumentacji przedstawiony jest na Rysunku \ref{swagger}. \\
+Logika kryptograficzna aplikacji, którą wykorzystuje REST API, pokryta jest testami jednostkowymi w stu procentach.
 Aplikacja przeznaczona jest do działania na serwerze \textit{IIS (Internet Information Service)} w~wersji~8.5.
 \begin{figure}[t]
     \centering
@@ -159,6 +160,8 @@ zgodnej z zaleceniami standardu, równej dziesięć.
     \label{code-secretgenerator}
 \end{figure}
 
+\section{Pobranie użytkowników powiązanych z podmiotem}
+
 \section{Dostarczanie sekretu na urządzenie mobilne}
 Po wysłaniu danych do stworzenia użytkownika w odpowiedzi wysyłany jest obiekt reprezentujący
 nowo stworzonego użytkownika:
@@ -233,26 +236,55 @@ Przykładowe kody QR o typach HOTP oraz TOTP znajdują się odpowiednio na Rysun
 	\caption{Kod QR umożliwiający generację haseł typu TOTP.}
     \label{qr-totp}
 \end{figure}
+Niezwykle ważne jest tutaj bezpieczeństwo samego kanału przekazywania sekretu do użytkownika końcowego. 
+Konieczne jest aby cała komunikacja odbywała się z wykorzystaniem protokołu HTTPS. 
+Projekt oczywiście wspiera użycie protokołu HTTPS, jak również zapobiega używaniu niezabezpieczonego kanału 
+poprzez zablokowanie możliwości logowania w przypadku nieszyfrowanego połączenia.
 
 \section{Generowanie OTP po stronie serwera}
+Mając już wspólną wartość sekretu po obu stronach można przejść do procesu generacji hasła jednorazowego.
+Niezależnie od wybranego typu hasła jednorazowego, wykorzystywana jest funkcja HMAC, której jednym z argumentów
+jest sekret użytkownika. Klasa zaimplementowana w projekcie, wykorzystywana do uzyskania wyniku funkcji HMAC, 
+przy użyciu funkcji skrótu SHA1 przedstawiona jest na Rysunku \ref{code-hmac}. \\
+W implementacji tej argument \textit{key} jest równoznaczny z sekretem użytkownika.
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/code-hmac}
     \caption{Klasa generująca HMAC.}
     \label{code-hmac}
-\end{figure}
+\end{figure} \\ \\
+Wynik funkcji HMAC jest następnie przycinany do postaci hasła jednorazowego. 
+Hasło może zostać przycięte do sześciu lub ośmiu cyfr w zależności od preferencji podmiotu.
+Sam proces przycięcia opisany został w sekcji \ref{truncate}. \\
+Zaimplementowana funkcja przycinająca przedstawiona jest na Rysunku \ref{code-truncator}.
+Funkcja ta pobiera wcześniej otrzymany wynik funkcji HMAC oraz liczbę cyfr, do jakiej zostanie przycięte hasło.
+Domyślną liczbą cyfr, która zostanie wybrana jeśli ten argument nie zostanie podany funkcji, jest sześć. \\
+Jako że prawidłową długością długością wyniku funkcji HMAC jest 20 bajtów, funkcja przycinająca sprawdza 
+długość przekazanego argumentu i rzuca wyjątek w przypadku, gdy długość danych jest różna od 20 bajtów.
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/code-truncator}
     \caption{Klasa odpowiedzialna za przycięcie wyniku HMAC do postaci hasła.}
     \label{code-truncator}
 \end{figure}
+
+\subsection{Generowanie haseł typu HOTP}
+Do generacji haseł typu HOTP stworzona została klasa \textit{HotpGenerator}, przedstawiona na Rysunku \ref{code-hotp}.
+Funkcja \textit{GenerateHotp} w niej zawarta na podstawie licznika użytkownika oraz jego sekretu generuje hasło jednorazowe.
+Funkcjonalność tej klasy bazuje na dwóch poprzednio omawianych klasach, odpowiedzialnych za wyliczenie wyniku funkcji HMAC oraz 
+przycięcie wyniku funkcji HMAC do postaci hasła.
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/code-hotpgenerator}
     \caption{Klasa generująca hasło jednorazowe oparte o licznik.}
     \label{code-hotp}
 \end{figure}
+
+\subsection{Generowanie haseł typu TOTP}
+W przypadku klasy \textit{TotpGenerator}, przedstawionej na Rysunku \ref{code-totp}, zamiast licznika, do funkcji HMAC
+przekazywana jest wartość aktualnego czasu uniksowego, zwrócona przez funkcję \textit{GetUnixTimestamp}. 
+Przed podaniem zmiennej \textit{currentTimestamp} do funkcji HMAC, jest ona uprzednio dzielona przez stałą 
+reprezentującą okres ważności hasła jednorazowego, przyjmującą wartość zgodną ze standardem, równą trzydzieści sekund.
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/code-totpgenerator}
@@ -295,6 +327,7 @@ Przykładowe kody QR o typach HOTP oraz TOTP znajdują się odpowiednio na Rysun
     \caption{Klasa odpowiedzialna za walidację hasła typu TOTP.}
     \label{totp-validator}
 \end{figure}
+\section{Zmiana sekretu użytkownika}
 
 \section{Przykład użycia projektu}
 
