@@ -401,9 +401,35 @@ Jeśli któreś z trzech wygenerowanych haseł jest zgodne z tym podanym przez u
 \end{figure}
 
 \section{Zmiana sekretu użytkownika}
-
+Funkcjonalnością wymaganą przez standard jest generacja nowego sekretu dla użytkownika.
+Jest ona konieczna w przypadku zgubienia przez użytkownika telefonu lub zdobycia jego sekretu przez osoby trzecie. \\
+Aby wygenerować nowy sekret dla użytkownika wystarczy wysłać zapytanie typu \textit{PATCH} na adres: \\
+\centerline{/api/AuthUsers/\{userId\}/secret}.
+W zapytaniu tym za parametr \textit{userId} należy wstawić unikalny identyfikator użytkownika, któremu chcemy zmienić sekret.
+Serwer zwraca obiekt JSON reprezentujący zmodyfikowanego użytkownika. 
+Postać tego obiektu jest identyczna jak w przypadku procesu tworzenia nowego użytkownika.
 
 \section{Przykład użycia projektu}
+Najbardziej ogólny przypadek użycia projektu można przedstawić w następujących krokach:
+\begin{enumerate}
+	\item Podmiot tworzy nowe konto. \\ 
+		Może to uczynić w jeden ze sposobów:
+		\begin{itemize}
+			\item Za pomocą strony internetowej projektu.
+			\item Za pomocą interaktywnej dokumentacji API.
+			\item Używając jednej z bibliotek klienckich.
+			\item Wysyłając zapytanie HTTP w dowolnym języku programowania.
+		\end{itemize}
+	\item Pozyskanie klucza API. Sposoby równoznaczne z tymi powyżej.
+	\item Wybranie jednej z bibliotek lub wysyłanie zapytań w dowolnym innym języku, w którym nie powstała jeszcze biblioteka kliencka.
+	\item W sytuacji, gdy dany użytkownik chce skorzystać podmiot w systemie PicnicAuth dodaje nowego użytkownika do swojej kolekcji.
+	\item Użytkownikowi przesyłany jest kod QR lub sam sekret zakodowany w Base32.
+	\item Użytkownik wprowadza na swoje urządzenie mobilne otrzymany sekret.
+	\item Od tej pory, gdy użytkownik chce się zalogować lub wykonać akcję o podwyższonym poziomie bezpieczeństwa, 
+		wraz ze zwykłym hasłem proszony jest także o podanie hasła jednorazowego.
+	\item Podmiot po otrzymaniu hasła wykorzystuje walidację w systemie PicnicAuth i w zależności od jej wyniku 
+		autoryzuje próbę logowania użytkownika lub też nie.
+\end{enumerate}
 
 \section{Planowane ulepszenia}
 
