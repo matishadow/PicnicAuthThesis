@@ -359,13 +359,49 @@ postaci łańcuchu znaków lub do postaci tablicy bajtów.
 \end{figure}
 
 \section{Walidacja hasła jednorazowego}
+W zależności od typu hasła jednorazowego proces walidacji znacząco się różni.
+
+\subsection{Walidacja hasła opartego o licznik}
+Do walidacji haseł opartych o licznik zaimplementowana została klasa \textit{HotpValidator}, której kod przedstawiony jest 
+na Rysunku \ref{hotp-validator}. Posiada ona funkcjonalność walidacji pojedynczego hasła jednorazowego 
+oraz kilku haseł we wcześniej skonfigurowanym przedziale. \\
+W pierwszym przypadku dla podanego licznika oraz sekretu ponownie generowane jest hasło jednorazowe.
+Następnie wygenerowane hasło porównywane jest z hasłem podanym przez użytkownika, jeśli obie wartości są sobie równe
+zwracany wynik walidacji jest pozytywny. \\
+W sytuacji, gdy użytkownik nieumyślnie kliknie na ikonę generacji nowego hasła jednorazowego 
+licznik na urządzeniu przestanie być zsynchronizowany z licznikiem na serwerze. 
+Przydaje się wtedy funkcjonalność walidacji w danym przydziale. 
+W przypadku tego rodzaju walidacji pobierany jest z bazy obecny stan licznika. 
+Jeżeli hasło wygenerowane na jego podstawie zgadza się z hasłem podanym przez użytkownika zwracany jest 
+pozytywny wynik walidacji. 
+W przeciwnym razie licznik jest każdorazowo zwiększany i z niego jest generowane hasło jednorazowe. 
+Dzieje się tak aż do końca zadanego przedziału walidacji. 
+Jeśli któreś z kolejnych wygenerowanych haseł okaże się zgodne z tym podanym przez użytkownika 
+wartość licznika w bazie jest aktualizowana, tak aby była zgodna z licznikiem na urządzeniu mobilnym.
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=\textwidth]{content/images/code-hvalidator}
+    \caption{Klasa odpowiedzialna za walidację hasła typu HOTP.}
+    \label{hotp-validator}
+\end{figure} 
+
+\subsection{Walidacja hasła opartego o czas}
+Odpowiednio do walidacji haseł opartych o czas wykorzystywana jest klasa \textit{TotpValidator}, 
+przedstawiona na Rysunku \ref{totp-validator}.
+Z założeń obecnych w standardzie walidacja odbywa się względem trzech wartości hasła jednorazowego.
+Są nimi obecna wartość hasła, poprzednia oraz następna. 
+Wartości te obliczane są na podstawie czasu uniksowego podzielonego przez okno czasowe, 
+czasu jedno okno czasowe wcześniej oraz czasu jedno okno czasowe później. 
+Jeśli któreś z trzech wygenerowanych haseł jest zgodne z tym podanym przez użytkownika walidację można uznać za pomyślną.
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/code-tvalidator}
     \caption{Klasa odpowiedzialna za walidację hasła typu TOTP.}
     \label{totp-validator}
 \end{figure}
+
 \section{Zmiana sekretu użytkownika}
+
 
 \section{Przykład użycia projektu}
 
