@@ -119,6 +119,19 @@ Na chwilę obecną gotowe do użycia są biblioteki w następujących technologi
     \caption{Klasa generująca KeyUri.}
     \label{code-keyuri}
 \end{figure}
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=0.5\textwidth]{content/images/qr-hotp}
+    \caption{Kod QR umożliwiający generację haseł typu HOTP.}
+    \label{qr-hotp}
+\end{figure}
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=0.5\textwidth]{content/images/qr-totp}
+	\caption{Kod QR umożliwiający generację haseł typu HOTP.}
+    \label{qr-totp}
+\end{figure}
+
 \section{Generowanie OTP po stronie serwera}
 \begin{figure}[t]
     \centering
@@ -144,7 +157,21 @@ Na chwilę obecną gotowe do użycia są biblioteki w następujących technologi
     \caption{Klasa generująca hasło jednorazowe oparte o czas.}
     \label{code-totp}
 \end{figure}
+
 \section{Generowanie OTP po stronie użytkownika}
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=0.5\textwidth]{content/images/mobile-google}
+	\caption{Użycie aplikacji Google Authenticator.}
+    \label{mobile-google}
+\end{figure}
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=0.5\textwidth]{content/images/mobile-authy}
+	\caption{Użycie aplikacji Authy.}
+    \label{mobile-authy}
+\end{figure}
+
 \section{Przechowywanie sekretu użytkownika}
 \begin{figure}[t]
     \centering
@@ -159,5 +186,73 @@ Na chwilę obecną gotowe do użycia są biblioteki w następujących technologi
     \label{code-decrypt}
 \end{figure}
 \section{Przykład użycia projektu}
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=\textwidth]{content/images/code-tvalidator}
+    \caption{Klasa odpowiedzialna za walidację hasła typu TOTP.}
+    \label{totp-validator}
+\end{figure}
+
 \section{Planowane ulepszenia}
 
+\subsection{Generowanie hasła po stronie użytkownika}
+Za najbezpieczniejsza metodę generacji haseł jednorazowych po stronie użytkownika uważany jest 
+token sprzętowy, zabezpieczony kodem PIN. 
+Jest to dosyć kosztowna metoda ze względu na koszty produkcji takiego tokenu, jak również 
+jest mało uniwersalna, gdyż zwykle token powiązany jest z pojedynczym kontem. \\
+Wychodząc na przeciw tym ograniczeniom, mogą tutaj zostać zaproponowane rozwiązania 
+oparte o mikrokontroler \textit{Arduino Uno} lub o mini-komputer \textit{Raspberry Pi Zero}.
+Projekt ten mógłby mieć formę DIY (Do it yourself) czyli być przepisem jak z dostarczonego 
+oprogramowania i części stworzyć własny token sprzętowy, mogący generować hasła jednorazowe do wielu serwisów. 
+Token posiadałby ekran, na którym wyświetlane by było wygenerowane hasło jedno razowe oraz klawiaturę 
+alfanumeryczną, wykorzystywaną do podawania kodu PIN oraz do dodania nowego konta do bazy tokenu.
+
+\subsection{Biblioteki klienckie}
+Użycie REST API jest możliwe w każdej technologii umożliwiającej wykorzystanie protokołu HTTP 
+wraz z formatem JSON. 
+Dużo wygodniejsze jest jednak korzystanie z gotowych bibliotek, stworzonych pod daną technologię. \\ \\
+W tym celu, w kolejnych wersjach projektu, planowana jest implementacja bibliotek klienckich w następujących 
+językach programowania:
+\begin{itemize}
+	\item{C}
+	\item{C++}
+	\item{Clojure}
+	\item{D}
+	\item{Elixir}
+	\item{Erlang}
+	\item{Groovy}
+	\item{Java}
+	\item{JavaScript}
+	\item{Kotlin}
+	\item{Nim}
+	\item{Objective-C}
+	\item{Perl}
+	\item{PHP}
+	\item{Scala}
+	\item{Swift}
+\end{itemize}
+
+\subsection{Architektura}
+Możliwe jest także ulepszenie architektury części REST API projektu pod kątem większego odseparowania od siebie komponentów.
+Szczególnie dotyczy to odseparowania części przechowującej sekrety użytkowników i walidującej hasła jednorazowe od reszty
+aplikacji. 
+W~idealnym przypadku odseparowana część umieszczona by była na osobnym systemie komputerowym, bez dostępu do Internetu. 
+Komunikacja z główną częścią aplikacji powinna odbywać się wtedy poprzez minimalny interfejs, pozwalający wyłącznie na 
+uwierzytelnienie podmiotu oraz walidację podanego przez użytkownika hasła jednorazowego. 
+Po przesłaniu podanego przez użytkownika hasła jednorazowego, 
+zwrócony zostałby jedynie wynik walidacji w postaci \textit{true} lub \textit{false}.
+
+\subsection{Konteneryzacja części serwerowej}
+Poza podstawowym przypadkiem użycia opartym o REST API wystawione pod adresem \texttt{https://picnicauth.gear.host/swagger/ui/index},
+nic nie stoi na przeszkodzie wykorzystaniu kodu źródłowego aplikacji i stworzenia REST API na własnym serwerze, na przykład w firmowej
+sieci lokalnej. Ten sposób wykorzystania projektu może okazać się bardziej bezpieczny, jeśli jest przez dany podmiot 
+umiejętnie administrowany oraz zupełnie niebezpieczny w przeciwnym przypadku. \\
+Aby ułatwić procedurę wdrożenia REST API na serwer można zaproponować tutaj użycie kontenerów. 
+Dzięki nim aplikacja nie jest zależna od systemu, który jest zainstalowany na serwerze a sam proces wdrożenia jej
+jest niezwykle prosty i szybki.
+Może zostać użyte oprogramowanie \textit{Docker}. 
+
+\subsection{Przechowywanie sekretu}
+Obecnie do szyfrowania sekretów użytkowników wykorzystywany jest interfejs \textit{Windows Data Protection}. 
+Posiada on kilka wad, między innymi to, że jest silnie zależny od hasła użytkownika sytemu. 
+Lepszym ale i bardziej kosztownym rozwiązaniem, byłoby użycie szyfrowania sprzętowego zamiast wspomnianego interfejsu.
