@@ -293,12 +293,30 @@ reprezentującą okres ważności hasła jednorazowego, przyjmującą wartość 
 \end{figure}
 
 \section{Generowanie OTP po stronie użytkownika}
+Generacja haseł jednorazowych po stronie użytkownika odbywa się przy użyciu aplikacji mobilnych. 
+Na tym etapie zakładamy, że sekret został już w bezpieczny sposób dostarczony na urządzenie mobilne. \\
+Jedną z wielu aplikacji, których można użyć jest \textit{Google Authenticator}. 
+Na Rysunku \ref{mobile-google} przedstawiony jest zrzut ekranu z tej aplikacji. 
+Widnieją na nim trzy konta użytkownika, wszystkie powiązane z podmiotem \textit{sggw.pl}. 
+Pierwsze od góry konto jest skonfigurowane do generacji haseł typu HOTP, opartych o licznik,
+pozostałe dwa widoczne hasła, są hasłami typu TOTP, opartymi o czas uniksowy.
+W celu wygenerowania kolejnego hasła typu HOTP konieczne jest na ikonę \textit{zwiniętej strzałki}.
+Po kliknięciu zostanie zwiększony licznik dla tego konta a na ekranie pojawi się nowe hasło jednorazowe.
+Hasła typu TOTP odświeżane są automatycznie wraz z upływem ich ważności. 
+Ikona w kształcie koła, znajdująca się na prawo od hasła symbolizuje pozostały czas ważności hasła.
 \begin{figure}[t]
     \centering
 	\includegraphics[width=0.5\textwidth]{content/images/mobile-google}
 	\caption{Użycie aplikacji Google Authenticator.}
     \label{mobile-google}
-\end{figure}
+\end{figure} \\
+Bezpieczniejszą alternatywą do aplikacji \textit{Google Authenticator} jest \textit{Authy 2-Factor Authentication}. 
+Posiada ona możliwość stworzenia szyfrowanych kopii zapasowych, użytecznych w przypadku zgubienia telefonu oraz
+wyposażona jest w dodatkową warstwę ochrony w postaci kodu PIN, wymaganego do uzyskania haseł jednorazowych. \\
+Jedną z cech podnoszących bezpieczeństwo aplikacji, odkrytych podczas testów jest zablokowana możliwość 
+robienia zrzutów ekranów, jak również nagrywania ekranu z wyświetlanym hasłem jednorazowym. \\
+Ekran aplikacji przedstawiony jest na Rysunku \ref{mobile-authy}. 
+Widoczne jest na nim wygenerowane hasło typu TOTP dla użytkownika \textit{Przykładowy użytkownik}.
 \begin{figure}[t]
     \centering
 	\includegraphics[width=0.5\textwidth]{content/images/mobile-authy}
