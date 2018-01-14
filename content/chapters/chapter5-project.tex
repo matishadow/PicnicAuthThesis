@@ -173,13 +173,54 @@ nowo stworzonego użytkownika:
   "Id": "00000000-0000-0000-0000-000000000000"
 }
 \end{lstlisting}
-
+W kwestii dostarczania sekretu użytkownika na jego urządzenie mobilne interesujące są tutaj pola
+zawierające adresy do kodów QR (Quick Response) oraz pole zawierające sekret zakodowany używając kodowania transportowego \textit{Base32}.
+Istnieją więc dwie metody dostarczenia sekretu. \\
+Pierwsza z nich polega na przepisaniu sekretu do urządzenia mobilnego, nadaniu nazwy konta oraz wybraniu typu hasła jednorazowe.
+Ekran używany do wprowadzania tych danych przedstawiony jest na Rysunku \ref{mobile-manual}.
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=\textwidth]{content/images/mobile-manual}
+    \caption{Ekran tworzenia nowego konta w aplikacji Google Authenticator.}
+    \label{mobile-manual}
+\end{figure} \\
+Jeśli urządzenie mobilne użytkownika jest wyposażone w aparat fotograficzny możliwe jest natychmiastowe dostarczenie sekretu, 
+poprzez zeskanowanie jednego z kodów QR.
+W kodach tych zakodowane są dane w formacie \textit{Key Uri}. 
+Format ten jest zgodny ze standardem \textit{URI}. \\
+Można go przedstawić w następujący sposób: \\
+\centerline{otpauth://\{TYP\}/\{ETYKIETA\}?\{PARAMETRY\}} 
+Typ może przybierać tutaj wartości \textit{hotp} lub \textit{totp}, w zależności jaki rodzaj hasła jednorazowego chcemy stosować. \\
+\textit{Etykieta} używana jest do identyfikacji konta, dla którego generowane są hasła jednorazowe. 
+Zwykle składa się z nazwy konta poprzedzonej nazwą podmiotu. Przykładową etykietą może być tutaj: \\
+\centerline{Podmiot1:Jan.Kowalski}
+Jednym z parametrów jest parametr \textit{secret}, w którym musi znajdować się sekret użytkownika zakodowany kodowaniem Base32. \\
+Niewymaganym parametrem jest tutaj parametr \textit{issuer}. Jest równoznaczny z prefiksem etykiety, będącym nazwą podmiotu. 
+Jeśli jest on obecny powinien przyjmować taką samą wartość jak wcześniej wspomniany prefiks. \\
+Pozostałe parametry są ignorowane przez najnowszą implementację aplikacji mobilnej \textit{Google Authenticator}.
+Ignorowanymi parametrami są: 
+\begin{itemize}
+	\item \textit{Algorithm} determinujący jaka funkcja skrótu będzie używana przy tworzeniu haseł jednorazowych. \\
+		Może przyjmować wartości: 
+		\begin{itemize}
+			\item SHA1 (Domyślna wartość).
+			\item SHA256.
+			\item SHA512.
+		\end{itemize}
+	\item \textit{Digits} determinujący długość hasła jednorazowego. Może przyjmować wartości \textit{6} lub \textit{8}.
+		Hasło jednorazowe będzie wtedy skracane do sześciu lub ośmiu cyfr.
+	\item \textit{Counter} ustalający początkową wartość licznika w przypadku haseł opartych o licznik.
+	\item \textit{Period} określający okres ważności haseł opartych o czas. Domyślną wartością jest tutaj 30 sekund. 
+\end{itemize}
+Klasa stworzona do generacji łańcucha znaków w formacie \textit{Key Uri} przedstawiona jest na Rysunku \ref{code-keyuri}.
+Wykorzystuje ona formatowanie łańcuchów znaków na podstawie z góry zadanego szablonu.
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/code-keyuri}
     \caption{Klasa generująca KeyUri.}
     \label{code-keyuri}
-\end{figure}
+\end{figure} \\
+Przykładowe kody QR o typach HOTP oraz TOTP znajdują się odpowiednio na Rysunku \ref{qr-hotp} oraz Rysunku \ref{qr-totp}.
 \begin{figure}[t]
     \centering
 	\includegraphics[width=0.5\textwidth]{content/images/qr-hotp}
@@ -189,7 +230,7 @@ nowo stworzonego użytkownika:
 \begin{figure}[t]
     \centering
 	\includegraphics[width=0.5\textwidth]{content/images/qr-totp}
-	\caption{Kod QR umożliwiający generację haseł typu HOTP.}
+	\caption{Kod QR umożliwiający generację haseł typu TOTP.}
     \label{qr-totp}
 \end{figure}
 
