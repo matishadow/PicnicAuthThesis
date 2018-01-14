@@ -44,7 +44,7 @@ Oprócz podstawowych informacji o metodach znajdujących się w kontrolerach, ta
 w~dokumentacji umieszczane są także komentarze, którymi opisana jest dana metoda. Oprócz funkcji informacyjnej, 
 wygenerowana dokumentacja pozwala na wygodne testy każdej z metod. 
 Końcowy efekt wygenerowanej dokumentacji przedstawiony jest na Rysunku \ref{swagger}. \\
-Aplikacja przeznaczona jest do działania na serwerze \textit{IIS (Internet Information Service)} w~wersji~7.
+Aplikacja przeznaczona jest do działania na serwerze \textit{IIS (Internet Information Service)} w~wersji~8.5.
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/swagger}
@@ -100,19 +100,80 @@ Na chwilę obecną gotowe do użycia są biblioteki w następujących technologi
 	\item Ruby
 \end{enumerate}
 
-\section{Dostarczanie sekretu na urządzenie mobilne}
+\section{Tworzenie konta podmiotu}
+Podmiotem jest nazywana instytucja, posiadająca użytkowników i chcąca wykorzystać w~swoim systemie 
+uwierzytelnienie dwuetapowe. \\
+Podmiot jest opisany bazodanowym modelem \textit{CompanyAccount}, bazującym na klasie \textit{IdentityUser}
+z przestrzeni \textit{Microsoft.AspNet.Identity}.
+Oprócz standardowych pól odziedziczonych z klasy \textit{IdentityUser}, model ten posiada także kolekcję 
+kolekcję użytkowników \textit{AuthUser}. \\
+Sam proces tworzenia nowego konta jak i autoryzacji jest zgodny ze standardowym zarządzeniem zwykłymi użytkownikami
+w projekcie typu \textit{WebAPI} w technologii \textit{.Net}. \\
+W~celu stworzenia nowego konta, metodą \textit{HTTP POST}, na adres \mbox{/api/Companies}, wysyłane są dane konta, 
+takie jak adres poczty elektronicznej, nazwa konta oraz hasło. 
+Format wysyłanych danych w postaci obiektu JSON jest przedstawiony poniżej:
+\begin{lstlisting}
+{
+  "Email": "string",
+  "UserName": "string",
+  "Password": "string",
+  "ConfirmPassword": "string"
+}
+\end{lstlisting}
+Proces logowania również jest standardowy i zgodny ze standardem \textit{OAuth}.
+Na adres \textit{/api/tokens}, metodą \textit{POST} wysyłane są dane takie jak nazwa konta oraz hasło
+a w odpowiedzi zwracany jest token typu JWT (JSON Web Token), wykorzystywany do autoryzacji podmiotu.
+Otrzymany token jest wysyłany przy każdym kolejnym zapytaniu w nagłówku w postaci \textit{Authorization: Bearer \{JWT\}}.
+
+\section{Generacja sekretu użytkownika}
+Po utworzeniu konta podmiotu możliwe jest dodanie do kolekcji użytkowników nowego użytkownika. 
+Wysyłane jest wtedy zapytanie typu \textit{POST} na adres \textit{/api/AuthUsers}. Zasób pod tym adresem dostępny jest 
+wyłącznie po zalogowaniu się kontem podmiotu. \\
+Dane mają postać obiektu:
+\begin{lstlisting}
+{
+  "ExternalId": "string",
+  "UserName": "string",
+  "Email": "string"
+}
+\end{lstlisting}
+Po przesłaniu żądania tworzone jest konto użytkownika a następnie zapisywane jest ono do bazy. 
+W procesie tym ważnym etapem jest generacja sekretu użytkownika. \\ 
+Do tego celu stworzona została klasa \textit{SecureRandomNumberGenerator}, której kod widoczny jest na Rysunku \ref{code-srng}.
+Wykorzystywana jest w niej klasa \textit{RNGCryptoServiceProvider} z przestrzeni \textit{System.Security.Cryptography}.
+Stworzona klasa wykorzystywana jest do wygenerowania kryptograficznie bezpiecznego, pseudolosowego ciągu bajtów, zwracanego 
+w formie tablicy.
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/code-srng}
     \caption{Klasa zwracająca kryptograficznie bezpiecznie pseudolosowe dane.}
     \label{code-srng}
-\end{figure}
+\end{figure} \\
+Bardziej wyspecjalizowaną klasą jest klasa \textit{SecretGenerator}, przedstawiona na Rysunku \ref{code-secretgenerator}.
+Jest w niej użyta funkcjonalność poprzedniej klasy. Zwraca ona wygenerowany sekret użytkownika, czyli ciąg bajtów o długości
+zgodnej z zaleceniami standardu, równej dziesięć.
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/code-secretgenerator}
     \caption{Klasa generująca sekret użytkownika.}
     \label{code-secretgenerator}
 \end{figure}
+
+\section{Dostarczanie sekretu na urządzenie mobilne}
+Po wysłaniu danych do stworzenia użytkownika w odpowiedzi wysyłany jest obiekt reprezentujący
+nowo stworzonego użytkownika:
+\begin{lstlisting}
+{
+  "ExternalId": "string",
+  "UserName": "string",
+  "Email": "string",
+  "HotpQrCodeUri": "string",
+  "TotpQrCodeUri": "string",
+  "SecretInBase32": "string",
+  "Id": "00000000-0000-0000-0000-000000000000"
+}
+\end{lstlisting}
+
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/code-keyuri}
@@ -185,13 +246,16 @@ Na chwilę obecną gotowe do użycia są biblioteki w następujących technologi
     \caption{Klasa odpowiedzialna za deszyfrowanie.}
     \label{code-decrypt}
 \end{figure}
-\section{Przykład użycia projektu}
+
+\section{Walidacja hasła jednorazowego}
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/code-tvalidator}
     \caption{Klasa odpowiedzialna za walidację hasła typu TOTP.}
     \label{totp-validator}
 \end{figure}
+
+\section{Przykład użycia projektu}
 
 \section{Planowane ulepszenia}
 
