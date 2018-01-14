@@ -161,6 +161,14 @@ zgodnej z zaleceniami standardu, równej dziesięć.
 \end{figure}
 
 \section{Pobranie użytkowników powiązanych z podmiotem}
+Podmiot może w dowolnym momencie uzyskać kolekcję użytkowników, których stworzył. 
+Aby tego dokonać należy wysłać zapytanie na adres \textit{/api/Companies/Me/AuthUsers}. 
+Zapytanie musi być typu \textit{GET} i może przyjmować parametry takie jak \textit{page} oraz \textit{pageCount}, 
+wykorzystywane do paginacji. 
+W przypadku niepodania któregoś z parametrów w zapytaniu przyjmują one domyślne wartości. 
+Dla parametru \textit{page} domyślną wartością jest \textit{1}, a dla parametru \textit{pageCount} jest to 10. \\
+Przykład zapytania z parametrami przedstawia się następująco: \\
+\centerline{https://picnicauth.gear.host/api/Companies/Me/AuthUsers?page=2\&pageCount=15}
 
 \section{Dostarczanie sekretu na urządzenie mobilne}
 Po wysłaniu danych do stworzenia użytkownika w odpowiedzi wysyłany jest obiekt reprezentujący
@@ -210,7 +218,7 @@ Ignorowanymi parametrami są:
 			\item SHA256.
 			\item SHA512.
 		\end{itemize}
-	\item \textit{Digits} determinujący długość hasła jednorazowego. Może przyjmować wartości \textit{6} lub \textit{8}.
+	\item \textit{Digits} determinujący długość hasła jednorazowego. Może przyjmować wartości \textit{6} lub~\textit{8}.
 		Hasło jednorazowe będzie wtedy skracane do sześciu lub ośmiu cyfr.
 	\item \textit{Counter} ustalający początkową wartość licznika w przypadku haseł opartych o licznik.
 	\item \textit{Period} określający okres ważności haseł opartych o czas. Domyślną wartością jest tutaj 30 sekund. 
