@@ -333,12 +333,24 @@ Widoczne jest na nim wygenerowane hasło typu TOTP dla użytkownika \textit{Przy
 \end{figure}
 
 \section{Przechowywanie sekretu użytkownika}
+Sekrety użytkowników przechowywane są w bazie danych w postaci zaszyfrowanej. 
+Do konwersji sekretu użytkownika do postaci zaszyfrowanej wykorzystywany 
+jest interfejs \textit{Windows Data Protection}, scharakteryzowany w sekcji \ref{wdp}. \\
+Klasą odpowiedzialną za szyfrowanie sekretów użytkownika jest klasa \textit{DpapiEncryptor}, której
+kod źródłowy przedstawiony jest na Rysunku \ref{code-encrypt}. Posiada ona dwie metody \textit{Encrypt}
+pobierające odpowiednio tablicę bajtów oraz ciąg znaków, których można używać naprzemiennie w zależności 
+od typu danych jaki chcemy zaszyfrować. Sam proces szyfrowania odbywa się \textit{w miejscu}, oznacza to że 
+funkcja pobiera dane do zaszyfrowania i bezpośrednio zwraca dane w formie zaszyfrowanej, bez zapisu ich 
+w~jakimkolwiek miejscu w pamięci.
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/code-encrypt}
     \caption{Klasa odpowiedzialna za szyfrowanie.}
     \label{code-encrypt}
-\end{figure}
+\end{figure} \\
+Komplementarną do powyższej klasy jest klasa \textit{DpapiDecryptor}, przedstawiona na Rysunku \ref{code-decrypt}. 
+Umożliwia ona deszyfrowanie danych, zaszyfrowanych interfejsem \textit{Windows Data Protection} do 
+postaci łańcuchu znaków lub do postaci tablicy bajtów.
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/code-decrypt}
