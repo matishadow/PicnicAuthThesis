@@ -86,7 +86,7 @@ Tryb ECB podatny jest również na atak typu \textit{oracle}. \\
 \end{figure} 
 
 \subsubsection{CBC}
-Najczęściej używanym trybem jest \textit{CBC - Cipher Block Chaining (ang.)}. 
+Najczęściej używanym trybem jest \textit{CBC (Cipher Block Chaining)}. 
 W tym trybie, blok wiadomości najpierw jest XORowany z poprzednim zaszyfrowanym blokiem a następnie
 on sam jest poddawany procesowi szyfrowania. W przypadku pierwszego bloku, dla którego nie ma bloku poprzedniego, 
 wprowadzane jest pojęcie \textit{wektora inicjalizującego}. \\ 
@@ -120,7 +120,7 @@ Porównanie skuteczności tego trybu z trybem ECB przedstawione jest na Rysunku 
 \end{figure}
 
 \subsubsection{CTR}
-Warto wspomnieć jeszcze o trybie \textit{CTR - Counter (ang.)}, gdyż sposób jego działania jest zbliżony 
+Warto wspomnieć jeszcze o trybie \textit{CTR (Counter)}, gdyż sposób jego działania jest zbliżony 
 do szyfrów strumieniowych. Wykorzystywany jest w nim \textit{liczba używana jednorazowo (z angielskiego ,,nonce'')}
 oraz licznik. Licznik jest zwiększany dla każdego z bloków wiadomości. 
 Na wejście szyfru blokowego podawana jest wyżej wspomniana liczba połączona z licznikiem. Następnie wynik
@@ -142,7 +142,7 @@ Wizualizacja tego trybu szyfrowania przedstawiona jest na Rysunku \ref{ctr-enc} 
 \end{figure}
 
 \subsection{Data Encryption Standard}
-Szyfr blokowy DES był pierwszym algorytmem, zatwierdzonym przez \textit{Narodowe Biuro Standaryzacji} 
+Szyfr blokowy DES (Data Encryption Standard) był pierwszym algorytmem, zatwierdzonym przez \textit{Narodowe Biuro Standaryzacji} 
 (obecnie \textit{Narodowy Instytut Standaryzacji i Technologii}), jako bezpieczny standard szyfrowania symetrycznego.
 Przez ponad 20 lat stowarzyszenia naukowe poddawały go intensywnym analizom. \\
 W tym czasie został wielokrotnie złamany, głównie z powodu długość klucza jaką posiada szyfr - zaledwie 56 bitów. \\
@@ -154,11 +154,11 @@ Dla porównania przy dzisiejszej mocy obliczeniowej może on zostać złamany pr
 Próbą uratowania szyfru była propozycja algorytmu 3DES. 
 Polegał on na zaszyfrowaniu danych szyfrem DES, odszyfrowaniu ich, a następnie ponownym zaszyfrowaniu. 
 Zamiast 3-krotnego szyfrowania, 3DES został wybrany schemat operacji umożliwiający zachowanie kompatybilności z systemami, w których możliwe było użycie jedynie wersji podstawowej algorytmu. \\
-Pomimo zwiększonej długości klucza w przypadku 3DES, w porównaniu do AES jest mniej bezpieczny i nadzwyczajnie wolny (AES potrzebuje 12.6 cykli procesora do zaszyfrowania bajtu danych, 3DES aż 134.5 \cite{crypto101}).
+Pomimo zwiększonej długości klucza w przypadku 3DES, w porównaniu do AES (Advanced Encryption Standard) jest mniej bezpieczny i nadzwyczajnie wolny (AES potrzebuje 12.6 cykli procesora do zaszyfrowania bajtu danych, 3DES aż 134.5 \cite{crypto101}).
 
 \subsection{Advanced Encryption Standard}
 Po problemach z DES agencja NIST ogłosiła konkurs na algorytm, który mógłby stać się nowym standardem.
-Do konkursu zgłoszone zostały między innymi: \textit{Rijndael}, \textit{Serpent}, \textit{Twofish}, \textit{MARS} czy \textit{RC6}. 
+Do konkursu zgłoszone zostały między innymi: \textit{Rijndael}, \textit{Serpent}, \textit{Twofish}, \textit{MARS} czy \textit{RC6 (Rivest cipher 6)}. 
 Zostały one poddane intensywnej kryptoanalizie. 
 Ostatecznie wygrał algorytm stworzony przez Vincenta Rijmena oraz Joana Daemena - Rijndael. \\
 Rijndael jest rodziną szyfrów, których rozmiar bloku oraz rozmiar klucza może wynosić: 128, 160, 192, 224 i 256 bitów. 
@@ -183,16 +183,16 @@ Każdy przebieg składa się z następujących kroków:
 			Jest to równoznaczne z zamianą zadanej liczby do postaci wielomianowej (wielomian o maksymalnym 
 			stopniu równym 7, w którym współczynnikami są bity liczby) a następnie znalezienie takiego
 			wielomianu, który po przemnożeniu przez wielomian liczby, modulo $x^8+x^4+x^3+x+1$, da w wyniku 1. \\
-			Funkcja \textit{f} jest przedstawiona na Rysunku \ref{ff}.  \\
+			Funkcja \textit{f} jest przedstawiona na Rysunku \ref{ff}. \\
+			Możliwe jest też jednorazowe wygenerowania tablicy odwzorowania (przedstawiona na Rysunku \ref{matrix}) dla zadanych wielomianów,
+			dzięki czemu zamiast za każdym razem obliczać wartość tej funkcji, wystarczy odczytać wartość tablicy
+			pod odpowiednim indeksem. 
 			\begin{figure}[t]
 			    \centering
 			    \includegraphics[scale=0.5]{content/images/affin}
 				\caption{Przekształcenie \textit{f}.}
 				\label{ff}
 			\end{figure}
-			Możliwe jest też jednorazowe wygenerowania tablicy odwzorowania (przedstawiona na Rysunku \ref{matrix}) dla zadanych wielomianów,
-			dzięki czemu zamiast za każdym razem obliczać wartość tej funkcji, wystarczy odczytać wartość tablicy
-			pod odpowiednim indeksem. 
 			\begin{figure}[t]
 			    \centering
 			    \includegraphics[width=\textwidth]{content/images/sbox}
@@ -277,7 +277,7 @@ Następnie wykonywana jest operacja XOR pomiędzy wygenerowanym ciągiem a wiado
 Deszyfrowanie polega na ponownym wygenerowaniu ciągu bitów na podstawie klucza a następnie wykonanie operacji XOR na bitach zaszyfrowanej wiadomości oraz tych wygenerowanych z klucza.
 
 \subsection{RC4}
-Obecnie najczęściej spotykanym szyfrem strumieniowym jest RC4. Mimo, że wielokrotnie wykazano wiele podatności w konstrukcji RC4, szyfr ten jest ciągle używany w protokołach takich jak TLS czy WEP. \\
+Obecnie najczęściej spotykanym szyfrem strumieniowym jest RC4 (Rivest Cipher 4). Mimo, że wielokrotnie wykazano wiele podatności w konstrukcji RC4, szyfr ten jest ciągle używany w protokołach takich jak TLS (Transport Layer Security) czy WEP (Wired Equivalent Privacy). \\
 Schemat działania algorytmu jest niezwykle prosty. 
 Składa się z inicjalizacji klucza oraz generacji pseudolosowego ciągu. \\
 W etapie inicjalizacji klucza tworzona jest tablica permutacji S, składają się z 256 bajtów. 
@@ -303,7 +303,7 @@ Kolejny z parametrów jest częściowo związany z poprzednim. Zależy nam, aby 
 Niezwykle ważne jest też, aby nawet niewielka zmiana danych wejściowych, spowodowała znaczną zmianę danych otrzymanych na wyjściu (wymagane jest aby przynajmniej połowa bitów uległa zmianie).
 
 \subsection{Message Digest 5}
-Funkcja MD5 jest wykorzystywana do generowania 128-bitowego skrótu. Została stworzona przez Rona Rivesta w 1991 roku. \\
+Funkcja MD5 (Message Digest 5) jest wykorzystywana do generowania 128-bitowego skrótu. Została stworzona przez Rona Rivesta w 1991 roku. \\
 W uproszczeniu, algorytm MD5 można przedstawić w następujących krokach \cite{crypto101}:
 \begin{enumerate}
 	\item Dodanie dopełnienia. W pierwszej kolejności dopisywany jest jeden bit o wartości 1, a następnie dopisywane są zera, aż do momentu, gdy długość danych wynosić będzie 448 bitów modulo 512. Dopełnienie dopisywane jest nawet w przypadku, gdy długość danych wynosi 448 bitów.
@@ -316,12 +316,12 @@ W uproszczeniu, algorytm MD5 można przedstawić w następujących krokach \cite
 	\item Dane wejściowe dzielone są na bloki po 512 bitów. Kolejno na każdym z bloków wykonywane są operacje bitowe zmieniające stan zmiennych. 
 	\item Wynikiem działania algorytmu jest 128-bitowa wartość składająca się z czterech zmiennych w kolejności A, B, C, D.
 \end{enumerate} 
-Szczegółowa specyfikacja algorytmy znajduje się w dokumencie RFC 1321 \cite{md5rfc}. \\
+Szczegółowa specyfikacja algorytmy znajduje się w dokumencie RFC (Request for Comments) 1321 \cite{md5rfc}. \\
 Analiza kryptograficzna funkcji MD5 wykazała wiele podatności i błędów przez co obecnie nie jest wskazane używanie MD5 w zastosowaniach kryptograficznych. 
 W roku 2004 została opublikowana praca wykazująca podatność funkcji MD5 na ataki kolizyjne (ang. collision attack) \cite{md5cert}. 
 
 \subsection{Secure Hash Algorithm 1}
-SHA-1 jest funkcją bazującą na MD4 (podobnie jak MD5), o długości skrótu wynoszącej 160 bitów \cite{cryptoirf}. \\
+SHA-1 (Secure Hash Algorithm 1) jest funkcją bazującą na MD4 (Message Digest 4) (podobnie jak MD5), o długości skrótu wynoszącej 160 bitów \cite{cryptoirf}. \\
 Wewnętrzny stan funkcji składa się z pięciu zmiennych: A, B, C, D oraz E, każda o rozmiarze 32 bitów. \\
 Pseudokod algorytmu można przedstawić w następujących krokach:
 \begin{enumerate}
@@ -395,7 +395,7 @@ W dokumencie RFC 3174 zostały zawarte szczegóły dotyczące algorytmu, jak ró
 Podobnie jak MD5, funkcja SHA-1 również nie jest uważana za bezpieczną. \\
 Do roku 2017 wszystkie przedstawione ataki uznawane były za niepraktyczne z uwagi na zbyt dużą moc obliczeniową, jaka byłaby potrzebna do ich wykonania.
 Przykładem może być tutaj atak opublikowany w październiku 2015 roku o nazwie \textit{The SHAppening}. Koszt wynajęcia sprzętu potrzebnego do przeprowadzenia ataku (wygenerowania jednej kolizji) estymowany był na 75 000 - 120 000 dolarów amerykańskich \cite{shap}. \\
-Pierwszy praktyczny atak na SHA-1 został ogłoszony w lutym 2017 roku. Zostały wygenerowane dwa pliki w formacie PDF, dla których wynik funkcji skrótu SHA-1 jest taki sam. Wszystkie systemy, w których wykorzystywana jest funkcja SHA-1 są narażone na ten atak, przykładowo umożliwia on fałszowanie podpisów cyfrowych dokumentów, czy też certyfikatów HTTPS. \cite{shatt}
+Pierwszy praktyczny atak na SHA-1 został ogłoszony w lutym 2017 roku. Zostały wygenerowane dwa pliki w formacie PDF (Portable Document Format), dla których wynik funkcji skrótu SHA-1 jest taki sam. Wszystkie systemy, w których wykorzystywana jest funkcja SHA-1 są narażone na ten atak, przykładowo umożliwia on fałszowanie podpisów cyfrowych dokumentów, czy też certyfikatów HTTPS (Hypertext Transfer Protocol Secure). \cite{shatt}
 
 \subsection{Secure Hash Algorithm 2}
 SHA-2 jest rodziną funkcji składającą się z:
@@ -501,7 +501,7 @@ Jedną z najczęściej używanych funkcji z rodziny SHA-2 jest SHA-256. Proces p
 W porównaniu do SHA-1, funkcje SHA-2 są znacznie odporniejsze na kolizję, dzięki czemu zalecane jest ich używanie w zastosowaniach takich jak podpisy cyfrowe czy uwierzytelnianie wiadomości.
 
 \subsection{Secure Hash Algorithm 3}
-Wewnętrzna budowa funkcji z rodziny SHA-3 znacząco się różni w odniesieniu do omawianych wcześniej. 
+Wewnętrzna budowa funkcji z rodziny SHA-3 (Secure Hash Algorithm 3) znacząco się różni w odniesieniu do omawianych wcześniej. 
 Poprzednie funkcje oparte były o schemat Merkle–Damgård. 
 Funkcje z rodziny SHA-3 oparte są o tak zwaną ,,architekturę gąbki''. 
 W obu przypadkach funkcja zawiera wewnętrzny stan. 
@@ -522,20 +522,20 @@ pod osobę, do której przesyłamy wiadomość. Wysyłając wiadomość jesteśm
 gdy tak naprawdę wysyłamy ją do atakującego. Odbiorca również sądzi, że otrzymana wiadomość jest wysłana 
 przez spodziewanego nadawcę, mimo że wysłał ją atakujący. Pomimo tego, że atakujący nie jest w stanie przeczytać
 przechwyconej wiadomości, gdyż jest zaszyfrowana, to może próbować ją modyfikować. \\
-Kody uwierzytelnienia wiadomości (Message Authentication Code ang.) są jedną z metod na uwierzytelnienie i zapewnienie 
+Kody uwierzytelnienia wiadomości są jedną z metod na uwierzytelnienie i zapewnienie 
 integralności danych. Przesyłane są razem z wiadomością w formie niewielkiej porcji danych.
-Algorytmy generujące MAC przyjmują klucz kryptograficzny o z góry określonej długości oraz dowolne dane 
+Algorytmy generujące MAC (Message Authentication Code) przyjmują klucz kryptograficzny o z góry określonej długości oraz dowolne dane 
 o dowolnej długości (podobnie jak w przypadku funkcji skrótu) i w wyniku zwracają kod o ustalonej długości.
 Algorytmy te umożliwiają również weryfikację danego kodu na podstawie klucza oraz wiadomości. \\
 Po wygenerowaniu kodu uwierzytelniającego pozostaje jeszcze kwestia sposobu dołączenia go do wiadomości.
 Sposobów tych je wiele. \\
 Przykładowo możemy w pierwszej kolejności wygenerować MAC z danej wiadomości a następnie ją zaszyfrować. 
 Wysyłana jest wtedy zaszyfrowana wiadomość oraz wygenerowany kod. Jednym z protokołów, w których 
-MAC jest wykorzystywany w taki sposób jest protokół SSH. \\
+MAC jest wykorzystywany w taki sposób jest protokół SSH (Secure Shell). \\
 Możliwe jest też wygenerowanie MAC, doklejenie go do wiadomości i zaszyfrowanie całości.
 Ten schemat wykorzystywany jest w protokole TLS. \\
 Trzecim sposobem jest zaszyfrowanie wiadomości, po czym wygenerowanie MAC z zaszyfrowanej wiadomości.
-Tego sposobu używa na przykład protokół IPSec. \\
+Tego sposobu używa na przykład protokół IPSec (Internet Protocol security). \\
 Okazuje się, że ostatni wspomniany sposób jest najbezpieczniejszy, należy sprawdzić kod uwierzytelnienia wiadomości
 przed próbą jej odszyfrowania. W przypadku protokołu SSH, który wykorzystuje pierwszy sposób, istnieje atak, 
 który umożliwia atakującemu odszyfrowanie pierwszych czterech bajtów zaszyfrowanego bloku. Jest to spowodowane 
@@ -544,8 +544,8 @@ Na drugi sposób również istnieje atak zaproponowany przez Serge'a Vaudenaya \
 
 \subsection{MAC bazujący na funkcji skrótu}
 Praktycznie jedynym poprawnie działającym mechanizmem generującym kody uwierzytelnienia wiadomości są algorytmy
-MAC bazujące na funkcji skrótu (Hash-based Message Authentication Code ang.). 
-Oprócz klucza kryptograficznego oraz wiadomości algorytm HMAC pobiera dodatkowo funkcję skrótu. 
+MAC bazujące na funkcji skrótu. 
+Oprócz klucza kryptograficznego oraz wiadomości algorytm HMAC (Hash-based Message Authentication Code) pobiera dodatkowo funkcję skrótu. 
 Jako argument może zostać użyta dowolna funkcja skrótu: SHA1, SHA-256, SHA-3 czy nawet MD5. 
 Nie jest tutaj wymagane aby użyta funkcja skrótu była odporna na kolizję więc HMAC zbudowany na
 funkcji MD5 jest uważany za bezpieczny \cite{hmacmd5}, chociaż nie jest to zalecane przy tworzeniu nowych systemów kryptograficznych. \\
