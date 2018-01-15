@@ -1,7 +1,7 @@
 \chapter{PicnicAuth}
 
 \section{Architektura projektu}
-Projekt składa się z trzech komponentów: serwera w architekturze REST (Representational state transfer) API, 
+Projekt składa się z trzech komponentów: serwera w architekturze REST (Representational state transfer) API (Application programming interface), 
 informacyjnej strony internetowej oraz bibliotek klienckich. Komponenty te są od siebie niezależne, dzięki czemu 
 łatwa jest rozbudowa projektu, jak również wersjonowanie każdego z nich.
 
@@ -9,7 +9,7 @@ informacyjnej strony internetowej oraz bibliotek klienckich. Komponenty te są o
 Pierwszym z nich jest serwer implementujący logikę aplikacji. 
 Jest on stworzony w technologii \textit{ASP.NET Web API 2} w języku programowania \textit{C\#}. \\
 Przy jego tworzeniu zostały zachowane zasady architektury REST, co pozwala na łatwą i sprawną integracją
-platform klienckim, niezależnie od użytej technologii. \\ \\
+platform klienckich, niezależnie od użytej technologii. \\ \\
 Zasoby udostępniane przez REST API to:
 \begin{itemize}
 	\item \textit{[GET] /api/Companies/Me/AuthUsers} \\
@@ -55,7 +55,7 @@ Aplikacja przeznaczona jest do działania na serwerze \textit{IIS (Internet Info
 
 \subsection{Frontend}
 Strona internetowa projektu (Rysunek \ref{front-home}) stworzona została w technologii \textit{Angular} w wersji~5 w konwencji 
-\textit{Single Page Application}. Znajduje się na niej instrukcja użycie projektu jak również informacje
+\textit{Single Page Application}. Znajduje się na niej instrukcja użycia projektu jak również informacje
 o aktualnej liczbie dostępnych bibliotek. Zawiera ona także przydatne odnośniki do repozytoriów, w których
 znajduje się kod źródłowy oraz do strony na której znajduje się dokumentacja API. \\
 Dodatkowymi funkcjonalnościami jakie oferuje strona jest stworzenie nowego konta dla podmiotu 
@@ -187,7 +187,7 @@ nowo stworzonego użytkownika:
 W kwestii dostarczania sekretu użytkownika na jego urządzenie mobilne interesujące są tutaj pola
 zawierające adresy do kodów QR (Quick Response) oraz pole zawierające sekret zakodowany używając kodowania transportowego \textit{Base32}.
 Istnieją więc dwie metody dostarczenia sekretu. \\
-Pierwsza z nich polega na przepisaniu sekretu do urządzenia mobilnego, nadaniu nazwy konta oraz wybraniu typu hasła jednorazowe.
+Pierwsza z nich polega na przepisaniu sekretu do urządzenia mobilnego, nadaniu nazwy konta oraz wybraniu typu hasła jednorazowego.
 Ekran używany do wprowadzania tych danych przedstawiony jest na Rysunku \ref{mobile-manual}.
 \begin{figure}[t]
     \centering
@@ -266,8 +266,8 @@ Hasło może zostać przycięte do sześciu lub ośmiu cyfr w zależności od pr
 Sam proces przycięcia opisany został w sekcji \ref{truncate}. \\
 Zaimplementowana funkcja przycinająca przedstawiona jest na Rysunku \ref{code-truncator}.
 Funkcja ta pobiera wcześniej otrzymany wynik funkcji HMAC oraz liczbę cyfr, do jakiej zostanie przycięte hasło.
-Domyślną liczbą cyfr, która zostanie wybrana jeśli ten argument nie zostanie podany funkcji, jest sześć. \\
-Jako że prawidłową długością długością wyniku funkcji HMAC jest 20 bajtów, funkcja przycinająca sprawdza 
+Domyślną liczbą cyfr, która zostanie wybrana jeśli ten argument nie zostanie podany, jest sześć. \\
+Jako że prawidłową długością wyniku funkcji HMAC jest 20 bajtów, funkcja przycinająca sprawdza 
 długość przekazanego argumentu i rzuca wyjątek w przypadku, gdy długość danych jest różna od 20 bajtów.
 \begin{figure}[t]
     \centering
@@ -308,7 +308,7 @@ Na Rysunku \ref{mobile-google} przedstawiony jest zrzut ekranu z tej aplikacji.
 Widnieją na nim trzy konta użytkownika, wszystkie powiązane z podmiotem \textit{sggw.pl}. 
 Pierwsze od góry konto jest skonfigurowane do generacji haseł typu HOTP, opartych o licznik,
 pozostałe dwa widoczne hasła, są hasłami typu TOTP, opartymi o czas uniksowy.
-W celu wygenerowania kolejnego hasła typu HOTP konieczne jest na ikonę \textit{zwiniętej strzałki}.
+W celu wygenerowania kolejnego hasła typu HOTP konieczne jest kliknięcie na ikonę \textit{zwiniętej strzałki}.
 Po kliknięciu zostanie zwiększony licznik dla tego konta a na ekranie pojawi się nowe hasło jednorazowe.
 Hasła typu TOTP odświeżane są automatycznie wraz z upływem ich ważności. 
 Ikona w kształcie koła, znajdująca się na prawo od hasła symbolizuje pozostały czas ważności hasła.
@@ -376,7 +376,7 @@ Jeżeli hasło wygenerowane na jego podstawie zgadza się z hasłem podanym prze
 pozytywny wynik walidacji. 
 W przeciwnym razie licznik jest każdorazowo zwiększany i z niego jest generowane hasło jednorazowe. 
 Dzieje się tak aż do końca zadanego przedziału walidacji. 
-Jeśli któreś z kolejnych wygenerowanych haseł okaże się zgodne z tym podanym przez użytkownika 
+Jeśli któreś z kolejnych wygenerowanych haseł okaże się być zgodne z tym podanym przez użytkownika 
 wartość licznika w bazie jest aktualizowana, tak aby była zgodna z licznikiem na urządzeniu mobilnym.
 \begin{figure}[t]
     \centering
@@ -422,7 +422,7 @@ Najbardziej ogólny przypadek użycia projektu można przedstawić w następują
 		\end{itemize}
 	\item Pozyskanie klucza API. Sposoby równoznaczne z tymi powyżej.
 	\item Wybranie jednej z bibliotek lub wysyłanie zapytań w dowolnym innym języku, w którym nie powstała jeszcze biblioteka kliencka.
-	\item W sytuacji, gdy dany użytkownik chce skorzystać podmiot w systemie PicnicAuth dodaje nowego użytkownika do swojej kolekcji.
+	\item W sytuacji, gdy dany użytkownik chce skorzystać z dwuetapowej weryfikacji podmiot w systemie PicnicAuth dodaje nowego użytkownika do swojej kolekcji.
 	\item Użytkownikowi przesyłany jest kod QR lub sam sekret zakodowany w Base32.
 	\item Użytkownik wprowadza na swoje urządzenie mobilne otrzymany sekret.
 	\item Od tej pory, gdy użytkownik chce się zalogować lub wykonać akcję o podwyższonym poziomie bezpieczeństwa, 
@@ -442,7 +442,7 @@ Wychodząc na przeciw tym ograniczeniom, mogą tutaj zostać zaproponowane rozwi
 oparte o mikrokontroler \textit{Arduino Uno} lub o mini-komputer \textit{Raspberry Pi Zero}.
 Projekt ten mógłby mieć formę DIY (Do it yourself) czyli być przepisem jak z dostarczonego 
 oprogramowania i części stworzyć własny token sprzętowy, mogący generować hasła jednorazowe do wielu serwisów. 
-Token posiadałby ekran, na którym wyświetlane by było wygenerowane hasło jedno razowe oraz klawiaturę 
+Token posiadałby ekran, na którym wyświetlane by było wygenerowane hasło jednorazowe oraz klawiaturę 
 alfanumeryczną, wykorzystywaną do podawania kodu PIN oraz do dodania nowego konta do bazy tokenu.
 
 \subsection{Biblioteki klienckie}
