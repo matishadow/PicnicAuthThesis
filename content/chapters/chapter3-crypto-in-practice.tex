@@ -127,14 +127,14 @@ oraz stroną uwierzytelniającą. \\
 Dokumentem, w którym opisany jest algorytm jest \textit{RFC 6238} \cite{totprfc}.
 
 \subsection{Porównanie HOTP i TOTP}
-Przewagą haseł opartych o czas jest ich krótki czas ważności. 
-Ich użycie jest możliwe tylko w z góry określonym oknie czasowym. 
+Przewagą haseł typu TOTP jest ich krótki czas ważności. 
+Użycie ich jest możliwe tylko w z góry określonym oknie czasowym. 
 Ważność haseł opartych o licznik jest praktycznie nieograniczona, są ważne aż do momentu ich użycia. \\
 W przypadku podejrzenia hasła opartego o czas, wygenerowanego na czyimś telefonie, atakujący nie jest 
 w stanie pójść do domu i spróbować użyć wykradzione hasło. 
 Przechwycone hasło oparte o licznik jest możliwe do użycia w dowolnej chwili. \\
 Drugim aspektem przemawiającym za używanie haseł opartych o czas jest kwestia ataków siłowych.
-Ataki siłowe skierowane bezpośrednio na hasło jednorazowe są nieco mniej efektywne, gdyż 
+Ataki siłowe skierowane bezpośrednio na hasło jednorazowe typu TOTP są nieco mniej efektywne, gdyż 
 szukane hasło w każdym oknie czasowym jest inne.
 
 \subsection{Porównanie kanałów dostarczania}
@@ -151,9 +151,9 @@ nie jest uważany za całkowicie bezpieczny.
 Obecnie najczęściej spotykanym kanałem dostarczania haseł jednorazowych są wiadomości SMS (Short Message Service). 
 W momencie wykonywania akcji wymagającej dodatkowego uwierzytelnienia, na telefon komórkowy użytkownika 
 wysyłane jest pojedyncze hasło jednorazowe. \\
-Pomijając koszty związane z wysyłaniem wiadomości SMS, kanał ten posiada zastrzeżeń w kwestii bezpieczeństwa.
+Pomijając koszty związane z wysyłaniem wiadomości SMS, kanał ten posiada wiele zastrzeżeń w kwestii bezpieczeństwa.
 Standard szyfrowania \textit{A5/x} używany w wiadomościach został wielokrotnie złamany a wady protokołu 
-\textit{SS7 (Signaling System No. 7)}, odpowiedzialnego za przekierowywanie wiadomości pozwalają na 
+\textit{SS7 (Signaling System No. 7)}, odpowiedzialnego za przekierowywanie wiadomości, pozwalają na 
 przekierowanie konkretnej wiadomości do atakującego. \\
 W lipcu 2016 roku \textit{Narodowy Instytut Standaryzacji i Technologii} wydał oświadczenie, w~którym
 zalecane jest nieużywanie tego kanału przy implementacji uwierzytelnienia dwuetapowego.
@@ -216,7 +216,7 @@ jest wykorzystywany coraz powszechniej, obecnie wykorzystywany jest między inny
 	\item Szyfrowany system plików EFS (Encrypting File System)
 \end{itemize}
 Bezpieczeństwo danych zaszyfrowanych tym interfejsem w znacznym stopniu zależne jest od hasła 
-systemu \textit{Windows}. W przypadku ujawnienia tego hasła lub ataku na bazę kont użytkowników system,
+systemu \textit{Windows}. W przypadku ujawnienia tego hasła lub ataku na bazę kont użytkowników systemu,
 zaszyfrowane dane narażone są na możliwe ataki. \\
 Używane algorytmy kryptograficzne różnią się w zależności o wersji systemu operacyjnego. 
 W systemie operacyjnym \textit{Windows 7} do szyfrowania symetrycznego wykorzystywane jest szyfr \textit{AES} 

@@ -12,11 +12,11 @@ jednak można pośród nich wyróżnić szyfry blokowe oraz szyfry strumieniowe.
 Szyfry symetryczne idealnie nadają się do szyfrowania dużych ilości danych. 
 
 \subsection{Szyfrowanie asymetryczne}
-Algorytmy używane w szyfrach asymetrycznych opierają się na rozwiązywaniu bardzo trudnych matematycznych problemów. 
+Algorytmy używane w szyfrach asymetrycznych opierają się na rozwiązywaniu bardzo trudnych, matematycznych problemów. 
 Konstrukcja tych szyfrów pozwala niemal natychmiastowo rozwiązać zadany problem (i co za tym idzie odszyfrować dane) mając odpowiedni klucz, a w przypadku nieposiadania owego klucza, problem staje się niemożliwy do rozwiązania w~rozsądnym czasie.
 Zwykle wykorzystywane jest tutaj zagadnienie faktoryzacji dużych liczb oraz znajdywania dyskretnych logarytmów. \\
 Algorytmy asymetryczne działają na danych o ustalonej długości - zwykle od 1024 do 2048 bitów. 
-Na ogół wykorzystywane są one tylko do bezpiecznego przesłania klucza symetrycznego, który jest używany do szyfrowania pozostałej komunikacji. 
+Na ogół wykorzystywane są one tylko do bezpiecznego przesłania klucza symetrycznego, który jest potem używany do szyfrowania pozostałej komunikacji. 
 Spowodowane jest to tym, że algorytmy symetryczne są dużo bardziej wydajne niż te asymetryczne. \\
 Szyfrowanie asymetryczne poprawia nieco problem dystrybucji klucza. W odróżnieniu od szyfrowania symetrycznego, wymagane jest użycie $O(N)$ kluczy zamiast $O(N^2)$ \mbox{kluczy}. \\ 
 Przykładami algorytmów asymetrycznych jest RSA lub ElGamal. \\ \\
@@ -153,11 +153,11 @@ W mniej niż 24 godziny szyfr DES został sukcesywnie złamany. \\
 Dla porównania przy dzisiejszej mocy obliczeniowej może on zostać złamany przez jedną maszynę w około jeden dzień \cite{desday}. \\
 Próbą uratowania szyfru była propozycja algorytmu 3DES. 
 Polegał on na zaszyfrowaniu danych szyfrem DES, odszyfrowaniu ich, a następnie ponownym zaszyfrowaniu. 
-Zamiast 3-krotnego szyfrowania, 3DES został wybrany schemat operacji umożliwiający zachowanie kompatybilności z systemami, w których możliwe było użycie jedynie wersji podstawowej algorytmu. \\
+Zamiast 3-krotnego szyfrowania, w 3DES został wybrany schemat operacji umożliwiający zachowanie kompatybilności z systemami, w których możliwe było użycie jedynie wersji podstawowej algorytmu. \\
 Pomimo zwiększonej długości klucza w przypadku 3DES, w porównaniu do AES (Advanced Encryption Standard) jest mniej bezpieczny i nadzwyczajnie wolny (AES potrzebuje 12.6 cykli procesora do zaszyfrowania bajtu danych, 3DES aż 134.5 \cite{crypto101}).
 
 \subsection{Advanced Encryption Standard}
-Po problemach z DES agencja NIST ogłosiła konkurs na algorytm, który mógłby stać się nowym standardem.
+Po problemach z DES agencja NIST (National Institute of Standards and Technology) ogłosiła konkurs na algorytm, który mógłby stać się nowym standardem.
 Do konkursu zgłoszone zostały między innymi: \textit{Rijndael}, \textit{Serpent}, \textit{Twofish}, \textit{MARS} czy \textit{RC6 (Rivest cipher 6)}. 
 Zostały one poddane intensywnej kryptoanalizie. 
 Ostatecznie wygrał algorytm stworzony przez Vincenta Rijmena oraz Joana Daemena - Rijndael. \\
@@ -590,7 +590,7 @@ szumy atmosferyczne do generacji liczb prawdziwie losowych.
 Idealnym byłoby używanie generatorów prawdziwie losowych liczb do zastosowań kryptograficznych, takich 
 jak na przykład generacja klucza symetrycznego. Często jednak nie mamy dostępu do takich generatorów
 lub użycie ich byłoby zbyt kosztowne. Szczęśliwie okazuje się, że do codziennych zastosowań 
-wystarczającym jest użycie kryptograficznie bezpiecznych generatorów liczb pseudolosowych. \\ \\
+wystarczające jest użycie kryptograficznie bezpiecznych generatorów liczb pseudolosowych. \\ \\
 Algorytmami używanymi w kryptografii do generacji liczb pseudolosowych są:
 \begin{itemize}
 	\item \textit{Yarrow}
@@ -598,10 +598,10 @@ Algorytmami używanymi w kryptografii do generacji liczb pseudolosowych są:
 	\item \textit{Dual\_EC\_DRBG}
 	\item \textit{Mersenne Twister}
 \end{itemize}
-Warto zaznaczyć, że samodzielna implementacja algorytmów jest wyjątkowo niewskazana. 
+Warto zaznaczyć, że samodzielna implementacja tych algorytmów jest wyjątkowo niewskazana. 
 Jest to obszar kryptografii, w którym niezwykle łatwo jest popełnić błąd, który
 będzie powodował złamanie całego systemu kryptograficznego. \\
-W razie potrzeby wygenerowania liczb pseudolosowych zalecane jest użycie interfejsu 
+W razie potrzeby generacji liczb pseudolosowych zalecane jest użycie interfejsu 
 wystawionego przez używany system operacyjny. Na systemach z rodziny \textit{Unix}
 interfejsem tym jest \texttt{/dev/urandom}, zaś na systemach \textit{Windows} należy korzystać
 z \texttt{CryptGenRandom}.
