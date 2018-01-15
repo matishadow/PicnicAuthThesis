@@ -82,6 +82,7 @@ Tryb ECB podatny jest również na atak typu \textit{oracle}. \\
         \label{fig:logo-cbc}
     \end{subfigure}
     \caption{Wizualizacja trybów szyfrowania.}
+    \label{modes}
 \end{figure} 
 
 \subsubsection{CBC}
@@ -90,9 +91,11 @@ W tym trybie, blok wiadomości najpierw jest XORowany z poprzednim zaszyfrowanym
 on sam jest poddawany procesowi szyfrowania. W przypadku pierwszego bloku, dla którego nie ma bloku poprzedniego, 
 wprowadzane jest pojęcie \textit{wektora inicjalizującego}. \\ 
 Wektor ten powinien być niemożliwy do zgadnięcia a w idealnej sytuacji powinien on być kryptograficznie losowy. Nie jest konieczne, aby wektor inicjalizujący był tajny, zwykle jest wysyłany razem z zaszyfrowaną wiadomością. Ważne jest jednak, aby atakujący nie był w stanie go przewidzieć przed samym procesem szyfrowania. \\ 
+Wizualizacja procesu szyfrowania trybem CBC przedstawiona jest na Rysunku \ref{cbc-enc}. \\
 Proces deszyfrowania jest analogiczny. W pierwszej kolejności, zaszyfrowany blok poddawany jest działaniu szyfru 
 blokowego, po czym jest on XORowany z poprzednim zaszyfrowanym blokiem. Na pierwszy blok musi zostać użyta funkcja XOR
-z takim samym wektorem inicjalizującym, jaki został użyty podczas szyfrowania. \\\\
+z takim samym wektorem inicjalizującym, jaki został użyty podczas szyfrowania. \\ 
+Schemat ten przedstawiony jest na Rysunku \ref{cbc-dec}. \\\\
 Tryb CBC sam w sobie można uznać za bezpieczny (w odróżnieniu od ECB), 
 należy jednak pamiętać o paru najczęściej popełnianych błędach:
 \begin{enumerate}
@@ -101,16 +104,19 @@ należy jednak pamiętać o paru najczęściej popełnianych błędach:
 	\item Używanie klucza jako wektora inicjalizującego. 
 \end{enumerate}
 Jednym z najbardziej znanych ataków na system bazujący na trybie CBC był atak o nazwie \textit{BEAST} \cite{beast}. 
-Błędem, który został wykorzystany, było użycie zaszyfrowanego bloku poprzedniej wysłanej wiadomości jako wektora inicjalizującego.
+Błędem, który został wykorzystany, było użycie zaszyfrowanego bloku poprzedniej wysłanej wiadomości jako wektora inicjalizującego. \\
+Porównanie skuteczności tego trybu z trybem ECB przedstawione jest na Rysunku \ref{modes}.
 \begin{figure}
     \centering
 	\includegraphics[width=\textwidth]{content/images/cbc-enc-scheme}
     \caption{Schemat szyfrowania w trybie CBC.}
+    \label{cbc-enc}
 \end{figure}
 \begin{figure}
     \centering
 	\includegraphics[width=\textwidth]{content/images/cbc-dec-scheme}
     \caption{Schemat deszyfrowania w trybie CBC.}
+    \label{cbc-dec}
 \end{figure}
 
 \subsubsection{CTR}
@@ -119,17 +125,20 @@ do szyfrów strumieniowych. Wykorzystywany jest w nim \textit{liczba używana je
 oraz licznik. Licznik jest zwiększany dla każdego z bloków wiadomości. 
 Na wejście szyfru blokowego podawana jest wyżej wspomniana liczba połączona z licznikiem. Następnie wynik
 działania szyfru jest XORowany z blokiem wiadomości. \\
-Krytyczne jest tutaj generowanie nowej liczby \textit{nonce} dla każdej z wiadomości. 
+Krytyczne jest tutaj generowanie nowej liczby \textit{nonce} dla każdej z wiadomości. \\
+Wizualizacja tego trybu szyfrowania przedstawiona jest na Rysunku \ref{ctr-enc} oraz na Rysunku \ref{ctr-dec}.
 
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/ctr-enc-scheme}
     \caption{Schemat szyfrowania w trybie CTR.}
+    \label{ctr-enc}
 \end{figure}
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/ctr-dec-scheme}
     \caption{Schemat deszyfrowania w trybie CTR.}
+    \label{ctr-dec}
 \end{figure}
 
 \subsection{Data Encryption Standard}
@@ -174,26 +183,30 @@ Każdy przebieg składa się z następujących kroków:
 			Jest to równoznaczne z zamianą zadanej liczby do postaci wielomianowej (wielomian o maksymalnym 
 			stopniu równym 7, w którym współczynnikami są bity liczby) a następnie znalezienie takiego
 			wielomianu, który po przemnożeniu przez wielomian liczby, modulo $x^8+x^4+x^3+x+1$, da w wyniku 1. \\
-			Funkcja \textit{f} jest przekształceniem wyrażanym następująco: \\
+			Funkcja \textit{f} jest przedstawiona na Rysunku \ref{ff}.  \\
 			\begin{figure}[t]
 			    \centering
 			    \includegraphics[scale=0.5]{content/images/affin}
 				\caption{Przekształcenie \textit{f}.}
+				\label{ff}
 			\end{figure}
-			Możliwe jest też jednorazowe wygenerowania tablicy odwzorowania dla zadanych wielomianów,
+			Możliwe jest też jednorazowe wygenerowania tablicy odwzorowania (przedstawiona na Rysunku \ref{matrix}) dla zadanych wielomianów,
 			dzięki czemu zamiast za każdym razem obliczać wartość tej funkcji, wystarczy odczytać wartość tablicy
 			pod odpowiednim indeksem. 
 			\begin{figure}[t]
 			    \centering
 			    \includegraphics[width=\textwidth]{content/images/sbox}
 				\caption{Macierz odwzorowania funkcji zamiany.}
+				\label{matrix}
 			\end{figure}
 			Przykładowo bajt 0xc4, za pomocą powyższej tablicy, konwertowany jest do wartości~28.
 			\begin{figure}[t]
 			    \centering
 			    \includegraphics[width=\textwidth]{content/images/sub-bytes}
 				\caption{Wizualizacja zamiany bajtów.}
+				\label{change}
 			\end{figure}
+			Wizualizacja zamiany bajtów przedstawiona jest na Rysunku \ref{change}.
 	\item Przesuwanie wierszy. \\
 			Każdy z wierszy jest przesuwany o odpowiednio 0, 1, 2, 3 komórki w lewo. 
 			Komórki macierzy, które wyszły poza macierz są dostawiane z prawej strony.
@@ -201,7 +214,9 @@ Każdy przebieg składa się z następujących kroków:
 			    \centering
 			    \includegraphics[width=\textwidth]{content/images/shift-row}
 				\caption{Wizualizacja przesunięcia wierszy.}
+				\label{rows}
 			\end{figure}
+			Wizualizacja przesuwania wierszy przedstawiona jest na Rysunku \ref{rows}.
 	\item Mieszanie kolumn. \\
 			Kolumna zapisywana jest w postaci wielomianu, następnie 
 			wielomian ten jest mnożony przez specjalny wielomian $03x^3+01x^2+01x+02$. 
@@ -234,7 +249,9 @@ Każdy przebieg składa się z następujących kroków:
 			    \centering
 			    \includegraphics[width=\textwidth]{content/images/mix-cols}
 				\caption{Wizualizacja mieszania kolumn.}
+				\label{cols}
 			\end{figure}
+			Wizualizacja mieszania kolumn przedstawiona jest na Rysunku \ref{cols}.
 	\item Dodanie klucza przebiegu. \\
 			Ostatnim etapem przebiegu jest użycie funkcji XOR pomiędzy każdym elementem macierzy
 			a każdym elementem klucza przebiegu.
@@ -242,7 +259,9 @@ Każdy przebieg składa się z następujących kroków:
 			    \centering
 			    \includegraphics[width=\textwidth]{content/images/add-key}
 				\caption{Wizualizacja dodania klucza przebiegu.}
+				\label{kk}
 			\end{figure}
+			Wizualizacja dodania klucza przebiegu przedstawiona jest na Rysunku \ref{kk}
 \end{enumerate}
 W celu odszyfrowania danych cały proces jest powtarzany w odwrotnej kolejności. \\
 Na chwile obecną nie są znane żadne praktyczne ataki na AES a co do szybkości działania na współczesnych komputerach,
@@ -530,11 +549,12 @@ Oprócz klucza kryptograficznego oraz wiadomości algorytm HMAC pobiera dodatkow
 Jako argument może zostać użyta dowolna funkcja skrótu: SHA1, SHA-256, SHA-3 czy nawet MD5. 
 Nie jest tutaj wymagane aby użyta funkcja skrótu była odporna na kolizję więc HMAC zbudowany na
 funkcji MD5 jest uważany za bezpieczny \cite{hmacmd5}, chociaż nie jest to zalecane przy tworzeniu nowych systemów kryptograficznych. \\
-Schemat generacji HMAC można przedstawić następująco:
+Schemat generacji HMAC przedstawia Rysunek \ref{hmac-scheme}.
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth, height=\textheight/2, keepaspectratio]{content/images/hmac}
     \caption{Schemat HMAC.}
+    \label{hmac-scheme}
 \end{figure} 
 \noindent
 Wartości stałych nie mają tutaj większego znaczenia. Ważne jest jednak aby miały długość równą długości bloku
