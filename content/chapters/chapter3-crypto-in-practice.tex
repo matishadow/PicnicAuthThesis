@@ -7,12 +7,12 @@ związane z kryptografią.
 
 \subsection{Kodowanie transportowe}
 Kodowanie transportowe wykorzystywane jest w przypadku, gdy zachodzi potrzeba transferu danych
-w środowiskach, które pozwalają na przesyłanie wyłącznie znaków ASCII. \\ \\
+w środowiskach, które pozwalają na przesyłanie wyłącznie znaków ASCII (American Standard Code for Information Interchange). \\ \\
 Użycie kodowania transportowego jest konieczne w celu zachowania kompatybilności przy pracy z protokołami, 
 które przystosowane są do pracy na danych 7-bitowych. W takim przypadku najstarszy bit jest zerowany, co
 mogłoby uszkodzić przesyłane dane. W przypadku przesyłania wyłącznie znaków ASCII zerowanie najstarszego bitu
 nie jest problemem, gdyż wszystkie znaki w podstawowej tablicy ASCII mają ten bit wyzerowany.\\
-Bardziej współczesnym przykładem wykorzystania kodowania transportowego jest osadzanie danych graficznych bezpośrednio w kodzie HTML. Konieczne jest wówczas zakodowanie danych w celu wyeliminowania ryzyka pojawienia się znaków '<' oraz '>', które mogłyby być zinterpretowane jako tagi HTML. \\ \\
+Bardziej współczesnym przykładem wykorzystania kodowania transportowego jest osadzanie danych graficznych bezpośrednio w kodzie HTML (Hypertext Markup Language). Konieczne jest wówczas zakodowanie danych w celu wyeliminowania ryzyka pojawienia się znaków '<' oraz '>', które mogłyby być zinterpretowane jako tagi HTML. \\ \\
 Aby ujednolicić implementacje kodowania transportowego został stworzony dokument RFC 4648 \cite{encoding}, w którym opisany jest prawidłowy sposób implementacji oraz to jaki typ kodowania wybrać w zależności od nałożonych wymagań.
 
 \subsubsection{Kodowanie Base64}
@@ -20,7 +20,7 @@ Najczęściej spotykanym typem kodowania transportowego jest kodowanie Base64. K
 Jeżeli po zakodowaniu końcowa część danych jest mniejsza niż 24 bity używany jest także znak '=' jako dopełnienie. \\
 Sam proces kodowania polega na pobraniu 24 bitów danych a następnie podzieleniu ich na 4 grupy po 6 bitów. Każda z grup jest interpretowana jako indeks tablicy ustalonego alfabetu Base64.
 Dla każdej z grup za pomocą indeksu odczytywany jest znak a następnie dopisywany jest on do ciągu zakodowanego. \\
-Istnieje również odmiana kodowania Base64 przystosowana do użycia w przypadku adresów URL czy nazw plików.
+Istnieje również odmiana kodowania Base64 przystosowana do użycia w przypadku adresów URL (Uniform Resource Locator) czy nazw plików.
 W alternatywie tej zamiast znaków '+', '/', które mogłyby zostać błędnie zinterpretowane np w środowisku systemu plików,
 używane są znaki '-' oraz '\_'.
 
@@ -55,7 +55,7 @@ Podobnie jak przy kodowaniu Base64, wymagane jest tutaj wstawienie dopełnienia 
 
 \subsection{Czas uniksowy}
 Czas uniksowy jest sposobem na reprezentację punktu w czasie, polegającym na mierzeniu sekund, które
-upłynęły od daty 1 stycznia 1970 (UTC). W systemach uniksowych zwykle reprezentowany jest w postaci
+upłynęły od daty 1 stycznia 1970 UTC (Coordinated Universal Time). W systemach uniksowych zwykle reprezentowany jest w postaci
 32-bitowej liczby całkowitej ze znakiem. \\
 W przypadku architektur typu serwer-klient wskazane jest synchronizowanie czasu wykorzystując czas~uniksowy,
 gdyż nie zależy on od lokalizacji w której jest mierzony. Właściwość ta eliminuje problem synchronizacji 
@@ -96,7 +96,7 @@ Niektóre z tych metod to:
 \end{enumerate}
 Standard uwierzytelniania za pomocą haseł jednorazowych zdefiniowany jest w dokumencie \textit{RFC 2289} \cite{otprfc}.
 
-\subsection{Hasło oparte o HMAC} \label{truncate}
+\subsection{Hasło typu HOTP (HMAC-based One-time Password Algorithm)} \label{truncate}
 Do generacji haseł tego typu wykorzystywana jest funkcja HMAC. Może być tu użyta dowolna funkcja skrótu, jednak 
 musi być ona taka sama po stronie generującej jak i weryfikującej. 
 Na wejście funkcji podawane są dwa argumenty, symetryczny klucz oraz licznik. 
@@ -114,7 +114,7 @@ Wykorzystywane są one jako indeks, od którego pobieramy 4 bajty z wyniku funkc
 Drugi etap polega na obliczeniu reszty z dzielenia z poprzedniego wyniku przez $10^n$, gdzie \textit{n} jest 
 liczbą cyfr jaką chcemy ostatecznie otrzymać. Algorytm jak i przykładowa implementacja w języku \textit{Java} znajduje się w dokumencie \textit{RFC~4226}~\cite{hotprfc}.
 
-\subsection{Hasło oparte o czas}
+\subsection{Hasło typu TOTP (Time-based One-time Password Algorithm)}
 Algorytm generacji haseł opartych o czas jest ulepszoną wersją poprzedniego. 
 Ponownie używana jest funkcja HMAC, jednak zamiast licznika wykorzystywany jest czas uniksowy.
 Przed podaniem czasu uniksowego do funkcji HMAC jest on dzielony przez okno czasowe czyli 
@@ -127,14 +127,14 @@ oraz stroną uwierzytelniającą. \\
 Dokumentem, w którym opisany jest algorytm jest \textit{RFC 6238} \cite{totprfc}.
 
 \subsection{Porównanie HOTP i TOTP}
-Przewagą haseł opartych o czas jest ich krótki czas ważności. 
-Ich użycie jest możliwe tylko w z góry określonym oknie czasowym. 
+Przewagą haseł typu TOTP jest ich krótki czas ważności. 
+Użycie ich jest możliwe tylko w z góry określonym oknie czasowym. 
 Ważność haseł opartych o licznik jest praktycznie nieograniczona, są ważne aż do momentu ich użycia. \\
 W przypadku podejrzenia hasła opartego o czas, wygenerowanego na czyimś telefonie, atakujący nie jest 
 w stanie pójść do domu i spróbować użyć wykradzione hasło. 
 Przechwycone hasło oparte o licznik jest możliwe do użycia w dowolnej chwili. \\
 Drugim aspektem przemawiającym za używanie haseł opartych o czas jest kwestia ataków siłowych.
-Ataki siłowe skierowane bezpośrednio na hasło jednorazowe są nieco mniej efektywne, gdyż 
+Ataki siłowe skierowane bezpośrednio na hasło jednorazowe typu TOTP są nieco mniej efektywne, gdyż 
 szukane hasło w każdym oknie czasowym jest inne.
 
 \subsection{Porównanie kanałów dostarczania}
@@ -151,9 +151,9 @@ nie jest uważany za całkowicie bezpieczny.
 Obecnie najczęściej spotykanym kanałem dostarczania haseł jednorazowych są wiadomości SMS (Short Message Service). 
 W momencie wykonywania akcji wymagającej dodatkowego uwierzytelnienia, na telefon komórkowy użytkownika 
 wysyłane jest pojedyncze hasło jednorazowe. \\
-Pomijając koszty związane z wysyłaniem wiadomości SMS, kanał ten posiada zastrzeżeń w kwestii bezpieczeństwa.
+Pomijając koszty związane z wysyłaniem wiadomości SMS, kanał ten posiada wiele zastrzeżeń w kwestii bezpieczeństwa.
 Standard szyfrowania \textit{A5/x} używany w wiadomościach został wielokrotnie złamany a wady protokołu 
-\textit{SS7 (Signaling System No. 7)}, odpowiedzialnego za przekierowywanie wiadomości pozwalają na 
+\textit{SS7 (Signaling System No. 7)}, odpowiedzialnego za przekierowywanie wiadomości, pozwalają na 
 przekierowanie konkretnej wiadomości do atakującego. \\
 W lipcu 2016 roku \textit{Narodowy Instytut Standaryzacji i Technologii} wydał oświadczenie, w~którym
 zalecane jest nieużywanie tego kanału przy implementacji uwierzytelnienia dwuetapowego.
@@ -212,14 +212,11 @@ jest wykorzystywany coraz powszechniej, obecnie wykorzystywany jest między inny
 	\item \textit{Microsoft Outlook} przy standardzie \textit{S/MIME}
 	\item \textit{Credential Manager}
 	\item Przestrzeń \textit{Microsoft.Owin} 
-	\item \textit{Windows Live Mail}
-	\item Hasła Zdalnego Pulpitu
-	\item Hasła Sieci bezprzewodowych
 	\item Szyfrowanie bazy danych \textit{Microsoft SQL Server} 
 	\item Szyfrowany system plików EFS (Encrypting File System)
 \end{itemize}
 Bezpieczeństwo danych zaszyfrowanych tym interfejsem w znacznym stopniu zależne jest od hasła 
-systemu \textit{Windows}. W przypadku ujawnienia tego hasła lub ataku na bazę kont użytkowników system,
+systemu \textit{Windows}. W przypadku ujawnienia tego hasła lub ataku na bazę kont użytkowników systemu,
 zaszyfrowane dane narażone są na możliwe ataki. \\
 Używane algorytmy kryptograficzne różnią się w zależności o wersji systemu operacyjnego. 
 W systemie operacyjnym \textit{Windows 7} do szyfrowania symetrycznego wykorzystywane jest szyfr \textit{AES} 
