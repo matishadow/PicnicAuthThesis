@@ -1,6 +1,29 @@
 \chapter{Wstęp}
 
-\section{Cel pracy}
 \section{Pojęcie uwierzytelnienia wielopoziomowego}
-\section{Korzyści płynące z używania uwierzytelnienia wielopoziomowego}
+Do uwierzytelnienie użytkownika można wykorzystać następujące czynniki:
+\begin{enumerate}
+	\item Tego co użytkownik wie, na przykład hasło lub kod PIN.
+	\item Tego co użytkownik posiada, na przykład fizyczny klucz, token, telefon, karta magnetyczna, identyfikacyjna karta elektroniczna.
+	\item Tego kim użytkownik jest, na przykład odcisk palca, tęczówka oka.
+\end{enumerate}
+Uwierzytelnienie wielopoziomowe polega na wykorzystaniu więcej niż jednego czynnika w~procesie potwierdzania tożsamości użytkownika.
+Uwierzytelnianie dwuetapowe (zwane również dwuetapową weryfikacją) jest metodą wykorzystującą dwa czynniki uwierzytelniające. \\
+Przykładowo podczas logowania użytkownik oprócz tradycyjnego hasła (coś co użytkownik wie) jest proszony także
+o podanie hasła jednorazowego, wygenerowanego na tokenie sprzętowym (coś co użytkownik posiada) lub 
+w przypadku wypłaty bankomatowej karta magnetyczna jest czymś co użytkownik posiada, a kod PIN czymś co użytkownik wie.
 
+\section{Korzyści płynące z używania uwierzytelnienia wielopoziomowego}
+Użycie uwierzytelniania wieloetapowego drastycznie zmniejsza ryzyko kradzieży kont użytkowników, gdyż 
+wejście w posiadanie hasła użytkownika nie wystarczy by uzyskać dostęp do jego konta.
+Uwierzytelnienie dwuetapowe pozwala więc stosunkowo niskim koszem znacznie zwiększyć bezpieczeństwo kont użytkowników. \\
+Pomimo, że istnieje standard określający sposób implementacji uwierzytelniania wielopoziomowego to wciąż jednak brakuje oprogramowania, 
+które byłoby zgodne ze standardem, będąc przy tym otwarte i proste w użyciu. 
+
+\section{Cel pracy}
+Celem pracy jest implementacja platformy umożliwiającej dwuetapową weryfikację jak również scharakteryzowanie 
+elementów kryptografii, na których dwuetapowa weryfikacja bazuje. 
+W sytuacji, gdy jakiś serwis zechce wykorzystać uwierzytelnianie dwuetapowe,
+zamiast implementować cały protokół samodzielnie, może wykorzystać platformę, będącą tematem pracy. \\
+Głównymi założeniami projektu jest prostota w użyciu oraz możliwość wykorzystania jego funkcjonalności 
+bez względu na używaną technologię czy język programowania.
