@@ -49,7 +49,7 @@ Aplikacja przeznaczona jest do działania na serwerze \textit{IIS (Internet Info
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/swagger}
-    \caption{Interaktywna dokumentacja API.}
+    \caption{Interaktywna dokumentacja API. Źródło: opracowanie własne.}
     \label{swagger}
 \end{figure}
 
@@ -64,13 +64,13 @@ umożliwiającego użycie bibliotek klienckich.
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/front-home}
-    \caption{Informacyjna strona internetowa projektu.}
+    \caption{Informacyjna strona internetowa projektu. Źródło: opracowanie własne.}
     \label{front-home}
 \end{figure}
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/front-create}
-    \caption{Tworzenie konta podmiotu.}
+    \caption{Tworzenie konta podmiotu. Źródło: opracowanie własne.}
     \label{front-create}
 \end{figure}
 
@@ -147,7 +147,7 @@ w formie tablicy.
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/code-srng}
-    \caption{Klasa zwracająca kryptograficznie bezpiecznie pseudolosowe dane.}
+    \caption{Klasa zwracająca kryptograficznie bezpiecznie pseudolosowe dane. Źródło: opracowanie własne.}
     \label{code-srng}
 \end{figure} \\
 Bardziej wyspecjalizowaną klasą jest klasa \textit{SecretGenerator}, przedstawiona na Rysunku \ref{code-secretgenerator}.
@@ -156,7 +156,7 @@ zgodnej z zaleceniami standardu, równej dziesięć.
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/code-secretgenerator}
-    \caption{Klasa generująca sekret użytkownika.}
+    \caption{Klasa generująca sekret użytkownika. Źródło: opracowanie własne.}
     \label{code-secretgenerator}
 \end{figure}
 
@@ -192,7 +192,7 @@ Ekran używany do wprowadzania tych danych przedstawiony jest na Rysunku \ref{mo
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/mobile-manual}
-    \caption{Ekran tworzenia nowego konta w aplikacji Google Authenticator.}
+    \caption{Ekran tworzenia nowego konta w aplikacji Google Authenticator. Źródło: opracowanie własne.}
     \label{mobile-manual}
 \end{figure} \\
 Jeśli urządzenie mobilne użytkownika jest wyposażone w aparat fotograficzny możliwe jest natychmiastowe dostarczenie sekretu, 
@@ -228,20 +228,20 @@ Wykorzystuje ona formatowanie łańcuchów znaków na podstawie z góry zadanego
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/code-keyuri}
-    \caption{Klasa generująca KeyUri.}
+    \caption{Klasa generująca KeyUri. Źródło: opracowanie własne.}
     \label{code-keyuri}
 \end{figure} \\
 Przykładowe kody QR o typach HOTP oraz TOTP znajdują się odpowiednio na Rysunku \ref{qr-hotp} oraz Rysunku \ref{qr-totp}.
 \begin{figure}[t]
     \centering
 	\includegraphics[width=0.5\textwidth]{content/images/qr-hotp}
-    \caption{Kod QR umożliwiający generację haseł typu HOTP.}
+    \caption{Kod QR umożliwiający generację haseł typu HOTP. Źródło: opracowanie własne.}
     \label{qr-hotp}
 \end{figure}
 \begin{figure}[t]
     \centering
 	\includegraphics[width=0.5\textwidth]{content/images/qr-totp}
-	\caption{Kod QR umożliwiający generację haseł typu TOTP.}
+	\caption{Kod QR umożliwiający generację haseł typu TOTP. Źródło: opracowanie własne.}
     \label{qr-totp}
 \end{figure}
 Niezwykle ważne jest tutaj bezpieczeństwo samego kanału przekazywania sekretu do użytkownika końcowego. 
@@ -258,7 +258,7 @@ W implementacji tej argument \textit{key} jest równoznaczny z sekretem użytkow
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/code-hmac}
-    \caption{Klasa generująca HMAC.}
+    \caption{Klasa generująca HMAC. Źródło: opracowanie własne.}
     \label{code-hmac}
 \end{figure} \\ \\
 Wynik funkcji HMAC jest następnie przycinany do postaci hasła jednorazowego. 
@@ -272,7 +272,7 @@ długość przekazanego argumentu i rzuca wyjątek w przypadku, gdy długość d
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/code-truncator}
-    \caption{Klasa odpowiedzialna za przycięcie wyniku HMAC do postaci hasła.}
+    \caption{Klasa odpowiedzialna za przycięcie wyniku HMAC do postaci hasła. Źródło: opracowanie własne.}
     \label{code-truncator}
 \end{figure}
 
@@ -284,7 +284,7 @@ przycięcie wyniku funkcji HMAC do postaci hasła.
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/code-hotpgenerator}
-    \caption{Klasa generująca hasło jednorazowe oparte o licznik.}
+    \caption{Klasa generująca hasło typu HOTP. Źródło: opracowanie własne.}
     \label{code-hotp}
 \end{figure}
 
@@ -296,7 +296,7 @@ reprezentującą okres ważności hasła jednorazowego, przyjmującą wartość 
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/code-totpgenerator}
-    \caption{Klasa generująca hasło jednorazowe oparte o czas.}
+    \caption{Klasa generująca hasło typu HOTP. Źródło: opracowanie własne.}
     \label{code-totp}
 \end{figure}
 
@@ -315,7 +315,7 @@ Ikona w kształcie koła, znajdująca się na prawo od hasła symbolizuje pozost
 \begin{figure}[t]
     \centering
 	\includegraphics[width=0.5\textwidth]{content/images/mobile-google}
-	\caption{Użycie aplikacji Google Authenticator.}
+	\caption{Użycie aplikacji Google Authenticator. Źródło: opracowanie własne.}
     \label{mobile-google}
 \end{figure} \\
 Bezpieczniejszą alternatywą do aplikacji \textit{Google Authenticator} jest \textit{Authy 2-Factor Authentication}. 
@@ -328,7 +328,7 @@ Widoczne jest na nim wygenerowane hasło typu TOTP dla użytkownika \textit{Przy
 \begin{figure}[t]
     \centering
 	\includegraphics[width=0.5\textwidth]{content/images/mobile-authy}
-	\caption{Użycie aplikacji Authy.}
+	\caption{Użycie aplikacji Authy. Źródło: opracowanie własne.}
     \label{mobile-authy}
 \end{figure}
 
@@ -345,7 +345,7 @@ w~jakimkolwiek miejscu w pamięci.
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/code-encrypt}
-    \caption{Klasa odpowiedzialna za szyfrowanie.}
+    \caption{Klasa odpowiedzialna za szyfrowanie. Źródło: opracowanie własne.}
     \label{code-encrypt}
 \end{figure} \\
 Komplementarną do powyższej klasy jest klasa \textit{DpapiDecryptor}, przedstawiona na Rysunku \ref{code-decrypt}. 
@@ -354,7 +354,7 @@ postaci łańcuchu znaków lub do postaci tablicy bajtów.
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/code-decrypt}
-    \caption{Klasa odpowiedzialna za deszyfrowanie.}
+    \caption{Klasa odpowiedzialna za deszyfrowanie. Źródło: opracowanie własne.}
     \label{code-decrypt}
 \end{figure}
 
@@ -381,7 +381,7 @@ wartość licznika w bazie jest aktualizowana, tak aby była zgodna z licznikiem
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/code-hvalidator}
-    \caption{Klasa odpowiedzialna za walidację hasła typu HOTP.}
+    \caption{Klasa walidująca hasła typu HOTP. Źródło: opracowanie własne.}
     \label{hotp-validator}
 \end{figure} 
 
@@ -396,7 +396,7 @@ Jeśli któreś z trzech wygenerowanych haseł jest zgodne z tym podanym przez u
 \begin{figure}[t]
     \centering
 	\includegraphics[width=\textwidth]{content/images/code-tvalidator}
-    \caption{Klasa odpowiedzialna za walidację hasła typu TOTP.}
+    \caption{Klasa walidująca hasła typu TOTP. Źródło: opracowanie własne.}
     \label{totp-validator}
 \end{figure}
 
